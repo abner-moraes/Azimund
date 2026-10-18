@@ -1,0 +1,256 @@
+/* react panels and controls */
+.main-menu {
+  position: fixed;
+  z-index: 3;
+  top: var(--edge);
+  right: var(--edge);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: var(--menu-width);
+  padding: 6px 6px 18px;
+  border-radius: 40px;
+  background: var(--blue);
+  box-shadow: var(--inner-shadow);
+}
+
+.menu-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 40px;
+  padding: 0;
+  border-radius: 22px;
+  background: transparent;
+  transition: background 150ms ease;
+}
+
+.menu-button:hover, .menu-button[aria-expanded='true'] {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.account-button {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 4px;
+  border-radius: 50%;
+  color: white;
+  background: #b0b0b0;
+}
+
+.account-button:hover, .account-button[aria-expanded='true'] {
+  background: #c0c0c0;
+}
+
+.account-button .material-symbols-outlined {
+  font-size: 40px;
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+}
+
+.menu-panel {
+  position: fixed;
+  z-index: 2;
+  top: calc(var(--edge) + 8px);
+  right: calc(var(--edge) + var(--menu-width) + 12px);
+  width: 360px;
+  max-width: calc(100vw - var(--menu-width) - var(--edge) * 2 - 12px);
+  max-height: calc(100dvh - var(--edge) * 2 - 8px);
+  overflow: auto;
+  border-radius: 40px;
+  background: var(--green);
+  box-shadow: var(--inner-shadow);
+  scrollbar-width: thin;
+  scrollbar-color: #729084 transparent;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 22px 18px 28px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.panel-header h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.close-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.close-button .material-symbols-outlined {
+  font-size: 20px;
+}
+
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.panel-placeholders {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 20px 22px;
+}
+
+.placeholder {
+  width: 84px;
+  height: 54px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.layers-content {
+  padding: 22px 26px 28px;
+}
+
+fieldset {
+  min-width: 0;
+  margin: 0 0 24px;
+  padding: 0;
+  border: none;
+}
+
+fieldset:last-child {
+  margin-bottom: 0;
+}
+
+fieldset:disabled {
+  opacity: 0.55;
+}
+
+legend {
+  margin-bottom: 12px;
+  padding: 0;
+  font-size: 15px;
+}
+
+.map-actions {
+  position: fixed;
+  z-index: 2;
+  right: calc(var(--edge) + 10px);
+  bottom: var(--edge);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.map-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: var(--inner-shadow);
+}
+
+.map-button:hover:not(:disabled), .map-button[aria-expanded='true'] {
+  background: var(--green);
+}
+
+.zoom-buttons {
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--blue);
+  box-shadow: var(--inner-shadow);
+}
+
+.zoom-buttons .map-button {
+  height: 36px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --edge: 12px;
+    --menu-width: 56px;
+  }
+
+  .main-menu {
+    gap: 6px;
+    padding: 6px 4px 14px;
+  }
+
+  .menu-button {
+    width: 44px;
+    height: 38px;
+  }
+
+  .account-button {
+    width: 46px;
+    height: 46px;
+  }
+
+  .menu-panel {
+    border-radius: 30px;
+  }
+
+  .panel-header {
+    gap: 6px;
+    padding: 18px;
+  }
+
+  .panel-header h1 {
+    font-size: 21px;
+  }
+
+  .layers-content {
+    padding: 18px;
+  }
+
+  .map-actions {
+    right: calc(var(--edge) + 6px);
+    gap: 8px;
+  }
+}
+
+@media (max-height: 580px) {
+  .main-menu {
+    gap: 4px;
+    padding-bottom: 10px;
+  }
+
+  .menu-button {
+    height: 34px;
+  }
+
+  .account-button {
+    height: 46px;
+    width: 46px;
+  }
+
+  .map-actions {
+    right: calc(var(--edge) + var(--menu-width) + 16px);
+    gap: 6px;
+  }
+
+  .menu-panel {
+    z-index: 4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-button {
+    transition: none;
+  }
+}
