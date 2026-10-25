@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { UserPanel } from './UserPanel.jsx';
 import profileImage from './UserIcon/profile.png';
+import { readDemoAccount } from './Page/demoAccount.js';
 import { setBasemap } from './basemapSwitcher.js';
 import { setProjection } from './projectionToggle.js';
 import { setDrawToolsOpen } from './drawTools.js';
@@ -29,7 +30,7 @@ function EmptyPanel() {
 }
 
 export function MapInterface({ map, draw }) {
-  const [user, setUser] = useState({ nome: 'Marcelo Batista Haas', tipo: 'Professor', email: 'Marcelo@email.com', foto: profileImage });
+  const [user, setUser] = useState(() => ({ nome: 'Marcelo Batista Haas', tipo: 'Professor', email: 'Marcelo@email.com', foto: profileImage, ...readDemoAccount() }));
   const [activePanel, setActivePanel] = useState(null);
   const [basemap, setActiveBasemap] = useState('satellite');
   const [projection, setActiveProjection] = useState('globe');

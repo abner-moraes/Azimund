@@ -38,7 +38,6 @@ export function initSpaceEffects(map) {
       seed = (seed * 1664525 + 1013904223) >>> 0;
       return seed / 4294967296;
     }
-    // Menos estrelas e pontos menores para manter o espaço escuro.
     for (let i = 0; i < width * height / 720; i++) {
       const x = random() * width;
       const y = random() * height;
@@ -105,7 +104,6 @@ export function initSpaceEffects(map) {
 
     if (!bounds || bounds.radius < 1) return;
     const { x, y, radius } = bounds;
-    // Aura concentrada no contorno, sem clarear todo o fundo.
     const gradient = glow.createRadialGradient(x, y, radius, x, y, radius * 2.5);
     gradient.addColorStop(0, 'rgba(150,205,255,0.65)');
     gradient.addColorStop(0.08, 'rgba(90,160,235,0.3)');

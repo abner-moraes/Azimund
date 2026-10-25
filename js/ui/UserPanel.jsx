@@ -100,7 +100,7 @@ export function UserPanel({ user, onChange, onClose }) {
 
   function trapFocus(event) {
     if (event.key !== 'Tab') return;
-    const elements = [...dialogRef.current.querySelectorAll('button, input, [tabindex="0"]')]
+    const elements = [...dialogRef.current.querySelectorAll('button, input, a[href], [tabindex="0"]')]
       .filter((element) => !element.disabled && element.getClientRects().length);
     const first = elements[0];
     const last = elements[elements.length - 1];
@@ -171,6 +171,10 @@ export function UserPanel({ user, onChange, onClose }) {
           ))}
         </div>
         <p className="user-status" role="status">{message}</p>
+        <nav className="user-auth-links" aria-label="Acesso à conta">
+          <a href="./login.html">Entrar</a>
+          <a href="./cadastro.html">Criar conta</a>
+        </nav>
       </section>
     </dialog>
   );

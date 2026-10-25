@@ -35,7 +35,7 @@ export const MAP_STYLE = {
     'sky-color': '#02040a',
     'horizon-color': '#52749a',
     'fog-color': '#172738',
-    'sky-horizon-blend': 0.15,
+    'sky-horizon-blend': 0.5,
     'horizon-fog-blend': 0.6,
     'fog-ground-blend': 0.85,
     'atmosphere-blend': [
