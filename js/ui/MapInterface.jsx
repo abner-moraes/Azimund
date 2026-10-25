@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { UserPanel } from './UserPanel.jsx';
+import profileImage from './UserIcon/profile.png';
 import { setBasemap } from './basemapSwitcher.js';
 import { setProjection } from './projectionToggle.js';
 import { setDrawToolsOpen } from './drawTools.js';
@@ -15,7 +17,7 @@ function Icon({ name }) {
   return <span className="material-symbols-outlined" aria-hidden="true">{name}</span>;
 }
 
-// Os espaços vazios serão substituídos pelo conteúdo de cada menu futuramente.
+// os espaços vazios vão ser substituídos pelo conteúdo de cada menu mais pra frente
 function EmptyPanel() {
   return (
     <div className="panel-placeholders" aria-label="Conteúdo a ser adicionado futuramente">
@@ -27,6 +29,7 @@ function EmptyPanel() {
 }
 
 export function MapInterface({ map, draw }) {
+  const [user, setUser] = useState({ nome: 'Marcelo Batista Haas', tipo: 'Professor', email: 'Marcelo@email.com', foto: profileImage });
   const [activePanel, setActivePanel] = useState(null);
   const [basemap, setActiveBasemap] = useState('satellite');
   const [projection, setActiveProjection] = useState('globe');
@@ -40,7 +43,6 @@ export function MapInterface({ map, draw }) {
       setMapReady(true);
     }
 
-    // Espera a estrutura do estilo, sem depender do download de todas as imagens.
     if (map.getLayer('satellite')) handleLoad();
     map.on('style.load', handleLoad);
     return () => map.off('style.load', handleLoad);
@@ -93,15 +95,20 @@ export function MapInterface({ map, draw }) {
             aria-label={item.label}
             title={item.label}
             aria-expanded={item.id === 'edit' ? drawOpen : activePanel === item.id}
-            aria-controls={item.id === 'edit' ? 'terradraw-tools' : activePanel === item.id ? 'menu-panel' : undefined}
+            aria-haspopup={item.id === 'account' ? 'dialog' : undefined}
+            aria-controls={item.id === 'account' ? 'user-panel' : item.id === 'edit' ? 'terradraw-tools' : activePanel === item.id ? 'menu-panel' : undefined}
             onClick={() => togglePanel(item.id)}
           >
-            <Icon name={item.icon} />
+            {item.id === 'account' ? <img className="account-photo" src={user.foto} alt="" /> : <Icon name={item.icon} />}
           </button>
         ))}
       </nav>
 
-      {selectedMenu && (
+      {activePanel === 'account' && (
+        <UserPanel user={user} onChange={setUser} onClose={() => setActivePanel(null)} />
+      )}
+
+      {selectedMenu && activePanel !== 'account' && (
         <section id="menu-panel" className="menu-panel" aria-labelledby="panel-title">
           <header className="panel-header">
             <h1 id="panel-title">{selectedMenu.label}</h1>
@@ -142,27 +149,27 @@ export function MapInterface({ map, draw }) {
       )}
 
       <div className="map-actions" role="group" aria-label="Controles do mapa">
-        {/* Controles visuais reservados para uma próxima etapa. */}
-        <button type="button" className="map-button" aria-label="3D" title="3D — em breve" disabled>
+        {/* controles visuais pro back dps*/}
+        <button type="button" className="map-button" aria-label="3D" title="3D" disabled>
           <Icon name="view_in_ar" />
         </button>
         <button
           type="button"
           className="map-button"
           aria-label="Medir distância"
-          title="Medir distância — em breve"
+          title="Medir distância"
           disabled
         >
           <Icon name="straighten" />
         </button>
-        <button type="button" className="map-button" aria-label="Orientação" title="Orientação — em breve" disabled>
+        <button type="button" className="map-button" aria-label="Orientação" title="Orientação" disabled>
           <Icon name="explore" />
         </button>
         <div className="zoom-buttons" role="group" aria-label="Zoom">
-          <button type="button" className="map-button" aria-label="Aumentar zoom" title="Aumentar zoom — em breve" disabled>
+          <button type="button" className="map-button" aria-label="Aumentar zoom" title="Aumentar zoom" disabled>
             <Icon name="add" />
           </button>
-          <button type="button" className="map-button" aria-label="Diminuir zoom" title="Diminuir zoom — em breve" disabled>
+          <button type="button" className="map-button" aria-label="Diminuir zoom" title="Diminuir zoom" disabled>
             <Icon name="remove" />
           </button>
         </div>

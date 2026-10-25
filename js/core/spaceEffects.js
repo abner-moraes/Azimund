@@ -38,13 +38,14 @@ export function initSpaceEffects(map) {
       seed = (seed * 1664525 + 1013904223) >>> 0;
       return seed / 4294967296;
     }
-    for (let i = 0; i < width * height / 900; i++) {
+    // Menos estrelas e pontos menores para manter o espaço escuro.
+    for (let i = 0; i < width * height / 720; i++) {
       const x = random() * width;
       const y = random() * height;
-      const size = random() * 1.3 + 0.2;
-      const alpha = random() * 0.6 + 0.15;
-      const color = random() > 0.8 ? (random() > 0.5 ? '180,210,255' : '255,230,185') : '255,255,255';
-      if (size > 1.1) {
+      const size = random() * 1 + 0.2;
+      const alpha = random() * 0.4 + 0.1;
+      const color = random() > 0.8 ? (random() > 1 ? '180,210,255' : '255,230,185') : '255,255,255';
+      if (size > 0.9) {
         context.fillStyle = `rgba(${color},${alpha * 0.12})`;
         context.beginPath();
         context.arc(x, y, size * 3, 0, Math.PI * 2);
@@ -104,13 +105,12 @@ export function initSpaceEffects(map) {
 
     if (!bounds || bounds.radius < 1) return;
     const { x, y, radius } = bounds;
-    const gradient = glow.createRadialGradient(x, y, radius, x, y, radius * 2.8);
-    gradient.addColorStop(0, 'rgba(200,235,255,1)');
-    gradient.addColorStop(0.03, 'rgba(130,200,250,0.6)');
-    gradient.addColorStop(0.08, 'rgba(70,150,230,0.35)');
-    gradient.addColorStop(0.18, 'rgba(40,100,200,0.15)');
-    gradient.addColorStop(0.35, 'rgba(25,65,160,0.06)');
-    gradient.addColorStop(0.6, 'rgba(15,40,110,0.02)');
+    // Aura concentrada no contorno, sem clarear todo o fundo.
+    const gradient = glow.createRadialGradient(x, y, radius, x, y, radius * 2.5);
+    gradient.addColorStop(0, 'rgba(150,205,255,0.65)');
+    gradient.addColorStop(0.08, 'rgba(90,160,235,0.3)');
+    gradient.addColorStop(0.25, 'rgba(45,100,185,0.12)');
+    gradient.addColorStop(0.55, 'rgba(20,50,110,0.03)');
     gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
     glow.globalCompositeOperation = 'screen';
     glow.fillStyle = gradient;
@@ -125,12 +125,12 @@ export function initSpaceEffects(map) {
 
   function animate(time) {
     frame = 0;
-    const delta = Math.min((time - previousTime) / 1000 || 0, 0.05);
+    const delta = Math.min((time - previousTime) / 1000 || 0, 0.5);
     previousTime = time;
     const context = comets.getContext('2d');
     context.clearRect(0, 0, width, height);
     if (visible() && !reducedMotion.matches) {
-      if (!comet && Math.random() < delta * 0.3) {
+      if (!comet && Math.random() < delta * 0.04) {
         comet = { x: Math.random() * width, y: Math.random() * height, angle: Math.PI / 5, life: 0, duration: 1.8, speed: 500, length: 220 };
       }
       if (comet) {

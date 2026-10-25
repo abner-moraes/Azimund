@@ -21,7 +21,7 @@ html, body, #map {
 
 body {
   overflow: hidden;
-  background: radial-gradient(ellipse at center, #0c1b33, #081222);
+  background: #02040a;
 }
 
 #map {
@@ -66,4 +66,3 @@ button:focus-visible, input:focus-visible {
   -webkit-font-smoothing: antialiased;
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
 }
-

@@ -32,7 +32,7 @@ export function initDrawTools(map) {
 
 
 
-// O menu Editar abre o controle original no canto superior esquerdo.
+// O menu abre o controle original no canto
 export function setDrawToolsOpen(map, draw, isOpen) {
   const container = map.getContainer().querySelector('#terradraw-tools');
   container.style.display = isOpen ? '' : 'none';
