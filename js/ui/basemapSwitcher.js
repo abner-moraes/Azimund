@@ -1,8 +1,7 @@
 // Connects the React options to the layers already defined in config/mapStyle.js.
 const BASEMAP_LAYERS = {
   satellite: 'satellite',
-  terrain: 'eox-terrain',
-  'terrain-light': 'eox-terrain-light'
+  terrain: 'eox-terrain', 'terrain-light': 'eox-terrain-light'
 };
 
 export function setBasemap(map, key) {
