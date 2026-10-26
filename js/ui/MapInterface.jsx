@@ -30,7 +30,8 @@ function EmptyPanel() {
 }
 
 export function MapInterface({ map, draw }) {
-  const [user, setUser] = useState(() => ({ nome: 'Marcelo Batista Haas', tipo: 'Professor', email: 'Marcelo@email.com', foto: profileImage, ...readDemoAccount() }));
+  //USUARIO DE EXEMPLO
+  const [user, setUser] = useState(() => ({ nome: 'Maurício Laks', tipo: 'Professor', email: 'mlaks.prof@gmail.com', foto: profileImage, ...readDemoAccount() }));
   const [activePanel, setActivePanel] = useState(null);
   const [basemap, setActiveBasemap] = useState('satellite');
   const [projection, setActiveProjection] = useState('globe');
@@ -151,9 +152,6 @@ export function MapInterface({ map, draw }) {
 
       <div className="map-actions" role="group" aria-label="Controles do mapa">
         {/* controles visuais pro back dps*/}
-        <button type="button" className="map-button" aria-label="3D" title="3D" disabled>
-          <Icon name="view_in_ar" />
-        </button>
         <button
           type="button"
           className="map-button"
@@ -163,16 +161,49 @@ export function MapInterface({ map, draw }) {
         >
           <Icon name="straighten" />
         </button>
-        <button type="button" className="map-button" aria-label="Orientação" title="Orientação" disabled>
+
+        <button 
+          type="button" 
+          className="map-button" 
+          aria-label="3D" 
+          title="3D" 
+          disabled
+        >
+          <Icon name="view_in_ar" />
+        </button>
+        
+        <button
+          type="button" 
+          className="map-button" 
+          aria-label="Orientação" 
+          title="Orientação" 
+          disabled
+        >
           <Icon name="explore" />
         </button>
+        
         <div className="zoom-buttons" role="group" aria-label="Zoom">
-          <button type="button" className="map-button" aria-label="Aumentar zoom" title="Aumentar zoom" disabled>
+
+          <button 
+            type="button" 
+            className="map-button" 
+            aria-label="Aumentar zoom" 
+            title="Aumentar zoom" 
+            disabled
+          >
             <Icon name="add" />
           </button>
-          <button type="button" className="map-button" aria-label="Diminuir zoom" title="Diminuir zoom" disabled>
+
+          <button 
+            type="button" 
+            className="map-button" 
+            aria-label="Diminuir zoom" 
+            title="Diminuir zoom" 
+            disabled
+          >
             <Icon name="remove" />
           </button>
+
         </div>
       </div>
     </>

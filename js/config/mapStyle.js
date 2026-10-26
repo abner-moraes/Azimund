@@ -55,11 +55,17 @@ export const MAP_STYLE = {
 
 
 
-// posição inicial do mapa e td mais (MUDAR)
+/*
+POSIÇÃO INICIAL DO GLOBO
+
+obs:
+center: [60, 25] = centrado no Velho Mundo
+center: [-80, 15] = centrado nas Américas
+*/
 export const MAP_VIEW_OPTIONS = {
-  zoom: 3.5,
-  center: [30, 40],
+  zoom: 2,
+  center: [60, 25],
   maxPitch: 89,
-  pitch: 11,
+  pitch: 0,
   canvasContextAttributes:{antialias: true}
 };

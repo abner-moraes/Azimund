@@ -1,6 +1,11 @@
 /* base and vars*/
+
+/* FONT IMPORTS */
+@import url(https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&display=swap);
+
 :root {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: DM Sans, sans-serif;
   color: #fff9e9;
   --blue: #000c32;
   --green: #1b4c3c;

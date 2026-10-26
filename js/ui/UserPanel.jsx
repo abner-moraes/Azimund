@@ -129,12 +129,12 @@ export function UserPanel({ user, onChange, onClose }) {
         <div className="user-avatar">
           <img src={user.foto} alt="Foto de perfil" />
         </div>
-        <h1 id="user-title">Usuário</h1>
+        <hr></hr>
         <div className="user-photo-controls" aria-busy={loadingPhoto}>
           <input ref={photoInputRef} id="user-photo" type="file" hidden accept="image/jpeg,image/png,image/webp,image/gif"
             onChange={changePhoto} />
           <button type="button" className="user-edit" aria-describedby="user-photo-help" onClick={() => photoInputRef.current?.click()}>
-            Alterar foto
+            Alterar Foto
           </button>
           {loadingPhoto && <p role="status">carregando foto</p>}
           {photoError && <p className="user-error" role="alert">{photoError}</p>}
