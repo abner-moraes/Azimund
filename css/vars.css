@@ -4,6 +4,15 @@
 @import url(https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap);
 /* @import url(https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap); */
 
+/* 
+icones 
+
+descobrir como fazer esse url ficar menos horrivel
+*/
+@import url(
+  https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0..1,0&icon_names=add,close,collections_bookmark,edit_square,explore,map,person,public,remove,search,straighten,view_in_ar,assignment,library_books,account_circle,settings,login,logout&display=block
+);
+
 :root {
   /*cores principais*/
   --color-primary-lime: #9DFF00;
