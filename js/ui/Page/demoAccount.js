@@ -15,7 +15,6 @@ export function readDemoAccount() {
 
 export function saveDemoAccount({ nome, email }) {
   try {
-    // Senha e n são gravados
     sessionStorage.setItem(ACCOUNT_KEY, JSON.stringify({ nome, email })); //jsonnn
     return true;
   } catch {

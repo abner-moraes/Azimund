@@ -9,8 +9,8 @@
   padding: 88px 20px 28px;
   border: 0;
   overflow: auto;
-  color: #fff9e9;
-  background: transparent;
+  color: var(--color-tertiary-ivory);
+  background: var(--color-tertiary-transparent);
 }
 
 .user-dialog[open] {
@@ -20,7 +20,7 @@
 }
 
 .user-dialog::backdrop {
-  background: rgba(0, 8, 20, 0.5);
+  background: var(--color-tertiary-backdrop);
 }
 
 .user-card {
@@ -31,8 +31,8 @@
   margin: auto;
   padding: 62px 22px 24px;
   border-radius: 40px;
-  background: #1d334b;
-  box-shadow: var(--inner-shadow), 0 14px 26px rgba(0, 0, 0, 0.5);
+  background: var(--color-tertiary-panel);
+  box-shadow: var(--inner-shadow), 0 14px 26px var(--color-tertiary-shadow);
 }
 
 .user-avatar {
@@ -42,10 +42,10 @@
   transform: translateX(-50%);
   width: 134px;
   height: 134px;
-  border: 5px solid #6050ff;
+  border: 5px solid var(--color-tertiary-avatar-ring);
   border-radius: 50%;
-  color: white;
-  background: #b0b0b0;
+  color: var(--color-tertiary-white);
+  background: var(--color-tertiary-avatar);
   overflow: hidden;
 }
 
@@ -66,7 +66,7 @@
 
 .user-photo-controls small {
   font-size: 12px;
-  color: #c5d2de;
+  color: var(--color-tertiary-muted);
 }
 
 .user-photo-controls p {
@@ -75,20 +75,20 @@
 }
 
 .user-photo-controls .user-error {
-  color: #ffb9b9;
+  color: var(--color-tertiary-error);
 }
 
 .user-card h1 {
   margin: 0;
   padding: 0 0 2px;
-  border-bottom: 4px solid #adff00;
+  border-bottom: 4px solid var(--color-tertiary-highlight);
   text-align: center;
   font-size: 38px;
   font-weight: 400;
 }
 
 .user-card hr {
-  border-bottom: 4px solid #adff00;
+  border-bottom: 4px solid var(--color-tertiary-highlight);
 }
 
 .user-close {
@@ -98,12 +98,12 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: transparent;
+  background: var(--color-tertiary-transparent);
   font-size: 28px;
 }
 
 .user-close:hover {
-  background: rgba(255, 255, 255, 0.13);
+  background: var(--color-tertiary-overlay-hover);
 }
 
 .user-fields {
@@ -127,8 +127,8 @@
 
 .user-edit {
   padding: 0;
-  color: #adff00;
-  background: transparent;
+  color: var(--color-tertiary-highlight);
+  background: var(--color-tertiary-transparent);
   text-decoration: underline;
   font-size: 14px;
 }
@@ -148,10 +148,10 @@
   width: 100%;
   min-width: 0;
   padding: 10px;
-  border: 1px solid #92a4b4;
+  border: 1px solid var(--color-tertiary-border);
   border-radius: 6px;
-  color: #fff9e9;
-  background: #12273b;
+  color: var(--color-tertiary-ivory);
+  background: var(--color-tertiary-input-background);
 }
 
 .user-form-actions {
@@ -163,17 +163,17 @@
 .user-form-actions button {
   padding: 8px 14px;
   border-radius: 6px;
-  background: #adff00;
-  color: #152739;
+  background: var(--color-tertiary-highlight);
+  color: var(--color-tertiary-button-text);
 }
 
 .user-form-actions button+button {
-  color: #fff9e9;
-  background: #3c5269;
+  color: var(--color-tertiary-ivory);
+  background: var(--color-tertiary-secondary-button);
 }
 
 .user-field .user-error {
-  color: #ffb9b9;
+  color: var(--color-tertiary-error);
   font-size: 14px;
 }
 
@@ -188,7 +188,7 @@
 }
 
 .user-auth-links {
-  display: none; /* temporary fix, these buttons will not be there later */
+  display: none; /* the cadastro and login buttons */
   /* display: flex; */
   justify-content: center;
   gap: 24px;
@@ -196,12 +196,12 @@
 }
 
 .user-auth-links a {
-  color: #adff00;
+  color: var(--color-tertiary-highlight);
   font-size: 14px;
 }
 
 .user-dialog :focus-visible {
-  outline: 2px solid #fff9e9;
+  outline: 2px solid var(--color-tertiary-ivory);
   outline-offset: 3px;
 }
 

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { MODELS_3D } from '../config/models3d.js';
+import { readThemeColor } from '../config/theme.js';
 
 // ML layer that renders Three.js GLTF models on the map
 export const customLayer = {
@@ -19,11 +20,11 @@ export const customLayer = {
       const scene = new THREE.Scene();
 
       // lights per scene
-      const light1 = new THREE.DirectionalLight(0xffffff);
+      const light1 = new THREE.DirectionalLight(readThemeColor('--color-tertiary-white'));
       light1.position.set(0, -70, 100).normalize();
       scene.add(light1);
 
-      const light2 = new THREE.DirectionalLight(0xffffff);
+      const light2 = new THREE.DirectionalLight(readThemeColor('--color-tertiary-white'));
       light2.position.set(0, 70, 100).normalize();
       scene.add(light2);
 

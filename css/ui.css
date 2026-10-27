@@ -11,7 +11,7 @@
   width: var(--menu-width);
   padding: 6px 6px 18px;
   border-radius: 40px;
-  background: var(--blue);
+  background: var(--color-general-navy);
   box-shadow: var(--inner-shadow);
 }
 
@@ -23,12 +23,12 @@
   height: 40px;
   padding: 0;
   border-radius: 22px;
-  background: transparent;
+  background: var(--color-tertiary-transparent);
   transition: background 150ms ease;
 }
 
 .menu-button:hover, .menu-button[aria-expanded='true'] {
-  background: rgba(255, 255, 255, 0.13);
+  background: var(--color-tertiary-overlay-hover);
 }
 
 .account-button {
@@ -36,12 +36,12 @@
   height: 50px;
   margin-bottom: 4px;
   border-radius: 50%;
-  color: white;
-  background: #b0b0b0;
+  color: var(--color-tertiary-white);
+  background: var(--color-tertiary-avatar);
 }
 
 .account-button:hover, .account-button[aria-expanded='true'] {
-  background: #c0c0c0;
+  background: var(--color-tertiary-avatar-hover);
 }
 
 .account-photo {
@@ -62,10 +62,10 @@
   max-height: calc(100dvh - var(--edge) * 2 - 8px);
   overflow: auto;
   border-radius: 40px;
-  background: var(--green);
+  background: var(--color-tertiary-forest);
   box-shadow: var(--inner-shadow);
   scrollbar-width: thin;
-  scrollbar-color: #729084 transparent;
+  scrollbar-color: var(--color-tertiary-border-green) var(--color-tertiary-transparent);
 }
 
 .panel-header {
@@ -74,7 +74,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 20px 22px 18px 28px;
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--color-tertiary-overlay-soft);
 }
 
 .panel-header h1 {
@@ -92,7 +92,7 @@
   height: 28px;
   padding: 0;
   border-radius: 50%;
-  background: transparent;
+  background: var(--color-tertiary-transparent);
 }
 
 .close-button .material-symbols-outlined {
@@ -100,7 +100,7 @@
 }
 
 .close-button:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--color-tertiary-overlay-close);
 }
 
 .panel-placeholders {
@@ -114,7 +114,7 @@
   width: 84px;
   height: 54px;
   border-radius: 32px;
-  background: rgba(255, 255, 255, 0.13);
+  background: var(--color-tertiary-overlay-hover);
 }
 
 .layers-content {
@@ -161,25 +161,25 @@ legend {
   height: 40px;
   padding: 0;
   border-radius: 50%;
-  background: var(--blue);
+  background: var(--color-general-navy);
   box-shadow: var(--inner-shadow);
 }
 
 .map-button:hover:not(:disabled), .map-button[aria-expanded='true'] {
-  background: var(--green);
+  background: var(--color-tertiary-forest);
 }
 
 .zoom-buttons {
   overflow: hidden;
   border-radius: 24px;
-  background: var(--blue);
+  background: var(--color-general-navy);
   box-shadow: var(--inner-shadow);
 }
 
 .zoom-buttons .map-button {
   height: 36px;
   border-radius: 0;
-  background: transparent;
+  background: var(--color-tertiary-transparent);
   box-shadow: none;
 }
 

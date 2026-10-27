@@ -1,5 +1,10 @@
+import { readThemeColor } from '../config/theme.js';
+
 // https://leoneljdias.github.io/posts/globe-atmosphere-halo-comets/
 export function initSpaceEffects(map) {
+
+  const colors = Object.fromEntries(['star-cool', 'star-warm', 'white', 'comet', 'halo-inner','halo-near', 'halo-middle', 'halo-outer', 'transparent'].map((name) => [name, readThemeColor(`--color-tertiary-${name}`)]));
+
   const background = document.createElement('div');
   background.className = 'space-effects';
   background.setAttribute('aria-hidden', 'true');
@@ -17,6 +22,7 @@ export function initSpaceEffects(map) {
   const sheet = document.createElement('canvas');
   const initialCenter = map.getCenter();
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
   let width = 0;
   let height = 0;
   let frame = 0;
@@ -43,18 +49,21 @@ export function initSpaceEffects(map) {
       const y = random() * height;
       const size = random() * 1 + 0.2;
       const alpha = random() * 0.4 + 0.1;
-      const color = random() > 0.8 ? (random() > 1 ? '180,210,255' : '255,230,185') : '255,255,255';
+      const color = random() > 0.8 ? (random() > 1 ? colors['star-cool'] : colors['star-warm']) : colors.white;
       if (size > 0.9) {
-        context.fillStyle = `rgba(${color},${alpha * 0.12})`;
+        context.fillStyle = color;
+        context.globalAlpha = alpha * 0.12;
         context.beginPath();
         context.arc(x, y, size * 3, 0, Math.PI * 2);
         context.fill();
       }
-      context.fillStyle = `rgba(${color},${alpha})`;
+      context.fillStyle = color;
+      context.globalAlpha = alpha;
       context.beginPath();
       context.arc(x, y, size, 0, Math.PI * 2);
       context.fill();
     }
+    context.globalAlpha = 1;
     render();
   }
 
@@ -105,11 +114,13 @@ export function initSpaceEffects(map) {
     if (!bounds || bounds.radius < 1) return;
     const { x, y, radius } = bounds;
     const gradient = glow.createRadialGradient(x, y, radius, x, y, radius * 2.5);
-    gradient.addColorStop(0, 'rgba(150,205,255,0.65)');
-    gradient.addColorStop(0.08, 'rgba(90,160,235,0.3)');
-    gradient.addColorStop(0.25, 'rgba(45,100,185,0.12)');
-    gradient.addColorStop(0.55, 'rgba(20,50,110,0.03)');
-    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+    gradient.addColorStop(0, colors['halo-inner']);
+    gradient.addColorStop(0.08, colors['halo-near']);
+    gradient.addColorStop(0.25, colors['halo-middle']);
+    gradient.addColorStop(0.55, colors['halo-outer']);
+    gradient.addColorStop(1, colors['transparent']);
+    
     glow.globalCompositeOperation = 'screen';
     glow.fillStyle = gradient;
     glow.fillRect(0, 0, width, height);
@@ -139,14 +150,16 @@ export function initSpaceEffects(map) {
         const tailX = comet.x - Math.cos(comet.angle) * comet.length;
         const tailY = comet.y - Math.sin(comet.angle) * comet.length;
         const gradient = context.createLinearGradient(tailX, tailY, comet.x, comet.y);
-        gradient.addColorStop(0, 'rgba(255,255,255,0)');
-        gradient.addColorStop(1, `rgba(220,240,255,${alpha})`);
+        gradient.addColorStop(0, colors['transparent']);
+        gradient.addColorStop(1, colors.comet);
+        context.globalAlpha = alpha;
         context.strokeStyle = gradient;
         context.lineWidth = 1.5;
         context.beginPath();
         context.moveTo(tailX, tailY);
         context.lineTo(comet.x, comet.y);
         context.stroke();
+        context.globalAlpha = 1;
         if (comet.life >= comet.duration) comet = null;
       }
       frame = requestAnimationFrame(animate);

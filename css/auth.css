@@ -1,6 +1,6 @@
 .auth-body {
   overflow: auto;
-  background: #1d334b;
+  background: var(--color-tertiary-panel);
 }
 
 .auth-page {
@@ -45,13 +45,13 @@
 
 .auth-content h1 {
   margin: 0 -6%;
-  color: #adff00;
+  color: var(--color-tertiary-highlight);
   text-align: center;
   font-size: clamp(26px, 3.6vw, 52px);
   line-height: 1.2;
   font-weight: 700;
   white-space: nowrap;
-  font-family: Alan Sans, sans-serif;
+  font-family: var(--font-heading);
 }
 
 .auth-form {
@@ -76,18 +76,18 @@
   padding: 0 6.3%;
   border: 0;
   border-radius: 999px;
-  background: linear-gradient(#83d989, #a2e69a);
-  color: #005e73;
+  background: linear-gradient(var(--color-tertiary-input-start), var(--color-tertiary-input-end));
+  color: var(--color-tertiary-input-text);
   font-size: clamp(15px, 1.6vw, 23px);
 }
 
 .auth-field input::placeholder {
-  color: #00677a;
+  color: var(--color-tertiary-input-placeholder);
   opacity: 1;
 }
 
 .auth-field input[aria-invalid="true"] {
-  outline: 2px solid #ffb9b9;
+  outline: 2px solid var(--color-tertiary-error);
   outline-offset: 3px;
 }
 
@@ -101,15 +101,15 @@
   margin: calc(5.5 * var(--auth-unit)) 0 0 auto;
   padding: 10px 16px;
   border-radius: 999px;
-  background: #5147ff;
-  color: #fff;
+  background: var(--color-tertiary-button);
+  color: var(--color-tertiary-white);
   font-size: clamp(15px, 1.6vw, 23px);
   text-decoration: none;
   text-align: center;
 }
 
 .auth-submit:hover {
-  background: #635bff;
+  background: var(--color-tertiary-button-hover);
 }
 
 .auth-switch {
@@ -121,12 +121,12 @@
 
 .auth-switch a {
   display: block;
-  color: #adff00;
+  color: var(--color-tertiary-highlight);
   text-decoration: underline;
 }
 
 .auth-page :focus-visible {
-  outline: 3px solid #fff9e9;
+  outline: 3px solid var(--color-tertiary-ivory);
   outline-offset: 5px;
 }
 
@@ -148,7 +148,7 @@
 
 .auth-error {
   margin: 16px 0 0;
-  color: #ffb9b9;
+  color: var(--color-tertiary-error);
   font-size: 16px;
   line-height: 1.4;
 }
@@ -175,3 +175,6 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* SVG herda as cores do tema */
+.auth-hud svg { display: block; width: 100%; height: 100%; }

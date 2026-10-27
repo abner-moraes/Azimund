@@ -19,13 +19,18 @@
 .layers-content select {
   width: 100%;
   padding: 8px;
-  border: 1px solid #729084;
+  border: 1px solid var(--color-tertiary-border-green);
   border-radius: 8px;
-  background: var(--green);
+  background: var(--color-tertiary-forest);
   color: inherit;
   font: inherit;
 }
 .menu-panel:has(.layers-content) {
   width: 280px;
   border-radius: 20px;
+}
+
+/* fonte pra ui maplibre */
+.maplibregl-map, .maplibregl-ctrl, .maplibregl-popup {
+  font-family: var(--font-body);
 }

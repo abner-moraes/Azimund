@@ -1,7 +1,6 @@
 import { ZOOM_LEVELS } from '../config/zoomLevels.js';
 
 // zoom based visibility system
-// make a min and max level range and makes onhide and onshow of the items
 export class ZoomVisibilityManager {
   constructor(map) {
     this.map = map;

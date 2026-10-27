@@ -1,5 +1,5 @@
-// auto orbit used after flying to a marker
-// manual drag calls stopOrbit to hand control back to the user (on main.jsx)
+//tirar esse slop mais dps
+
 let orbitFrame = null;
 
 export function stopOrbit() {

@@ -1,0 +1,104 @@
+/* fontes do google fonts */
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/Sora.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/fonts/Roboto.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  /*cores principais*/
+  --color-primary-lime: #9DFF00;
+  --color-primary-yellow: #FFFF61;
+  --color-primary-red: #FF6464;
+  --color-primary-blue: #4E4EFF;
+  --color-primary-cosmic-latte: #FFF8E7;
+
+  /*cores gerais */
+  --color-general-navy: #000C32;
+  --color-general-slate: #1E334C;
+  --color-general-indigo: #2F3861;
+  --color-general-teal: #00616C;
+  --color-general-turquoise: #00AEA0;
+  --color-general-mint: #A7E59E;
+  --color-general-green: #6EC761;
+
+
+  /*terciárias/miscelanea*/
+
+  --color-tertiary-ivory: #fff9e9;
+  --color-tertiary-forest: #1b4c3c;
+  --color-tertiary-space: #02040a;
+  --color-tertiary-panel: #1d334b;
+
+  --color-tertiary-highlight: #adff00;
+
+  --color-tertiary-input-start: #83d989;
+  --color-tertiary-input-end: #a2e69a;
+
+  --color-tertiary-input-text: #005e73;
+
+  --color-tertiary-input-placeholder: #00677a;
+
+  --color-error: #ffb9b9;
+  
+  --color-tertiary-button: #5147ff;
+  --color-tertiary-button-hover: #635bff;
+
+
+  --color-tertiary-white: #fff;
+  --color-tertiary-black: #000;
+
+  /*cor do avatar default da imagem la meio tnt faz*/
+  --color-tertiary-avatar: #b0b0b0;
+  --color-tertiary-avatar-hover: #c0c0c0;
+  --color-tertiary-avatar-ring: #6050ff;
+
+  --color-tertiary-border-green: #729084;
+
+  --color-tertiary-muted: #c5d2de;
+  --color-tertiary-border: #92a4b4;
+  --color-tertiary-input-background: #12273b;
+  --color-tertiary-button-text: #152739;
+  --color-tertiary-secondary-button: #3c5269;
+
+
+  /* cores da terra e espaço */
+  --color-tertiary-horizon: #52749a;
+  --color-tertiary-fog: #172738;
+  --color-tertiary-star-cool: #b4d2ff;
+  --color-tertiary-star-warm: #ffe6b9;
+  --color-tertiary-comet: #dcf0ff;
+  --color-tertiary-halo-inner: rgba(150, 205, 255, 0.65);
+  --color-tertiary-halo-near: rgba(90, 160, 235, 0.3);
+  --color-tertiary-halo-middle: rgba(45, 100, 185, 0.12);
+  --color-tertiary-halo-outer: rgba(20, 50, 110, 0.03);
+
+  --color-tertiary-backdrop: rgba(0, 8, 20, 0.5);
+  --color-tertiary-shadow: rgba(0, 0, 0, 0.5);
+  --color-tertiary-transparent: transparent;
+
+
+  --color-tertiary-overlay-hover: rgba(255, 255, 255, 0.13);
+  --color-tertiary-overlay-soft: rgba(255, 255, 255, 0.07);
+  --color-tertiary-overlay-close: rgba(255, 255, 255, 0.12);
+  --color-tertiary-overlay-strong: rgba(255, 255, 255, 0.15);
+
+  /* Fontes */
+  --font-heading: "Sora", sans-serif;
+  --font-body: "Roboto", sans-serif;
+
+  --font-icons: "Material Symbols Outlined";
+
+  /* efeito cards */
+  --inner-shadow: inset 0 0 25px 10px var(--color-tertiary-overlay-strong);
+}

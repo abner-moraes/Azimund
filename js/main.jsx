@@ -7,7 +7,7 @@ import '../css/base.css';
 import '../css/ui.css';
 import '../css/map.css';
 import { initSpaceEffects } from './core/spaceEffects.js';
-import { MAP_STYLE, MAP_VIEW_OPTIONS } from './config/mapStyle.js';
+import { createMapStyle, MAP_VIEW_OPTIONS } from './config/mapStyle.js';
 import { ZoomVisibilityManager } from './core/ZoomVisibilityManager.js';
 import { stopOrbit } from './core/cameraOrbit.js';
 import { customLayer } from './core/ThreeModelLayer.js';
@@ -16,7 +16,7 @@ import { initDrawTools } from './ui/drawTools.js';
 import { initTerrain } from './ui/terrainToggle.js';
 import { MapInterface } from './ui/MapInterface.jsx';
 
-const map = new maplibregl.Map({container: 'map', style: MAP_STYLE, ...MAP_VIEW_OPTIONS }); // initializes the map
+const map = new maplibregl.Map({container: 'map', style: createMapStyle(), ...MAP_VIEW_OPTIONS }); // initializes the map
 
 initSpaceEffects(map);
 
