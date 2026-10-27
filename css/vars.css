@@ -1,19 +1,8 @@
 /* fontes do google fonts */
-@font-face {
-  font-family: "Sora";
-  src: url("/fonts/Sora.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 100 800;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Roboto";
-  src: url("/fonts/Roboto.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-}
+@import url(https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap);
+/* @import url(https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&display=swap); */
+@import url(https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap);
+/* @import url(https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap); */
 
 :root {
   /*cores principais*/
@@ -94,8 +83,8 @@
   --color-tertiary-overlay-strong: rgba(255, 255, 255, 0.15);
 
   /* Fontes */
-  --font-heading: "Sora", sans-serif;
-  --font-body: "Roboto", sans-serif;
+  --font-heading: Sora, sans-serif;
+  --font-body: DM Sans, sans-serif;
 
   --font-icons: "Material Symbols Outlined";
 
