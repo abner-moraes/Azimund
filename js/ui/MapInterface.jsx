@@ -5,29 +5,25 @@ import { readDemoAccount } from './Page/demoAccount.js';
 import { setBasemap } from './basemapSwitcher.js';
 import { setProjection } from './projectionToggle.js';
 import { setDrawToolsOpen } from './drawTools.js';
+import { Icon } from './Icon.jsx';
+import { MenuPanel, EmptyPanel, AccountPanel, MapLayersPanel } from './MenuPanel.jsx';
 
-const MENU_ITEMS = [
-  { id: 'account', label: 'Conta', icon: 'person' },
-  { id: 'search', label: 'Pesquisar no mapa', icon: 'search' },
-  { id: 'layers', label: 'Camadas', icon: 'public' },
+const SITE_ACTION_ITEMS = [
+  { id: 'account', label: 'Sua conta', icon: 'person' },
+  { id: 'search-map', label: 'Pesquisar no mapa', icon: 'search' },
+  { id: 'layers', label: 'Camadas do mapa', icon: 'public' },
   { id: 'edit', label: 'Editar', icon: 'edit_square' },
-  { id: 'projects', label: 'Projetos', icon: 'collections_bookmark' }
+  { id: 'search-tasks', label: 'Pesquisar projetos', icon: 'assignment' },
+  { id: 'projects', label: 'Projetos', icon: 'library_books' }
 ];
 
-function Icon({ name }) {
-  return <span className="material-symbols-outlined" aria-hidden="true">{name}</span>;
-}
-
-// os espaços vazios vão ser substituídos pelo conteúdo de cada menu mais pra frente
-function EmptyPanel() {
-  return (
-    <div className="panel-placeholders" aria-label="Conteúdo a ser adicionado futuramente">
-      <div className="placeholder" aria-hidden="true"></div>
-      <div className="placeholder" aria-hidden="true"></div>
-      <div className="placeholder" aria-hidden="true"></div>
-    </div>
-  );
-}
+const GLOBE_ACTION_ITEMS = [
+  { id: "measure", label: "Medir distância", icon: "straighten"},
+  { id: "angle", label: "3D", icon: "view_in_ar"},
+  { id: "orient", label: "Orientação", icon: "explore"},
+  { id: "zoom-in", label: "Aumentar zoom", icon: "add"},
+  { id: "zoom-out", label: "Diminuir zoom", icon: "remove"}
+];
 
 export function MapInterface({ map, draw }) {
   //USUARIO DE EXEMPLO
@@ -38,7 +34,7 @@ export function MapInterface({ map, draw }) {
   const [drawOpen, setDrawOpen] = useState(false);
   const [mapReady, setMapReady] = useState(!!map.getLayer('satellite'));
 
-  const selectedMenu = MENU_ITEMS.find((item) => item.id === activePanel);
+  const selectedMenu = SITE_ACTION_ITEMS.find((item) => item.id === activePanel);
 
   useEffect(() => {
     function handleLoad() {
@@ -88,124 +84,134 @@ export function MapInterface({ map, draw }) {
 
   return (
     <>
-      <nav className="main-menu" aria-label="Menu principal">
-        {MENU_ITEMS.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            className={`menu-button ${item.id === 'account' ? 'account-button' : ''}`}
-            aria-label={item.label}
-            title={item.label}
-            aria-expanded={item.id === 'edit' ? drawOpen : activePanel === item.id}
-            aria-haspopup={item.id === 'account' ? 'dialog' : undefined}
-            aria-controls={item.id === 'account' ? 'user-panel' : item.id === 'edit' ? 'terradraw-tools' : activePanel === item.id ? 'menu-panel' : undefined}
-            onClick={() => togglePanel(item.id)}
-          >
-            {item.id === 'account' ? <img className="account-photo" src={user.foto} alt="" /> : <Icon name={item.icon} />}
-          </button>
-        ))}
-      </nav>
+      <SiteActions 
+        activePanel={activePanel}
+        togglePanel={togglePanel}
+        user={user}
+        drawOpen={drawOpen}
+      />
 
-      {activePanel === 'account' && (
-        <UserPanel user={user} onChange={setUser} onClose={() => setActivePanel(null)} />
+      <GlobeActions />
+
+      {selectedMenu && (
+        <MenuPanel 
+          label={selectedMenu.label} 
+          setActivePanel={setActivePanel}
+        >
+          {
+            (() => {
+              switch(activePanel) {
+                case "account":
+                  return <AccountPanel 
+                    togglePanel={togglePanel}
+                  />
+
+                case "user-info":
+                  return <UserPanel 
+                    user={user}
+                    onChange={setUser}
+                    onClose={() => setActivePanel(null)}
+                  />
+
+                case "layers":
+                  return <MapLayersPanel 
+                    mapReady={mapReady} 
+                    projection={projection} 
+                    changeProjection={changeProjection}
+                    basemap={basemap}
+                    changeBasemap={changeBasemap}
+                  />
+
+                default:
+                  return <EmptyPanel />
+              }
+            })()
+          }
+        </MenuPanel>
       )}
+    </>
+  );
+}
 
-      {selectedMenu && activePanel !== 'account' && (
-        <section id="menu-panel" className="menu-panel" aria-labelledby="panel-title">
-          <header className="panel-header">
-            <h1 id="panel-title">{selectedMenu.label}</h1>
-            <button
-              type="button"
-              className="close-button"
-              aria-label="Fechar painel"
-              title="Fechar painel"
-              onClick={() => setActivePanel(null)}
-            >
-              <Icon name="close" />
-            </button>
-          </header>
-
-          {activePanel === 'layers' ? (
-            <div className="layers-content">
-              <fieldset disabled={!mapReady}>
-                <legend>Projeção</legend>
-                <select aria-label="Projeção" value={projection} onChange={changeProjection}>
-                  <option value="globe">Globo</option>
-                  <option value="mercator">Plano</option>
-                </select>
-              </fieldset>
-
-              <fieldset className="basemap-options" disabled={!mapReady}>
-                <legend>Mapa base</legend>
-                <select aria-label="Mapa base" value={basemap} onChange={changeBasemap}>
-                  <option value="satellite">Satélite 2020</option>
-                  <option value="terrain">Terreno base</option>
-                  <option value="terrain-light">Terreno claro</option>
-                </select>
-              </fieldset>
-            </div>
-          ) : (
-            <EmptyPanel />
-          )}
-        </section>
-      )}
-
-      <div className="map-actions" role="group" aria-label="Controles do mapa">
-        {/* controles visuais pro back dps*/}
+function SiteActions({activePanel, togglePanel, user, drawOpen}) {
+  return (
+    <nav className="main-menu" aria-label="Menu principal">
+      {SITE_ACTION_ITEMS.map((item) => (
         <button
+          key={item.id}
           type="button"
-          className="map-button"
-          aria-label="Medir distância"
-          title="Medir distância"
+          className={`menu-button ${item.id === 'account' ? 'account-button' : ''}`}
+          aria-label={item.label}
+          title={item.label}
+          aria-expanded={item.id === 'edit' ? drawOpen : activePanel === item.id}
+          aria-haspopup={item.id === 'account' ? 'dialog' : undefined}
+          aria-controls={item.id === 'account' ? 'user-panel' : item.id === 'edit' ? 'terradraw-tools' : activePanel === item.id ? 'menu-panel' : undefined}
+          onClick={() => togglePanel(item.id)}
+        >
+          {item.id === 'account' ? <img className="account-photo" src={user.foto} alt="" /> : <Icon name={item.icon} />}
+        </button>
+      ))}
+    </nav>
+  );
+}
+
+function GlobeActions() {
+  return (
+    <div className="map-actions" role="group" aria-label="Controles do mapa">
+      {/* controles visuais pro back dps*/}
+      <button
+        type="button"
+        className="map-button"
+        aria-label="Medir distância"
+        title="Medir distância"
+        disabled
+      >
+        <Icon name="straighten" />
+      </button>
+
+      <button 
+        type="button" 
+        className="map-button" 
+        aria-label="3D" 
+        title="3D" 
+        disabled
+      >
+        <Icon name="view_in_ar" />
+      </button>
+      
+      <button
+        type="button" 
+        className="map-button" 
+        aria-label="Orientação" 
+        title="Orientação" 
+        disabled
+      >
+        <Icon name="explore" />
+      </button>
+      
+      <div className="zoom-buttons" role="group" aria-label="Zoom">
+
+        <button 
+          type="button" 
+          className="map-button" 
+          aria-label="Aumentar zoom" 
+          title="Aumentar zoom" 
           disabled
         >
-          <Icon name="straighten" />
+          <Icon name="add" />
         </button>
 
         <button 
           type="button" 
           className="map-button" 
-          aria-label="3D" 
-          title="3D" 
+          aria-label="Diminuir zoom" 
+          title="Diminuir zoom" 
           disabled
         >
-          <Icon name="view_in_ar" />
+          <Icon name="remove" />
         </button>
-        
-        <button
-          type="button" 
-          className="map-button" 
-          aria-label="Orientação" 
-          title="Orientação" 
-          disabled
-        >
-          <Icon name="explore" />
-        </button>
-        
-        <div className="zoom-buttons" role="group" aria-label="Zoom">
 
-          <button 
-            type="button" 
-            className="map-button" 
-            aria-label="Aumentar zoom" 
-            title="Aumentar zoom" 
-            disabled
-          >
-            <Icon name="add" />
-          </button>
-
-          <button 
-            type="button" 
-            className="map-button" 
-            aria-label="Diminuir zoom" 
-            title="Diminuir zoom" 
-            disabled
-          >
-            <Icon name="remove" />
-          </button>
-
-        </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -62,12 +62,12 @@ export function createMapStyle() {
 POSIÇÃO INICIAL DO GLOBO
 
 obs:
-center: [60, 25] = centrado no Velho Mundo
+center: [60, 25] = centrado na Eurafrásia
 center: [-80, 15] = centrado nas Américas
 */
 export const MAP_VIEW_OPTIONS = {
-  zoom: 2,
-  center: [60, 25],
+  zoom: 2.5,
+  center: [37.420278, -26.330278],
   maxPitch: 89,
   pitch: 0,
   canvasContextAttributes:{antialias: true}
