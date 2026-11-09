@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
-import { readProfilePhoto } from "./UserIcon/profilePhoto.js";
-import "../../css/user.css";
+import React, { useEffect, useRef, useState } from 'react';
+import { readProfilePhoto } from './UserIcon/profilePhoto.js';
+import '../../css/user.css';
 
 const USER_FIELDS = [
-  { key: "nome", label: "Nome", type: "text", autoComplete: "name" },
-  { key: "tipo", label: "Função", type: "text", autoComplete: "off" },
-  { key: "email", label: "Email", type: "email", autoComplete: "email" },
+  { key: 'nome', label: 'Nome', type: 'text', autoComplete: 'name' },
+  { key: 'tipo', label: 'Função', type: 'text', autoComplete: 'off' },
+  { key: 'email', label: 'Email', type: 'email', autoComplete: 'email' },
   {
-    key: "senha",
-    label: "Senha",
-    type: "password",
-    autoComplete: "new-password",
+    key: 'senha',
+    label: 'Senha',
+    type: 'password',
+    autoComplete: 'new-password',
   },
 ];
 
@@ -21,11 +21,11 @@ export function UserPanel({ user, onChange, onClose }) {
   const photoInputRef = useRef(null);
   const photoRequestRef = useRef(0);
   const [editing, setEditing] = useState(null);
-  const [value, setValue] = useState("");
-  const [confirmation, setConfirmation] = useState("");
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
-  const [photoError, setPhotoError] = useState("");
+  const [value, setValue] = useState('');
+  const [confirmation, setConfirmation] = useState('');
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+  const [photoError, setPhotoError] = useState('');
   const [loadingPhoto, setLoadingPhoto] = useState(false);
 
   useEffect(() => {
@@ -47,18 +47,18 @@ export function UserPanel({ user, onChange, onClose }) {
   async function changePhoto(event) {
     const file = event.target.files[0];
     // deixa selecionar o mesmo arquivo dnv
-    event.target.value = "";
+    event.target.value = '';
     if (!file) return;
     const request = ++photoRequestRef.current;
-    setPhotoError("");
-    setMessage("");
+    setPhotoError('');
+    setMessage('');
     setLoadingPhoto(true);
     try {
       const foto = await readProfilePhoto(file);
       if (request !== photoRequestRef.current) return;
       // MUDA AQUI P INTEGRAR COM O BACK-END
       onChange((currentUser) => ({ ...currentUser, foto }));
-      setMessage("Foto de perfil atualizada.");
+      setMessage('Foto de perfil atualizada.');
     } catch (error) {
       if (request === photoRequestRef.current) setPhotoError(error.message);
     } finally {
@@ -68,47 +68,45 @@ export function UserPanel({ user, onChange, onClose }) {
 
   function finishEditing() {
     setEditing(null);
-    setValue("");
-    setConfirmation("");
-    setError("");
+    setValue('');
+    setConfirmation('');
+    setError('');
   }
 
   function startEditing(field, event) {
     editButtonRef.current = event.currentTarget;
     setEditing(field.key);
-    setValue(field.key === "senha" ? "" : user[field.key]);
-    setConfirmation("");
-    setError("");
-    setMessage("");
+    setValue(field.key === 'senha' ? '' : user[field.key]);
+    setConfirmation('');
+    setError('');
+    setMessage('');
   }
 
   function saveField(event) {
     event.preventDefault();
     if (!value.trim()) {
-      setError("preencha os campos");
+      setError('preencha os campos');
       inputRef.current?.focus();
       return;
     }
-    if (editing === "senha") {
+    if (editing === 'senha') {
       if (value !== confirmation) {
-        setError("as senhas tem que ser iguais");
+        setError('as senhas tem que ser iguais');
         return;
       }
-      // MUDAR AQUI PARA INTEGRAR COM O BACK-END
-      setMessage("senha funfada");
+      // MUDAR AQUI P INTEGRAR COM O BACK-END
+      setMessage('senha funfada');
     } else {
       onChange({ ...user, [editing]: value.trim() });
-      setMessage("atualizou");
+      setMessage('atualizou');
     }
     finishEditing();
   }
 
   function trapFocus(event) {
-    if (event.key !== "Tab") return;
+    if (event.key !== 'Tab') return;
     const elements = [
-      ...dialogRef.current.querySelectorAll(
-        'button, input, a[href], [tabindex="0"]',
-      ),
+      ...dialogRef.current.querySelectorAll('button, input, a[href], [tabindex="0"]'),
     ].filter((element) => !element.disabled && element.getClientRects().length);
     const first = elements[0];
     const last = elements[elements.length - 1];
@@ -180,7 +178,7 @@ export function UserPanel({ user, onChange, onClose }) {
             <div className="user-field" key={field.key}>
               <h2>{field.label}</h2>
               {editing !== field.key && (
-                <p>{field.key === "senha" ? "**********" : user[field.key]}</p>
+                <p>{field.key === 'senha' ? '**********' : user[field.key]}</p>
               )}
               <button
                 type="button"
@@ -193,7 +191,7 @@ export function UserPanel({ user, onChange, onClose }) {
               {editing === field.key && (
                 <form onSubmit={saveField}>
                   <label htmlFor={`user-${field.key}`}>
-                    {field.key === "senha" ? "nova senha" : field.label}
+                    {field.key === 'senha' ? 'nova senha' : field.label}
                   </label>
                   <input
                     ref={inputRef}
@@ -201,22 +199,20 @@ export function UserPanel({ user, onChange, onClose }) {
                     type={field.type}
                     autoComplete={field.autoComplete}
                     required
-                    maxLength={field.key === "email" ? 254 : 120}
-                    minLength={field.key === "senha" ? 8 : 1}
+                    maxLength={field.key === 'email' ? 254 : 120}
+                    minLength={field.key === 'senha' ? 8 : 1}
                     value={value}
                     onChange={(event) => {
                       setValue(event.target.value);
-                      setError("");
+                      setError('');
                     }}
                     aria-invalid={!!error}
-                    aria-describedby={error ? "user-error" : undefined}
+                    aria-describedby={error ? 'user-error' : undefined}
                   />
-                  {field.key === "senha" && (
+                  {field.key === 'senha' && (
                     <>
                       <small>pelo menos 8 caracteres</small>
-                      <label htmlFor="user-confirmation">
-                        confirmar senha nova
-                      </label>
+                      <label htmlFor="user-confirmation">confirmar senha nova</label>
                       <input
                         id="user-confirmation"
                         type="password"
@@ -227,7 +223,7 @@ export function UserPanel({ user, onChange, onClose }) {
                         value={confirmation}
                         onChange={(event) => {
                           setConfirmation(event.target.value);
-                          setError("");
+                          setError('');
                         }}
                       />
                     </>
@@ -239,7 +235,7 @@ export function UserPanel({ user, onChange, onClose }) {
                   )}
                   <div className="user-form-actions">
                     <button type="submit">
-                      {field.key === "senha" ? "validar senha" : "Salvar"}
+                      {field.key === 'senha' ? 'validar senha' : 'Salvar'}
                     </button>
                     <button type="button" onClick={finishEditing}>
                       Cancelar

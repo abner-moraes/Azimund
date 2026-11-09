@@ -7,9 +7,14 @@
     "dev": "vite --host 127.0.0.1",
     "start": "npm run dev",
     "build": "vite build",
-    "preview": "vite preview --host 127.0.0.1"
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test",
+    "format": "prettier --write \"js/**/*.{js,jsx}\" \"tests/**/*.js\" vite.config.js index.html login.html cadastro.html",
+    "format:check": "prettier --check \"js/**/*.{js,jsx}\" \"tests/**/*.js\" vite.config.js index.html login.html cadastro.html"
   },
   "dependencies": {
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource-variable/sora": "^5.3.0",
     "@watergis/maplibre-gl-terradraw": "1.0.1",
     "maplibre-gl": "5.20.1",
     "react": "19.3.0",
@@ -17,6 +22,9 @@
     "three": "0.169.0"
   },
   "devDependencies": {
+    "esbuild": "^0.28.2",
+    "jsdom": "^26.1.0",
+    "prettier": "^3.9.10",
     "vite": "^7.0.0"
   },
   "engines": {

@@ -15,9 +15,9 @@ export class ZoomVisibilityManager {
       maxZoom: ZOOM_LEVELS[maxLevel],
       onShow,
       onHide,
-      visible: null
+      visible: null,
     });
-    this._updateOne(id); // apply initial state right 
+    this._updateOne(id); // apply initial state right
   }
 
   unregister(id) {

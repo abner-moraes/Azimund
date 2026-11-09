@@ -1,0 +1,151 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "delta-area",
+      "properties": {
+        "titulo": "Área aproximada do delta",
+        "stroke": "#A7E59E",
+        "stroke-width": 2,
+        "stroke-opacity": 0.9,
+        "fill": "#00AEA0",
+        "fill-opacity": 0.2
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -51.344,
+              -29.936
+            ],
+            [
+              -51.28,
+              -29.905
+            ],
+            [
+              -51.212,
+              -29.941
+            ],
+            [
+              -51.2,
+              -29.995
+            ],
+            [
+              -51.252,
+              -30.024
+            ],
+            [
+              -51.327,
+              -29.998
+            ],
+            [
+              -51.344,
+              -29.936
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "delta-texto",
+      "properties": {
+        "label": "Delta do Jacuí",
+        "label-size": 19,
+        "label-color": "#FFF8E7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.276,
+          -29.97
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "capital-ponto",
+      "properties": {
+        "titulo": "Centro de Porto Alegre",
+        "marker-color": "#9DFF00",
+        "marker-size": "medium"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.228,
+          -30.034
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "capital-texto",
+      "properties": {
+        "label": "Porto Alegre",
+        "label-size": 19,
+        "label-color": "#FFF8E7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.212,
+          -30.025
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "guaiba-texto",
+      "properties": {
+        "label": "Guaíba",
+        "label-size": 20,
+        "label-color": "#FFF8E7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.278,
+          -30.075
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "orla-linha",
+      "properties": {
+        "titulo": "Trecho aproximado da orla",
+        "stroke": "#A7E59E",
+        "stroke-width": 4,
+        "stroke-opacity": 0.95
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -51.244,
+            -30.033
+          ],
+          [
+            -51.243,
+            -30.05
+          ],
+          [
+            -51.239,
+            -30.062
+          ],
+          [
+            -51.253,
+            -30.082
+          ],
+          [
+            -51.252,
+            -30.101
+          ]
+        ]
+      }
+    }
+  ]
+}

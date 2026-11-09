@@ -15,13 +15,15 @@ export function initDrawTools(map) {
       'select',
       'delete-selection',
       'delete',
-      'download'
+      'download',
     ],
-    open: true
+    open: true,
   });
   map.addControl(draw, 'top-left');
 
-  const container = map.getContainer().querySelector('.maplibregl-terradraw-add-control').parentElement;
+  const container = map
+    .getContainer()
+    .querySelector('.maplibregl-terradraw-add-control').parentElement;
   container.id = 'terradraw-tools';
   container.setAttribute('role', 'toolbar');
   container.setAttribute('aria-label', 'Ferramentas TerraDraw');
@@ -29,8 +31,6 @@ export function initDrawTools(map) {
 
   return draw;
 }
-
-
 
 // O menu abre o controle original no canto
 export function setDrawToolsOpen(map, draw, isOpen) {

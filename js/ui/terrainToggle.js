@@ -8,7 +8,7 @@ export function initTerrain(map) {
     }
     map.setTerrain({
       source: 'terrain',
-      exaggeration: 1.5
+      exaggeration: 1.5,
     });
   });
 }

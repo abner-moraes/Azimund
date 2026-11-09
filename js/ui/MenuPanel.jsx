@@ -1,11 +1,13 @@
-import React from "react";
-import { Icon } from "./Icon.jsx";
+import React from 'react';
+import { Icon } from './Icon.jsx';
 
-export function MenuPanel({label, setActivePanel, children}) {
+export function MenuPanel({ label, setActivePanel, children }) {
   return (
     <section id="menu-panel" className="menu-panel" aria-labelledby="panel-title">
       <header className="panel-header">
-        <p class="panel-title">{label}</p>
+        <p id="panel-title" className="panel-title">
+          {label}
+        </p>
         <button
           type="button"
           className="close-button"
@@ -16,9 +18,8 @@ export function MenuPanel({label, setActivePanel, children}) {
           <Icon name="close" />
         </button>
       </header>
-      
+
       {children}
-      
     </section>
   );
 }
@@ -26,7 +27,10 @@ export function MenuPanel({label, setActivePanel, children}) {
 // os espaços vazios vão ser substituídos pelo conteúdo de cada menu mais pra frente
 export function EmptyPanel() {
   return (
-    <div className="panel-placeholders" aria-label="Conteúdo a ser adicionado futuramente">
+    <div
+      className="panel-placeholders"
+      aria-label="Conteúdo a ser adicionado futuramente"
+    >
       <div className="placeholder" aria-hidden="true"></div>
       <div className="placeholder" aria-hidden="true"></div>
       <div className="placeholder" aria-hidden="true"></div>
@@ -34,10 +38,10 @@ export function EmptyPanel() {
   );
 }
 
-export function AccountPanel({togglePanel}) {
+export function AccountPanel({ togglePanel }) {
   return (
     <div className="panel-account" aria-label="Conteúdo a ser adicionado futuramente">
-      <div className="panel-option" onClick={() => togglePanel("user-info")}>
+      <div className="panel-option" onClick={() => togglePanel('user-info')}>
         <Icon name="account_circle" />
         Informações
       </div>
@@ -47,7 +51,7 @@ export function AccountPanel({togglePanel}) {
         Configurações
       </div>
 
-      <div className="panel-option" onClick={() => location.href = "./login.html"}>
+      <div className="panel-option" onClick={() => (location.href = './login.html')}>
         <Icon name="login" />
         Entrar
       </div>
@@ -60,7 +64,13 @@ export function AccountPanel({togglePanel}) {
   );
 }
 
-export function MapLayersPanel({mapReady, projection, changeProjection, basemap, changeBasemap}) {
+export function MapLayersPanel({
+  mapReady,
+  projection,
+  changeProjection,
+  basemap,
+  changeBasemap,
+}) {
   return (
     <div className="layers-content">
       <fieldset className="projection-options" disabled={!mapReady}>

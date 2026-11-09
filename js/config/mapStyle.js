@@ -6,31 +6,31 @@ export function createMapStyle() {
   return {
     version: 8,
     projection: {
-      type: 'globe'
+      type: 'globe',
     },
     sources: {
       satellite: BASEMAP_TILE_SOURCES.satellite,
       'eox-terrain': BASEMAP_TILE_SOURCES['eox-terrain'],
-      'eox-terrain-light': BASEMAP_TILE_SOURCES['eox-terrain-light']
+      'eox-terrain-light': BASEMAP_TILE_SOURCES['eox-terrain-light'],
     },
     layers: [
       {
         id: 'satellite',
         type: 'raster',
-        source: 'satellite'
+        source: 'satellite',
       },
       {
         id: 'eox-terrain',
         type: 'raster',
         source: 'eox-terrain',
-        layout: { visibility: 'none' }
+        layout: { visibility: 'none' },
       },
       {
         id: 'eox-terrain-light',
         type: 'raster',
         source: 'eox-terrain-light',
-        layout: { visibility: 'none' }
-      }
+        layout: { visibility: 'none' },
+      },
     ],
     sky: {
       // https://maplibre.org/maplibre-gl-js/docs/examples/sky-fog-terrain/
@@ -40,23 +40,14 @@ export function createMapStyle() {
       'sky-horizon-blend': 0.5,
       'horizon-fog-blend': 0.6,
       'fog-ground-blend': 0.85,
-      'atmosphere-blend': [
-        'interpolate',
-        ['linear'],
-        ['zoom'],
-        0, 0.7,
-        5, 0.85,
-        7, 0
-      ]
+      'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 0.7, 5, 0.85, 7, 0],
     },
     light: {
       anchor: 'map',
-      position: [100, 90, 180]
-    }
+      position: [100, 90, 180],
+    },
   };
 }
-
-
 
 /*
 POSIÇÃO INICIAL DO GLOBO
@@ -66,9 +57,10 @@ center: [60, 25] = centrado na Eurafrásia
 center: [-80, 15] = centrado nas Américas
 */
 export const MAP_VIEW_OPTIONS = {
-  zoom: 2.5,
-  center: [37.420278, -26.330278],
-  maxPitch: 89,
-  pitch: 0,
-  canvasContextAttributes:{antialias: true}
+  zoom: 6,
+  center: [-52.5, -30],
+  maxPitch: 89.9,
+  pitch: 45,
+  bearing: -25,
+  canvasContextAttributes: { antialias: true },
 };

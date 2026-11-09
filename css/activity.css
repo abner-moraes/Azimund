@@ -1,0 +1,468 @@
+/* Painéis do globo: mesmas cores, fontes e sombra interna da UI existente. */
+.activity-panel {
+  position: fixed;
+  z-index: 3;
+  inset: var(--edge) auto var(--edge) var(--edge);
+  display: flex;
+  flex-direction: column;
+  width: 348px;
+  padding: 28px 26px 20px;
+  overflow: auto;
+  border-radius: 40px;
+  background: color-mix(in srgb, var(--color-general-slate) 95%, transparent);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--inner-shadow), 0 14px 26px var(--color-tertiary-shadow);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-tertiary-border) transparent;
+}
+
+.activity-summary {
+  top: max(var(--edge), 9vh);
+  bottom: max(var(--edge), 9vh);
+  padding: 36px 28px 28px;
+}
+
+.activity-close {
+  position: absolute;
+  right: 16px;
+  top: 14px;
+}
+
+.activity-title {
+  margin: 8px 4px 34px;
+  text-align: center;
+  font-size: 25px;
+  line-height: 1.35;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.activity-title:focus,
+.activity-page-title:focus,
+.activity-result-heading h1:focus,
+.activity-centered h1:focus {
+  outline: none;
+}
+
+.activity-description,
+.activity-text {
+  white-space: pre-line;
+  line-height: 1.5;
+  font-size: 17px;
+}
+
+.activity-description {
+  margin: 4px 0 28px;
+}
+
+.activity-summary-footer {
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.activity-type {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.activity-type .material-symbols-outlined {
+  font-size: 25px;
+}
+
+.activity-count {
+  margin: 2px 0 22px;
+  font-weight: 700;
+}
+
+.activity-author {
+  margin: 0 0 12px;
+  font-size: 17px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.activity-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border-radius: 28px;
+  background: var(--color-tertiary-button);
+  color: var(--color-tertiary-ivory);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.activity-button:hover:not(:disabled) {
+  background: var(--color-tertiary-button-hover);
+}
+
+.activity-button:disabled {
+  opacity: 0.5;
+}
+
+.activity-play {
+  color: var(--color-general-teal);
+  background: linear-gradient(100deg, var(--color-tertiary-input-start), var(--color-tertiary-input-end));
+  font-size: 25px;
+}
+
+.activity-play:hover:not(:disabled) {
+  background: var(--color-general-green);
+}
+
+.activity-secondary {
+  background: var(--color-tertiary-secondary-button);
+  font-size: 15px;
+}
+
+.activity-exit {
+  display: block;
+  padding: 8px 12px;
+  margin: 8px auto 0;
+  background: transparent;
+  color: var(--color-tertiary-muted);
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.activity-progress {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 2px 22px 8px;
+}
+
+.activity-progress span {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--color-tertiary-border);
+  opacity: 0.7;
+}
+
+.activity-progress .current {
+  background: var(--color-tertiary-ivory);
+  opacity: 1;
+}
+
+.activity-progress .complete {
+  background: var(--color-general-mint);
+  opacity: 1;
+}
+
+.activity-page-count {
+  color: var(--color-tertiary-muted);
+  font-size: 12px;
+  text-align: center;
+  margin: 3px 0 10px;
+}
+
+.activity-page-title {
+  margin: 0;
+  padding: 0 8px 14px;
+  border-bottom: 3px solid var(--color-primary-blue);
+  text-align: center;
+  font-size: 23px;
+  line-height: 1.3;
+}
+
+.activity-page-body {
+  flex: 1 0 auto;
+  padding: 16px 0 24px;
+}
+
+.activity-text {
+  margin: 0 0 22px;
+}
+
+.activity-question {
+  margin: 0;
+}
+
+.activity-question:disabled {
+  opacity: 1;
+}
+
+.activity-question legend {
+  margin: 0 8px 34px;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.activity-options {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0 14px;
+}
+
+.activity-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: 30px;
+  color: var(--color-general-teal);
+  background: linear-gradient(100deg, var(--color-tertiary-input-start), var(--color-tertiary-input-end));
+  text-align: center;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.activity-option:hover {
+  background: var(--color-general-mint);
+}
+
+.activity-option.selected {
+  background: var(--color-primary-lime);
+}
+
+.activity-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.activity-option:has(input:focus-visible) {
+  outline: 2px solid var(--color-tertiary-ivory);
+  outline-offset: 4px;
+}
+
+.activity-question:disabled .activity-option {
+  cursor: default;
+}
+
+.activity-page-footer {
+  margin-top: auto;
+}
+
+.activity-confirmed {
+  margin: 0 0 10px;
+  text-align: center;
+  color: var(--color-tertiary-muted);
+  font-size: 13px;
+}
+
+.activity-navigation {
+  display: flex;
+  gap: 10px;
+}
+
+.activity-navigation .activity-button {
+  flex: 1;
+}
+
+.activity-centered {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 18px;
+}
+
+.activity-centered h1 {
+  font-size: 24px;
+}
+
+.activity-centered .material-symbols-outlined,
+.activity-result-heading>.material-symbols-outlined {
+  font-size: 44px;
+  color: var(--color-general-mint);
+}
+
+.activity-loading {
+  margin: 0;
+  color: var(--color-tertiary-muted);
+}
+
+.activity-error {
+  text-align: center;
+}
+
+.activity-error-detail {
+  font-size: 14px;
+  color: var(--color-tertiary-muted);
+}
+
+.activity-index-error {
+  position: fixed;
+  bottom: var(--edge);
+  left: var(--edge);
+  z-index: 2;
+  padding: 16px 20px;
+  border-radius: 24px;
+  background: var(--color-general-slate);
+  box-shadow: var(--inner-shadow);
+  max-width: 360px;
+}
+
+.activity-result-heading {
+  padding: 22px 0 14px;
+  text-align: center;
+}
+
+.activity-result-heading h1 {
+  font-size: 25px;
+  line-height: 1.45;
+}
+
+.activity-result-heading>p {
+  color: var(--color-tertiary-muted);
+  font-size: 14px;
+}
+
+.activity-review-item {
+  padding: 18px 0;
+  border-top: 1px solid var(--color-tertiary-border);
+  line-height: 1.5;
+}
+
+.activity-review-item h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.activity-review-item p {
+  font-size: 15px;
+  margin: 8px 0;
+}
+
+.activity-chosen {
+  color: var(--color-tertiary-muted);
+}
+
+.activity-result-exit {
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+.activity-dialog {
+  width: 440px;
+  max-width: calc(100vw - 80px);
+  padding: 28px;
+  border: none;
+  border-radius: 32px;
+  background: var(--color-tertiary-panel);
+  box-shadow: var(--inner-shadow), 0 14px 26px var(--color-tertiary-shadow);
+  color: var(--color-tertiary-ivory);
+}
+
+.activity-dialog::backdrop {
+  background: var(--color-tertiary-backdrop);
+}
+
+.activity-dialog h2 {
+  margin: 0 0 16px;
+  font-size: 23px;
+}
+
+.activity-dialog p {
+  line-height: 1.5;
+  color: var(--color-tertiary-muted);
+}
+
+.activity-dialog label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.activity-dialog input {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 24px;
+  background: var(--color-general-mint);
+  color: var(--color-general-teal);
+}
+
+.activity-modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.activity-modal-actions .activity-button {
+  font-size: 15px;
+}
+
+.project-marker {
+  cursor: pointer;
+  background-color: var(--color-tertiary-transparent);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--color-tertiary-ivory);
+}
+
+.project-marker>.material-symbols-outlined {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 36px;
+  /* sem fundo, a sombra mantém o ícone legível sobre o satélite */
+  text-shadow: 0 2px 8px var(--color-tertiary-shadow);
+}
+
+.project-marker [hidden] {
+  display: none;
+}
+
+.project-marker:focus-visible {
+  outline: 3px solid var(--color-primary-lime);
+  outline-offset: 4px;
+}
+
+.activity-anchor {
+  font-size: 84px;
+  color: var(--color-tertiary-ivory);
+  text-shadow: 0 4px 16px var(--color-tertiary-shadow);
+  pointer-events: none;
+}
+
+.main-menu[inert] {
+  opacity: 0.55;
+}
+
+@media (max-height: 680px) {
+  .activity-panel {
+    padding: 24px 24px 14px;
+    border-radius: 32px;
+  }
+
+  .activity-summary {
+    top: var(--edge);
+    bottom: var(--edge);
+  }
+
+  .activity-question legend {
+    margin-bottom: 22px;
+  }
+
+  .activity-options {
+    gap: 16px;
+  }
+
+  .activity-page-title {
+    font-size: 21px;
+  }
+}

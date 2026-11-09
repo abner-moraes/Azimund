@@ -7,5 +7,5 @@ export const ZOOM_LEVELS = {
   CITY: 9,
   STREET: 14,
   CLOSEUP: 18,
-  MAX: 24
+  MAX: 24,
 };

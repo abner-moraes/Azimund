@@ -1,0 +1,215 @@
+{
+  "idProjeto": "1",
+  "titulo": "Rios no Rio Grande do Sul",
+  "descricao": "Rios do Rio Grande do Sul, Delta do Jacuí e na Lagoa dos Patos, Porto alegre e região metropolitana",
+  "ancora": {
+    "lng": -51.27,
+    "lat": -29.96
+  },
+  "paginas": [
+    {
+      "id": "p1",
+      "tipo": "questao",
+      "titulo": "Questão 1",
+      "texto": "",
+      "featureIds": [
+        "delta-area",
+        "delta-texto"
+      ],
+      "camera": {
+        "centro": [
+          -51.27,
+          -29.99
+        ],
+        "zoom": 11.5,
+        "pitch": 35,
+        "bearing": 10,
+        "duracaoMs": 2500
+      },
+      "questao": {
+        "formato": "multipla_escolha",
+        "enunciado": "Quais destes rios compõem o Delta do Jacuí?",
+        "alternativas": [
+          {
+            "id": "a",
+            "texto": "Rio dos Sinos"
+          },
+          {
+            "id": "b",
+            "texto": "Rio Camaquã"
+          },
+          {
+            "id": "c",
+            "texto": "Rio Amazonas"
+          },
+          {
+            "id": "d",
+            "texto": "Rio Uruguai"
+          }
+        ],
+        "respostaCorreta": "a",
+        "comentarioErro": "veja os cursos de água que chegam à região metropolitana, rios de outras bacias não fazem parte desse delta."
+      }
+    },
+    {
+      "id": "p2",
+      "tipo": "questao",
+      "titulo": "Questão 2",
+      "texto": "",
+      "featureIds": [
+        "jacui-linha",
+        "taquari-linha",
+        "confluencia-ponto"
+      ],
+      "camera": {
+        "centro": [
+          -51.73,
+          -29.93
+        ],
+        "zoom": 9.7,
+        "pitch": 25,
+        "bearing": -18,
+        "duracaoMs": 2500
+      },
+      "questao": {
+        "formato": "verdadeiro_falso",
+        "enunciado": "O rio Taquari é um afluente do rio Jacuí.",
+        "respostaCorreta": true,
+        "comentarioErro": "Observe a confluência entre o Taquari e o Jacuí, na região de Triunfo. Um afluente é um curso de água que desemboca em outro."
+      }
+    },
+    {
+      "id": "p3",
+      "tipo": "conteudo",
+      "titulo": "encontro das águas",
+      "texto": "O sistema do Delta do Jacuí reúne águas dos rios Jacuí, Caí, dos Sinos e Gravataí. Entre ilhas e canais, essas águas seguem para o Guaíba.\n\nO delta inclui áreas de Porto Alegre e de outros municípios.",
+      "featureIds": [
+        "delta-area",
+        "delta-texto",
+        "guaiba-ponto"
+      ],
+      "camera": {
+        "centro": [
+          -51.27,
+          -30.01
+        ],
+        "zoom": 10.8,
+        "pitch": 45,
+        "bearing": 24,
+        "duracaoMs": 2500
+      }
+    },
+    {
+      "id": "p4",
+      "tipo": "questao",
+      "titulo": "Questão 3",
+      "texto": "",
+      "featureIds": [
+        "guaiba-patos-linha",
+        "patos-texto"
+      ],
+      "camera": {
+        "centro": [
+          -51.25,
+          -30.73
+        ],
+        "zoom": 7.6,
+        "pitch": 15,
+        "bearing": -8,
+        "duracaoMs": 2500
+      },
+      "questao": {
+        "formato": "multipla_escolha",
+        "enunciado": "As águas do Guaíba seguem para qual lagoa?",
+        "alternativas": [
+          {
+            "id": "a",
+            "texto": "Lagoa Mirim"
+          },
+          {
+            "id": "b",
+            "texto": "Lagoa dos Quadros"
+          },
+          {
+            "id": "c",
+            "texto": "Lagoa dos Patos"
+          },
+          {
+            "id": "d",
+            "texto": "Lagoa da Conceição"
+          }
+        ],
+        "respostaCorreta": "c"
+      }
+    },
+    {
+      "id": "p5",
+      "tipo": "questao",
+      "titulo": "Questão 4",
+      "texto": "",
+      "featureIds": [
+        "uruguai-linha",
+        "oeste-texto"
+      ],
+      "camera": {
+        "centro": [
+          -55.55,
+          -29.44
+        ],
+        "zoom": 7.8,
+        "pitch": 30,
+        "bearing": 16,
+        "duracaoMs": 2500
+      },
+      "questao": {
+        "formato": "verdadeiro_falso",
+        "enunciado": "O rio Uruguai faz parte do Delta do Jacuí.",
+        "respostaCorreta": false,
+        "comentarioErro": "O rio Uruguai pertence a outra bacia e percorre parte da fronteira oeste do Rio Grande do Sul. Compare sua localização com a do delta."
+      }
+    },
+    {
+      "id": "p6",
+      "tipo": "questao",
+      "titulo": "Questão 5",
+      "texto": "",
+      "featureIds": [
+        "capital-ponto",
+        "guaiba-texto"
+      ],
+      "camera": {
+        "centro": [
+          -51.24,
+          -30.04
+        ],
+        "zoom": 11.7,
+        "pitch": 42,
+        "bearing": -12,
+        "duracaoMs": 2500
+      },
+      "questao": {
+        "formato": "multipla_escolha",
+        "enunciado": "Qual capital brasileira está situada junto ao Guaíba?",
+        "alternativas": [
+          {
+            "id": "a",
+            "texto": "Curitiba"
+          },
+          {
+            "id": "b",
+            "texto": "Porto Alegre"
+          },
+          {
+            "id": "c",
+            "texto": "Florianópolis"
+          },
+          {
+            "id": "d",
+            "texto": "São Paulo"
+          }
+        ],
+        "respostaCorreta": "b"
+      }
+    }
+  ]
+}

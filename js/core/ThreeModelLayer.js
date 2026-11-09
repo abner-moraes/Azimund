@@ -32,12 +32,14 @@ export const customLayer = {
         model.url,
         (gltf) => {
           scene.add(gltf.scene);
+          // Inclui o modelo recém-carregado no próximo frame, sem manter um loop.
+          map.triggerRepaint();
           console.log(`[3d-model] loaded OK: ${model.url}`);
         },
         undefined,
         (error) => {
           console.error(`[3d-model] FAILED to load ${model.url}:`, error);
-        }
+        },
       );
 
       model.scene = scene;
@@ -46,26 +48,29 @@ export const customLayer = {
     this.renderer = new THREE.WebGLRenderer({
       canvas: map.getCanvas(),
       context: gl,
-      antialias: true
+      antialias: true,
     });
     this.renderer.autoClear = false;
   },
 
   render(gl, args) {
-    const mainMatrix = new THREE.Matrix4().fromArray(args.defaultProjectionData.mainMatrix);
+    const mainMatrix = new THREE.Matrix4().fromArray(
+      args.defaultProjectionData.mainMatrix,
+    );
 
     this.models.forEach((model) => {
       if (!model.scene) return;
-      const modelMatrix = this.map.transform.getMatrixForModel(model.origin, model.altitude);
-      const l = new THREE.Matrix4().fromArray(modelMatrix).scale(
-        new THREE.Vector3(model.scale, model.scale, model.scale)
+      const modelMatrix = this.map.transform.getMatrixForModel(
+        model.origin,
+        model.altitude,
       );
+      const l = new THREE.Matrix4()
+        .fromArray(modelMatrix)
+        .scale(new THREE.Vector3(model.scale, model.scale, model.scale));
 
       this.camera.projectionMatrix = mainMatrix.clone().multiply(l);
       this.renderer.resetState();
       this.renderer.render(model.scene, this.camera);
     });
-
-    this.map.triggerRepaint();
-  }
+  },
 };

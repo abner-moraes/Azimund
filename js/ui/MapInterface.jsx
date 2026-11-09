@@ -7,6 +7,7 @@ import { setProjection } from './projectionToggle.js';
 import { setDrawToolsOpen } from './drawTools.js';
 import { Icon } from './Icon.jsx';
 import { MenuPanel, EmptyPanel, AccountPanel, MapLayersPanel } from './MenuPanel.jsx';
+import { ActivityExperience } from './ActivityExperience.jsx';
 
 const SITE_ACTION_ITEMS = [
   { id: 'account', label: 'Sua conta', icon: 'person' },
@@ -14,25 +15,32 @@ const SITE_ACTION_ITEMS = [
   { id: 'layers', label: 'Camadas do mapa', icon: 'public' },
   { id: 'edit', label: 'Editar', icon: 'edit_square' },
   { id: 'search-tasks', label: 'Pesquisar projetos', icon: 'assignment' },
-  { id: 'projects', label: 'Projetos', icon: 'library_books' }
+  { id: 'projects', label: 'Projetos', icon: 'library_books' },
 ];
 
 const GLOBE_ACTION_ITEMS = [
-  { id: "measure", label: "Medir distância", icon: "straighten"},
-  { id: "angle", label: "3D", icon: "view_in_ar"},
-  { id: "orient", label: "Orientação", icon: "explore"},
-  { id: "zoom-in", label: "Aumentar zoom", icon: "add"},
-  { id: "zoom-out", label: "Diminuir zoom", icon: "remove"}
+  { id: 'measure', label: 'Medir distância', icon: 'straighten' },
+  { id: 'angle', label: '3D', icon: 'view_in_ar' },
+  { id: 'orient', label: 'Orientação', icon: 'explore' },
+  { id: 'zoom-in', label: 'Aumentar zoom', icon: 'add' },
+  { id: 'zoom-out', label: 'Diminuir zoom', icon: 'remove' },
 ];
 
-export function MapInterface({ map, draw }) {
+export function MapInterface({ map, draw, markerLayer }) {
   //USUARIO DE EXEMPLO
-  const [user, setUser] = useState(() => ({ nome: 'Maurício Laks', tipo: 'Professor', email: 'mlaks.prof@gmail.com', foto: profileImage, ...readDemoAccount() }));
+  const [user, setUser] = useState(() => ({
+    nome: 'Maurício Laks',
+    tipo: 'Professor',
+    email: 'mlaks.prof@gmail.com',
+    foto: profileImage,
+    ...readDemoAccount(),
+  }));
   const [activePanel, setActivePanel] = useState(null);
   const [basemap, setActiveBasemap] = useState('satellite');
   const [projection, setActiveProjection] = useState('globe');
   const [drawOpen, setDrawOpen] = useState(false);
   const [mapReady, setMapReady] = useState(!!map.getLayer('satellite'));
+  const [activityPlaying, setActivityPlaying] = useState(false);
 
   const selectedMenu = SITE_ACTION_ITEMS.find((item) => item.id === activePanel);
 
@@ -84,58 +92,65 @@ export function MapInterface({ map, draw }) {
 
   return (
     <>
-      <SiteActions 
+      <SiteActions
         activePanel={activePanel}
         togglePanel={togglePanel}
         user={user}
         drawOpen={drawOpen}
+        activityPlaying={activityPlaying}
       />
 
-      <GlobeActions />
+      <GlobeActions map={map} />
+
+      <ActivityExperience
+        map={map}
+        markerLayer={markerLayer}
+        sessionUser={user}
+        onPlayingChange={setActivityPlaying}
+        onOpen={() => {
+          setActivePanel(null);
+          setDrawOpen(false);
+        }}
+      />
 
       {selectedMenu && (
-        <MenuPanel 
-          label={selectedMenu.label} 
-          setActivePanel={setActivePanel}
-        >
-          {
-            (() => {
-              switch(activePanel) {
-                case "account":
-                  return <AccountPanel 
-                    togglePanel={togglePanel}
-                  />
+        <MenuPanel label={selectedMenu.label} setActivePanel={setActivePanel}>
+          {(() => {
+            switch (activePanel) {
+              case 'account':
+                return <AccountPanel togglePanel={togglePanel} />;
 
-                case "user-info":
-                  return <UserPanel 
-                    user={user}
-                    onChange={setUser}
-                    onClose={() => setActivePanel(null)}
-                  />
-
-                case "layers":
-                  return <MapLayersPanel 
-                    mapReady={mapReady} 
-                    projection={projection} 
+              case 'layers':
+                return (
+                  <MapLayersPanel
+                    mapReady={mapReady}
+                    projection={projection}
                     changeProjection={changeProjection}
                     basemap={basemap}
                     changeBasemap={changeBasemap}
                   />
+                );
 
-                default:
-                  return <EmptyPanel />
-              }
-            })()
-          }
+              default:
+                return <EmptyPanel />;
+            }
+          })()}
         </MenuPanel>
+      )}
+
+      {/* "user-info" não é um item de SITE_ACTION_ITEMS (então selectedMenu é
+          undefined para ele): a página da conta é um dialog próprio, aberto
+          por "Informações" em AccountPanel, e não fica dentro do MenuPanel. */}
+      {activePanel === 'user-info' && (
+        <UserPanel user={user} onChange={setUser} onClose={() => setActivePanel(null)} />
       )}
     </>
   );
 }
 
-function SiteActions({activePanel, togglePanel, user, drawOpen}) {
+function SiteActions({ activePanel, togglePanel, user, drawOpen, activityPlaying }) {
   return (
-    <nav className="main-menu" aria-label="Menu principal">
+    <nav className="main-menu" aria-label="Menu principal" inert={activityPlaying}>
       {SITE_ACTION_ITEMS.map((item) => (
         <button
           key={item.id}
@@ -145,17 +160,29 @@ function SiteActions({activePanel, togglePanel, user, drawOpen}) {
           title={item.label}
           aria-expanded={item.id === 'edit' ? drawOpen : activePanel === item.id}
           aria-haspopup={item.id === 'account' ? 'dialog' : undefined}
-          aria-controls={item.id === 'account' ? 'user-panel' : item.id === 'edit' ? 'terradraw-tools' : activePanel === item.id ? 'menu-panel' : undefined}
+          aria-controls={
+            item.id === 'account'
+              ? 'user-panel'
+              : item.id === 'edit'
+                ? 'terradraw-tools'
+                : activePanel === item.id
+                  ? 'menu-panel'
+                  : undefined
+          }
           onClick={() => togglePanel(item.id)}
         >
-          {item.id === 'account' ? <img className="account-photo" src={user.foto} alt="" /> : <Icon name={item.icon} />}
+          {item.id === 'account' ? (
+            <img className="account-photo" src={user.foto} alt="" />
+          ) : (
+            <Icon name={item.icon} />
+          )}
         </button>
       ))}
     </nav>
   );
 }
 
-function GlobeActions() {
+function GlobeActions({ map }) {
   return (
     <div className="map-actions" role="group" aria-label="Controles do mapa">
       {/* controles visuais pro back dps*/}
@@ -169,48 +196,40 @@ function GlobeActions() {
         <Icon name="straighten" />
       </button>
 
-      <button 
-        type="button" 
-        className="map-button" 
-        aria-label="3D" 
-        title="3D" 
-        disabled
-      >
+      <button type="button" className="map-button" aria-label="3D" title="3D" disabled>
         <Icon name="view_in_ar" />
       </button>
-      
+
       <button
-        type="button" 
-        className="map-button" 
-        aria-label="Orientação" 
-        title="Orientação" 
-        disabled
+        type="button"
+        className="map-button"
+        aria-label="Orientação"
+        title="Orientação"
+        onClick={() => map.easeTo({ bearing: 0, pitch: 0, duration: 700 })}
       >
         <Icon name="explore" />
       </button>
-      
-      <div className="zoom-buttons" role="group" aria-label="Zoom">
 
-        <button 
-          type="button" 
-          className="map-button" 
-          aria-label="Aumentar zoom" 
-          title="Aumentar zoom" 
-          disabled
+      <div className="zoom-buttons" role="group" aria-label="Zoom">
+        <button
+          type="button"
+          className="map-button"
+          aria-label="Aumentar zoom"
+          title="Aumentar zoom"
+          onClick={() => map.zoomIn()}
         >
           <Icon name="add" />
         </button>
 
-        <button 
-          type="button" 
-          className="map-button" 
-          aria-label="Diminuir zoom" 
-          title="Diminuir zoom" 
-          disabled
+        <button
+          type="button"
+          className="map-button"
+          aria-label="Diminuir zoom"
+          title="Diminuir zoom"
+          onClick={() => map.zoomOut()}
         >
           <Icon name="remove" />
         </button>
-
       </div>
     </div>
   );

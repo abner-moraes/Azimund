@@ -1,0 +1,71 @@
+{
+  "idProjeto": "2",
+  "titulo": "Geografia de Porto Alegre",
+  "descricao": "Uma viagem em três páginas pela capital gaúcha, sua relação com o Guaíba e as ilhas do Delta do Jacuí.",
+  "ancora": {
+    "lng": -51.228,
+    "lat": -30.034
+  },
+  "paginas": [
+    {
+      "id": "p1",
+      "tipo": "conteudo",
+      "titulo": "A capital gaúcha",
+      "texto": "Porto Alegre é a capital do Rio Grande do Sul. Localizada no leste do estado, a cidade se desenvolveu junto ao Guaíba.\n\nO ponto no mapa indica aproximadamente a região central.",
+      "featureIds": [
+        "capital-ponto",
+        "capital-texto"
+      ],
+      "camera": {
+        "centro": [
+          -51.228,
+          -30.034
+        ],
+        "zoom": 11.8,
+        "pitch": 25,
+        "bearing": 0,
+        "duracaoMs": 2500
+      }
+    },
+    {
+      "id": "p2",
+      "tipo": "conteudo",
+      "titulo": "Uma cidade junto à água",
+      "texto": "A orla do Guaíba é uma das paisagens marcantes de Porto Alegre. As águas do Guaíba seguem para a Laguna dos Patos.\n\nA linha no mapa representa um trecho aproximado da orla, sem função de rota.",
+      "featureIds": [
+        "orla-linha",
+        "guaiba-texto"
+      ],
+      "camera": {
+        "centro": [
+          -51.242,
+          -30.068
+        ],
+        "zoom": 12.3,
+        "pitch": 45,
+        "bearing": -22,
+        "duracaoMs": 2500
+      }
+    },
+    {
+      "id": "p3",
+      "tipo": "conteudo",
+      "titulo": "Ilhas e canais do delta",
+      "texto": "Ao norte do centro, as ilhas e os canais do Delta do Jacuí compõem outra paisagem da capital. O complexo recebe águas dos rios Jacuí, Caí, dos Sinos e Gravataí.\n\nA área destacada é uma aproximação didática, e não o limite oficial do parque estadual.",
+      "featureIds": [
+        "delta-area",
+        "delta-texto"
+      ],
+      "camera": {
+        "centro": [
+          -51.27,
+          -29.985
+        ],
+        "zoom": 11.1,
+        "pitch": 32,
+        "bearing": 28,
+        "duracaoMs": 2500
+      }
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-// Demo markers (ISSO SERIA AS ATIVIDADES E TD MAIS)
+// DAS ATIVIDADES
 export const MARKERS_GEOJSON = {
   type: 'FeatureCollection',
   features: [
@@ -6,37 +6,43 @@ export const MARKERS_GEOJSON = {
       type: 'Feature',
       properties: {
         message: 'teste',
+        projetoId: '1',
+        miniatura: 'data/miniaturas/rios.jpg',
         iconSize: [60, 60],
-        levelRange: ['CONTINENTAL', 'CITY'] //visibility level
+        levelRange: ['CONTINENTAL', 'CITY'], //visibility level
       },
       geometry: {
         type: 'Point',
-        coordinates: [-50.200395591397736, -29.65694190676408]
-      }
+        coordinates: [-50.200395591397736, -29.65694190676408],
+      },
     },
     {
       type: 'Feature',
       properties: {
         message: '12345',
+        projetoId: '2',
+        miniatura: 'data/miniaturas/porto-alegre.jpg',
         iconSize: [50, 50],
-        levelRange: ['CONTINENTAL', 'STREET']
+        levelRange: ['CONTINENTAL', 'STREET'],
       },
       geometry: {
         type: 'Point',
-        coordinates: [-61.2158203125, -15.97189158092897]
-      }
+        coordinates: [-61.2158203125, -15.97189158092897],
+      },
     },
     {
       type: 'Feature',
       properties: {
         message: 'lorem ipsum dolor sit amet',
+        projetoId: '2',
+        miniatura: 'data/miniaturas/porto-alegre.jpg',
         iconSize: [40, 40],
-        levelRange: ['CONTINENTAL', 'STREET']
+        levelRange: ['CONTINENTAL', 'STREET'],
       },
       geometry: {
         type: 'Point',
-        coordinates: [-25.29223632812499, 28.28151823530889]
-      }
-    }
-  ]
+        coordinates: [-25.29223632812499, 28.28151823530889],
+      },
+    },
+  ],
 };

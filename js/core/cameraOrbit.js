@@ -9,14 +9,18 @@ export function stopOrbit() {
   }
 }
 
-export function flyToOrbit(map, coords, { zoom = 12.75, pitch = 65, orbitSpeed = 0.75 } = {}) {
+export function flyToOrbit(
+  map,
+  coords,
+  { zoom = 12.75, pitch = 65, orbitSpeed = 0.75 } = {},
+) {
   stopOrbit();
   map.flyTo({
     center: coords,
     zoom,
     pitch,
     duration: 3000,
-    essential: true
+    essential: true,
   });
 
   map.once('moveend', () => {

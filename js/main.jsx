@@ -16,21 +16,24 @@ import { initDrawTools } from './ui/drawTools.js';
 import { initTerrain } from './ui/terrainToggle.js';
 import { MapInterface } from './ui/MapInterface.jsx';
 
-const map = new maplibregl.Map({container: 'map', style: createMapStyle(), ...MAP_VIEW_OPTIONS }); // initializes the map
+const map = new maplibregl.Map({
+  container: 'map',
+  style: createMapStyle(),
+  ...MAP_VIEW_OPTIONS,
+}); // initializes the map
 
 initSpaceEffects(map);
 
 const zoomVisibility = new ZoomVisibilityManager(map);
 
 // initializes the UI
-addMarkers(map, zoomVisibility);
+const markerLayer = addMarkers(map, zoomVisibility);
 const draw = initDrawTools(map);
 initTerrain(map);
 
 createRoot(document.getElementById('root')).render(
-  <MapInterface map={map} draw={draw} />
+  <MapInterface map={map} draw={draw} markerLayer={markerLayer} />,
 );
-
 
 // any manual drag takes control back from the auto-orbit
 map.on('dragstart', stopOrbit);
@@ -40,4 +43,3 @@ map.on('style.load', () => {
     map.addLayer(customLayer);
   }
 });
-
