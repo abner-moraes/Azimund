@@ -1,6 +1,6 @@
 # Azimund
 
-uma plataforma interativa para criar e realizar atividades de geografia sobre um globo 3D
+uma plataforma de ensino interativa a geografia, que permite criar e realizar atividades em um globo 3D
 professores e autores marcam lugares no mapa, desenham objetos e montam páginas e questões, e os alunos abrem a atividade pelo globo ou por um código de 6 dígitos e a percorrem página por página
 
 ## como rodar
