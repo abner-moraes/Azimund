@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from './Icon.jsx';
 
+// painel lateral padrão dos menus da direita (título + fechar)
 export function MenuPanel({ label, setActivePanel, children }) {
   return (
     <section id="menu-panel" className="menu-panel" aria-labelledby="panel-title">
@@ -24,29 +25,18 @@ export function MenuPanel({ label, setActivePanel, children }) {
   );
 }
 
-// os espaços vazios vão ser substituídos pelo conteúdo de cada menu mais pra frente
-export function EmptyPanel() {
+export function AccountPanel({ togglePanel, user, onLogout, onSettings }) {
   return (
-    <div
-      className="panel-placeholders"
-      aria-label="Conteúdo a ser adicionado futuramente"
-    >
-      <div className="placeholder" aria-hidden="true"></div>
-      <div className="placeholder" aria-hidden="true"></div>
-      <div className="placeholder" aria-hidden="true"></div>
-    </div>
-  );
-}
+    <div className="panel-account" aria-label="Conta">
+      {!user && <p>Visitante - Entre em uma atividade pelo código abaixo.</p>}
+      {user && (
+        <div className="panel-option" onClick={() => togglePanel('user-info')}>
+          <Icon name="account_circle" />
+          Informações
+        </div>
+      )}
 
-export function AccountPanel({ togglePanel }) {
-  return (
-    <div className="panel-account" aria-label="Conteúdo a ser adicionado futuramente">
-      <div className="panel-option" onClick={() => togglePanel('user-info')}>
-        <Icon name="account_circle" />
-        Informações
-      </div>
-
-      <div className="panel-option">
+      <div className="panel-option" onClick={onSettings}>
         <Icon name="settings" />
         Configurações
       </div>
@@ -56,39 +46,12 @@ export function AccountPanel({ togglePanel }) {
         Entrar
       </div>
 
-      <div className="panel-option">
-        <Icon name="logout" />
-        Sair
-      </div>
-    </div>
-  );
-}
-
-export function MapLayersPanel({
-  mapReady,
-  projection,
-  changeProjection,
-  basemap,
-  changeBasemap,
-}) {
-  return (
-    <div className="layers-content">
-      <fieldset className="projection-options" disabled={!mapReady}>
-        <legend>Projeção</legend>
-        <select aria-label="Projeção" value={projection} onChange={changeProjection}>
-          <option value="globe">Globo</option>
-          <option value="mercator">Plano</option>
-        </select>
-      </fieldset>
-
-      <fieldset className="basemap-options" disabled={!mapReady}>
-        <legend>Mapa base</legend>
-        <select aria-label="Mapa base" value={basemap} onChange={changeBasemap}>
-          <option value="satellite">Satélite 2020</option>
-          <option value="terrain">Terreno base</option>
-          <option value="terrain-light">Terreno claro</option>
-        </select>
-      </fieldset>
+      {user && (
+        <button type="button" className="panel-option logout-button" onClick={onLogout}>
+          <Icon name="logout" />
+          Sair
+        </button>
+      )}
     </div>
   );
 }

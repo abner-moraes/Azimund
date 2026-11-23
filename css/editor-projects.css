@@ -1,0 +1,74 @@
+/* painel Projetos e caixas de busca */
+.my-projects {
+  position: fixed;
+  left: var(--edge);
+  top: var(--edge);
+  bottom: var(--edge);
+  width: 320px;
+  z-index: 3;
+  padding: 18px 20px;
+  border-radius: 28px;
+  background: var(--color-tertiary-forest);
+  box-shadow: var(--inner-shadow);
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.my-projects > .editor-row > input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  border-radius: 22px;
+  padding: 12px 14px;
+  background: var(--color-tertiary-overlay-soft);
+  color: inherit;
+  font-size: 14px;
+}
+.my-projects h2 {
+  font-size: 16px;
+  font-weight: 400;
+}
+.my-project-item {
+  padding: 8px 0;
+}
+.my-project-open {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  padding: 4px 0;
+  font-size: 13px;
+}
+.my-project-open .project-glyph {
+  width: 26px;
+  height: 28px;
+}
+.my-project-actions {
+  display: flex;
+  gap: 14px;
+  opacity: 0;
+  transition: opacity 0.15s;
+  padding-left: 42px;
+}
+.my-project-item:hover .my-project-actions,
+.my-project-item:focus-within .my-project-actions {
+  opacity: 1;
+}
+.my-project-actions .text-button {
+  font-size: 11px;
+}
+.project-search {
+  padding: 10px 24px 24px;
+}
+.my-projects-new {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.my-projects-error {
+  margin: 4px 0 10px;
+  font-size: 13px;
+  color: var(--color-error);
+}

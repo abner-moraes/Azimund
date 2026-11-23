@@ -67,5 +67,13 @@
         "duracaoMs": 2500
       }
     }
-  ]
+  ],
+  "codigo": "100002",
+  "autor": {
+    "id": "101",
+    "nome": "Equipe Azimund"
+  },
+  "cor": "#A7E59E",
+  "horarioModificado": "2026-11-16T00:00:00Z",
+  "tipo": "APRESENTACAO"
 }

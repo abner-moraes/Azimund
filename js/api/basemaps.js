@@ -1,5 +1,15 @@
 export const BASEMAP_TILE_SOURCES = {
-  satellite: {
+  'satellite-2025': {
+    type: 'raster',
+    tiles: [
+      'https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2025_3857/default/g/{z}/{y}/{x}.jpg',
+    ],
+    tileSize: 256,
+    maxzoom: 14,
+    attribution:
+      'EOxCloudless Copyright <a href="https://cloudless.eox.at" target="_blank" rel="noopener noreferrer">EOX</a>',
+  },
+  'satellite-2020': {
     type: 'raster',
     tiles: [
       'https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg',
@@ -7,7 +17,7 @@ export const BASEMAP_TILE_SOURCES = {
     tileSize: 256,
     maxzoom: 14,
     attribution:
-      'EOxCloudless © <a href="https://cloudless.eox.at" target="_blank" rel="noopener noreferrer">EOX</a> (Contains modified Copernicus Sentinel data 2020)',
+      'EOxCloudless Copyright <a href="https://cloudless.eox.at" target="_blank" rel="noopener noreferrer">EOX</a>',
   },
   'eox-terrain': {
     type: 'raster',

@@ -1,6 +1,7 @@
+// tela de login e cadastro (mesmo componente, muda pelo data-page do HTML)
 import React, { useRef, useState } from 'react';
 import bg from './bg.png';
-import hud from './hud.svg?raw';
+import { HudShape } from './HudShape.jsx';
 import { readDemoAccount, saveDemoAccount } from './demoAccount.js';
 
 export function AuthPage({ signup }) {
@@ -27,14 +28,14 @@ export function AuthPage({ signup }) {
   function submit(event) {
     event.preventDefault();
     if (signup && !values.nome.trim()) {
-      setError({ field: 'nome', message: 'Informe seu nome ou nickname.' });
+      setError({ field: 'nome', message: 'Informe seu nome ou nickname' });
       nameRef.current?.focus();
       return;
     }
     if (!values.senha.trim()) {
       setError({
         field: 'senha',
-        message: 'Informe uma senha (8 caracteres minimo)',
+        message: 'Informe uma senha (minimo 8 caracteres)',
       });
       event.currentTarget.elements.senha.focus();
       return;
@@ -48,7 +49,7 @@ export function AuthPage({ signup }) {
       return;
     }
 
-    // substitui esse placeholder pelo backend de cadastro/login
+    // substituir esse placeholder pelo backend de cadastro/login (por enquanto so guarda nome e email)
     const email = values.email.trim();
     const nome = signup
       ? values.nome.trim()
@@ -100,19 +101,16 @@ export function AuthPage({ signup }) {
       aria-labelledby="auth-title"
     >
       <img className="auth-background" src={bg} alt="" />
-      {/* a cor do SVG é chamada das cores do vars.css (FODA TA)*/}
-      <div
-        className="auth-hud"
-        aria-hidden="true"
-        dangerouslySetInnerHTML={{ __html: hud }}
-      />
+      <div className="auth-hud" aria-hidden="true">
+        <HudShape />
+      </div>
       <section className="auth-content">
         <h1 id="auth-title">{signup ? 'Bem vindo abordo!' : 'Bem vindo de volta!'}</h1>
         {complete ? (
           <div className="auth-result" ref={statusRef} tabIndex={-1}>
             <p role="status">Cadastro feito!</p>
             <p>faça o login para continuar</p>
-            {!storageAvailable && <p role="alert">navegador não salvou os dados</p>}
+            {!storageAvailable && <p role="alert">browser não salvou os dados</p>}
             <a className="auth-submit" href="./login.html">
               fazer login
             </a>

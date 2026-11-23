@@ -75,7 +75,7 @@
 }
 
 .user-photo-controls .user-error {
-  color: var(--color-tertiary-error);
+  color: var(--color-error);
 }
 
 .user-card h1 {
@@ -173,7 +173,7 @@
 }
 
 .user-field .user-error {
-  color: var(--color-tertiary-error);
+  color: var(--color-error);
   font-size: 14px;
 }
 

@@ -1,0 +1,38 @@
+/*  ajustes do editor para telas baixas (até 760px de altura)
+    só fiz isso pq queria testar no pc antigo KKKKKK*/
+@media (max-height: 760px) {
+  .editor-tools {
+    top: 128px;
+    bottom: 76px;
+    padding: 5px 3px;
+  }
+  .editor-tools .icon-button {
+    height: 30px;
+    min-height: 30px;
+  }
+  .editor-tools .material-symbols-outlined {
+    font-size: 23px;
+  }
+  .editor-workspace .activity-with-banner {
+    top: 126px;
+  }
+  .editor-context-bar {
+    top: 80px;
+  }
+  .editor-objects {
+    top: 126px;
+  }
+  .editor-workspace .activity-page-title {
+    font-size: 24px;
+  }
+  .editor-status {
+    max-width: 620px;
+    font-size: 11px;
+  }
+  .editor-workspace .activity-panel {
+    padding: 15px 22px;
+  }
+  .editor-workspace .activity-page-toolbar {
+    margin-bottom: 10px;
+  }
+}

@@ -1,7 +1,9 @@
+// janela "Informações" da conta, foto e campos editáveis (por enquanto so no navegador)
 import React, { useEffect, useRef, useState } from 'react';
 import { readProfilePhoto } from './UserIcon/profilePhoto.js';
 import '../../css/user.css';
 
+// "Função" e "Senha" ainda não fazem nada no front puro, ficam pro back-end (MySQL) usar depois
 const USER_FIELDS = [
   { key: 'nome', label: 'Nome', type: 'text', autoComplete: 'name' },
   { key: 'tipo', label: 'Função', type: 'text', autoComplete: 'off' },
@@ -31,11 +33,11 @@ export function UserPanel({ user, onChange, onClose }) {
   useEffect(() => {
     const dialog = dialogRef.current;
     const opener = document.activeElement;
-    dialog.showModal();
+    dialog.showModal(); // modal nativo: o resto da página fica inativo e o foco fica aqui dentro
     return () => {
       photoRequestRef.current += 1;
       dialog.close();
-      if (opener instanceof HTMLElement && opener.isConnected) opener.focus(); // mapa fica inativo quando abre
+      if (opener instanceof HTMLElement && opener.isConnected) opener.focus();
     };
   }, []);
 
@@ -49,7 +51,7 @@ export function UserPanel({ user, onChange, onClose }) {
     // deixa selecionar o mesmo arquivo dnv
     event.target.value = '';
     if (!file) return;
-    const request = ++photoRequestRef.current;
+    const request = ++photoRequestRef.current; // so a última foto escolhida vale
     setPhotoError('');
     setMessage('');
     setLoadingPhoto(true);
@@ -103,36 +105,18 @@ export function UserPanel({ user, onChange, onClose }) {
     finishEditing();
   }
 
-  function trapFocus(event) {
-    if (event.key !== 'Tab') return;
-    const elements = [
-      ...dialogRef.current.querySelectorAll('button, input, a[href], [tabindex="0"]'),
-    ].filter((element) => !element.disabled && element.getClientRects().length);
-    const first = elements[0];
-    const last = elements[elements.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  }
-
   return (
     <dialog
       ref={dialogRef}
       id="user-panel"
       className="user-dialog"
       aria-label="Conta do usuário"
-      aria-modal="true"
-      onKeyDown={trapFocus}
       onCancel={(event) => {
         event.preventDefault();
         onClose();
       }}
       onClick={(event) => {
-        if (event.target === event.currentTarget) onClose();
+        if (event.target === event.currentTarget) onClose(); // clique no fundo fecha
       }}
     >
       <section className="user-card">
@@ -143,7 +127,7 @@ export function UserPanel({ user, onChange, onClose }) {
           onClick={onClose}
           autoFocus
         >
-          ×
+          X
         </button>
         <div className="user-avatar">
           <img src={user.foto} alt="Foto de perfil" />
@@ -161,7 +145,6 @@ export function UserPanel({ user, onChange, onClose }) {
           <button
             type="button"
             className="user-edit"
-            aria-describedby="user-photo-help"
             onClick={() => photoInputRef.current?.click()}
           >
             Alterar Foto

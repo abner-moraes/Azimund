@@ -93,7 +93,10 @@ export function initSpaceEffects(map) {
       const edgeLat = Math.asin(Math.cos(lat) * Math.cos(bearing));
       const edgeLng =
         lng +
-        Math.atan2(Math.sin(bearing) * Math.cos(lat), -Math.sin(lat) * Math.sin(edgeLat));
+        Math.atan2(
+          Math.sin(bearing) * Math.cos(lat),
+          -Math.sin(lat) * Math.sin(edgeLat),
+        );
       const point = map.project([(edgeLng * 180) / Math.PI, (edgeLat * 180) / Math.PI]);
       if (Number.isFinite(point.x) && Number.isFinite(point.y)) points.push(point);
     }

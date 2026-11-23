@@ -2,17 +2,16 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import '@watergis/maplibre-gl-terradraw/dist/maplibre-gl-terradraw.css';
+
 import '../css/base.css';
 import '../css/ui.css';
 import '../css/map.css';
 import { initSpaceEffects } from './core/spaceEffects.js';
 import { createMapStyle, MAP_VIEW_OPTIONS } from './config/mapStyle.js';
-import { ZoomVisibilityManager } from './core/ZoomVisibilityManager.js';
-import { stopOrbit } from './core/cameraOrbit.js';
-import { customLayer } from './core/ThreeModelLayer.js';
+import { initModels3d } from './core/models3dToggle.js';
+import { readPreferences } from './config/preferences.js';
 import { addMarkers } from './ui/markerLayer.js';
-import { initDrawTools } from './ui/drawTools.js';
+
 import { initTerrain } from './ui/terrainToggle.js';
 import { MapInterface } from './ui/MapInterface.jsx';
 
@@ -20,26 +19,28 @@ const map = new maplibregl.Map({
   container: 'map',
   style: createMapStyle(),
   ...MAP_VIEW_OPTIONS,
-}); // initializes the map
+});
+
+// a atribuição do maplibre abre expandida; fecha ela assim que aparece pela 1a vez
+function collapseAttribution() {
+  const box = map.getContainer().querySelector('.maplibregl-ctrl-attrib');
+  if (!box?.classList.contains('maplibregl-compact-show')) return;
+  box.classList.remove('maplibregl-compact-show');
+  box.removeAttribute('open');
+  map.off('sourcedata', collapseAttribution);
+  map.off('styledata', collapseAttribution);
+}
+map.on('sourcedata', collapseAttribution);
+map.on('styledata', collapseAttribution);
 
 initSpaceEffects(map);
 
-const zoomVisibility = new ZoomVisibilityManager(map);
+const markerLayer = addMarkers(map);
 
-// initializes the UI
-const markerLayer = addMarkers(map, zoomVisibility);
-const draw = initDrawTools(map);
 initTerrain(map);
 
 createRoot(document.getElementById('root')).render(
-  <MapInterface map={map} draw={draw} markerLayer={markerLayer} />,
+  <MapInterface map={map} markerLayer={markerLayer} />,
 );
 
-// any manual drag takes control back from the auto-orbit
-map.on('dragstart', stopOrbit);
-
-map.on('style.load', () => {
-  if (!map.getLayer('3d-model')) {
-    map.addLayer(customLayer);
-  }
-});
+initModels3d(map, readPreferences().models3d);

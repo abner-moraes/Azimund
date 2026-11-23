@@ -1,4 +1,4 @@
-/* As mesmas fontes e os Material Symbols, empacotados por npm pelo Vite. */
+/* s mesmas fontes e os Material Symbols salvo por npm pelo Vite */
 @import '@fontsource-variable/dm-sans/wght.css';
 @import '@fontsource-variable/sora/wght.css';
 
@@ -25,7 +25,6 @@
   --color-general-teal: #00616C;
   --color-general-turquoise: #00AEA0;
   --color-general-mint: #A7E59E;
-  --color-general-green: #6EC761;
 
 
   /*terciárias/miscelanea*/
@@ -45,13 +44,13 @@
   --color-tertiary-input-placeholder: #00677a;
 
   --color-error: #ffb9b9;
+  --color-tertiary-locked: #9b9fa8;
   
   --color-tertiary-button: #5147ff;
   --color-tertiary-button-hover: #635bff;
 
 
   --color-tertiary-white: #fff;
-  --color-tertiary-black: #000;
 
   /*cor do avatar default da imagem la meio tnt faz*/
   --color-tertiary-avatar: #b0b0b0;
@@ -69,6 +68,8 @@
 
   /* cores da terra e espaço */
   --color-tertiary-horizon: #52749a;
+  --color-tertiary-road: #ffe9ac;
+  --color-tertiary-measure: #ffeb92;
   --color-tertiary-fog: #172738;
   --color-tertiary-star-cool: #b4d2ff;
   --color-tertiary-star-warm: #ffe6b9;
@@ -96,4 +97,22 @@
 
   /* efeito cards */
   --inner-shadow: inset 0 0 25px 10px var(--color-tertiary-overlay-strong);
+
+  /* menu principal e controles do mapa (medidas tiradas do design no Figma) */
+  --color-menu-edge: #1c2648;
+  --color-menu-core: #020e33;
+  --color-control-fill: #202b4c;
+  --color-zoom-edge: #222c4d;
+  --color-zoom-core: #0d183c;
+  --gradient-menu: linear-gradient(
+    90deg,
+    var(--color-menu-edge) 0%,
+    var(--color-menu-core) 50%,
+    var(--color-menu-edge) 100%
+  );
+  --gradient-zoom: radial-gradient(
+    ellipse 62% 61% at 50% 50%,
+    var(--color-zoom-core) 0%,
+    var(--color-zoom-edge) 100%
+  );
 }

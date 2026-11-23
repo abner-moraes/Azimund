@@ -4,7 +4,12 @@
   font-family: var(--font-body);
   color: var(--color-tertiary-ivory);
   --edge: 24px;
-  --menu-width: 64px;
+  --menu-width: 57px;
+  --menu-top: 10px;
+  --menu-right: 22px;
+  --controls-bottom: 22px;
+  --control-width: 40px;
+  --actions-right: calc(var(--menu-right) + (var(--menu-width) - var(--control-width)) / 2);
 }
 
 * {
@@ -66,7 +71,7 @@ button:focus-visible, input:focus-visible {
 }
 
 
-/* títulos e cabeçalhos usam Sora e formulários herdam Roboto */
+/* títulos e cabeçalhos usam sora e formulários herdam roboto */
 h1, h2, h3, h4, h5, h6, header {
   font-family: var(--font-heading);
 }

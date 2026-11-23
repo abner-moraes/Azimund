@@ -1,20 +1,16 @@
+// camadas nativas que desenham os objetos de uma atividade (no jogo e de apoio no editor)
 import { readThemeColor } from '../config/theme.js';
-import { stopOrbit } from '../core/cameraOrbit.js';
+import { CAMERA_DURATION } from '../api/projectContract.js';
 
-const SOURCE = 'atividade-features';
-const LAYERS = [
-  'atividade-fill',
-  'atividade-outline',
-  'atividade-line',
-  'atividade-point',
-  'atividade-label',
-];
-
-// Uma fonte por sessão; ids permanecem strings numa propriedade explícita.
-export function createActivityLayer(map, geojson) {
+export function createActivityLayer(map, geojson, { prefix = 'atividade' } = {}) {
+  const SOURCE = `${prefix}-features`;
+  const LAYERS = ['fill', 'outline', 'line', 'point', 'label', 'extrusion'].map(
+    (name) => `${prefix}-${name}`,
+  );
   const mint = readThemeColor('--color-general-mint');
   const ivory = readThemeColor('--color-tertiary-ivory');
   const navy = readThemeColor('--color-general-navy');
+  // o id vai pra properties pq o filtro das camadas não consegue ler o feature.id
   const data = {
     ...geojson,
     features: geojson.features.map(({ id, ...feature }) => ({
@@ -31,6 +27,7 @@ export function createActivityLayer(map, geojson) {
     geometry('LineString'),
     ['all', geometry('Point'), ['==', ['coalesce', ['get', 'label'], ''], '']],
     ['all', geometry('Point'), ['!=', ['coalesce', ['get', 'label'], ''], '']],
+    ['all', geometry('Polygon'), ['>', ['coalesce', ['get', 'altura'], 0], 0]],
   ];
 
   function install() {
@@ -69,7 +66,15 @@ export function createActivityLayer(map, geojson) {
         type: 'circle',
         paint: {
           'circle-color': ['coalesce', ['get', 'marker-color'], mint],
-          'circle-radius': ['match', ['get', 'marker-size'], 'small', 5, 'large', 12, 8],
+          'circle-radius': [
+            'match',
+            ['get', 'marker-size'],
+            'small',
+            5,
+            'large',
+            12,
+            8,
+          ],
           'circle-stroke-color': ivory,
           'circle-stroke-width': 2,
         },
@@ -88,6 +93,15 @@ export function createActivityLayer(map, geojson) {
           'text-color': ['coalesce', ['get', 'label-color'], ivory],
           'text-halo-color': navy,
           'text-halo-width': 2,
+        },
+      },
+      {
+        id: LAYERS[5],
+        type: 'fill-extrusion',
+        paint: {
+          'fill-extrusion-color': ['coalesce', ['get', 'fill'], mint],
+          'fill-extrusion-height': ['coalesce', ['get', 'altura'], 0],
+          'fill-extrusion-opacity': 0.7,
         },
       },
     ];
@@ -122,8 +136,8 @@ export function createActivityLayer(map, geojson) {
   };
 }
 
-export function panelPadding() {
-  // Reserva o painel à esquerda sem acumular padding na câmera do mapa.
+// reserva o espaço do painel da esquerda pra câmera centralizar no que sobra do mapa
+function panelPadding() {
   const panel = document.getElementById('activity-panel');
   return {
     left: Math.ceil(panel?.getBoundingClientRect().right || 396) + 24,
@@ -134,13 +148,12 @@ export function panelPadding() {
 }
 
 export function flyToPage(map, camera) {
-  stopOrbit();
   map.flyTo({
     center: camera.centro,
     zoom: camera.zoom,
     pitch: camera.pitch,
     bearing: camera.bearing,
-    duration: camera.duracaoMs ?? 2500,
+    duration: camera.duracaoMs ?? CAMERA_DURATION,
     padding: panelPadding(),
     retainPadding: false,
   });

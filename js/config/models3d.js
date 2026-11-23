@@ -1,4 +1,4 @@
-//list of GLTF object that will be rendered with threeJS
+//lista de objetos GLTF que são renderizados com threeJS
 export const MODELS_3D = [
   {
     url: 'models/totem_test_1.gltf',

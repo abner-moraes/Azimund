@@ -1,4 +1,4 @@
-// demo de um usuario
+// conta demo no sessionStorage enquanto não tem back-end (some ao fechar o navegador)
 const ACCOUNT_KEY = 'azimund-demo-account';
 
 export function readDemoAccount() {
@@ -8,16 +8,20 @@ export function readDemoAccount() {
       return { nome: account.nome, email: account.email };
     }
   } catch {
-    // interface continua msm se o armazenamento não estiver funfando
+    // interface continua msm se o armazenamento não estiver funcionando
   }
   return null;
 }
 
 export function saveDemoAccount({ nome, email }) {
   try {
-    sessionStorage.setItem(ACCOUNT_KEY, JSON.stringify({ nome, email })); //jsonnn
+    sessionStorage.setItem(ACCOUNT_KEY, JSON.stringify({ nome, email }));
     return true;
   } catch {
     return false;
   }
+}
+
+export function signOutDemoAccount() {
+  sessionStorage.removeItem(ACCOUNT_KEY);
 }

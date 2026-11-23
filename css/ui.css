@@ -1,55 +1,72 @@
-/* react panels and controls */
+/* menu principal, painéis da direita e controles do mapa */
 :root {
   --gap-main-menu-list: 8px;
   --size-account-button-pc: 50px;
+  --size-avatar: 44px;
+  --menu-icon-size: 28px;
 }
 
+.main-menu .material-symbols-outlined,
+.map-actions .material-symbols-outlined {
+  font-size: var(--menu-icon-size);
+  color: var(--color-tertiary-ivory);
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.main-menu button[title='Camadas do mapa'] .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* menu principal */
 .main-menu {
   position: fixed;
   z-index: 3;
-  top: var(--edge);
-  right: var(--edge);
+  top: var(--menu-top);
+  right: var(--menu-right);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--gap-main-menu-list);
   width: var(--menu-width);
-  padding: 6px 6px 18px;
-  border-radius: 40px;
-  background: var(--color-general-navy);
-  box-shadow: var(--inner-shadow);
+  padding: 4px 4px 12px;
+  border-radius: 999px;
+  background: var(--gradient-menu);
 }
 
 .menu-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 40px;
+  width: 100%;
+  height: 43px;
   padding: 0;
   border-radius: 22px;
   background: var(--color-tertiary-transparent);
   transition: background 150ms ease;
 }
 
+.menu-button:last-child {
+  margin-top: 2px;
+}
+
 .menu-button:hover {
-  background: var(--color-tertiary-overlay-hover);
+  background: var(--color-tertiary-overlay-soft);
 }
 
 .menu-button[aria-expanded='true'] {
-  background: var(--color-tertiary-forest);
+  background: var(--color-tertiary-overlay-hover);
 }
 
 .account-button {
-  width: var(--size-account-button-pc);
-  height: var(--size-account-button-pc);
-  margin-bottom: 4px;
+  width: var(--size-avatar);
+  height: var(--size-avatar);
+  margin-bottom: 7px;
   border-radius: 50%;
   color: var(--color-tertiary-white);
   background: var(--color-tertiary-avatar);
 }
 
-.account-button:hover, .account-button[aria-expanded='true'] {
+.account-button:hover,
+.account-button[aria-expanded='true'] {
   background: var(--color-tertiary-avatar-hover);
 }
 
@@ -63,12 +80,12 @@
 
 .menu-panel {
   position: fixed;
-  z-index: 2;
-  top: calc(var(--edge) + 8px);
-  right: calc(var(--edge) + var(--menu-width) + 12px);
+  top: calc(var(--menu-top) + 8px);
+  right: calc(var(--menu-right) + var(--menu-width) + 12px);
+  z-index: 10;
   width: 360px;
-  max-width: calc(100vw - var(--menu-width) - var(--edge) * 2 - 12px);
-  max-height: calc(100dvh - var(--edge) * 2 - 8px);
+  max-width: calc(100vw - var(--menu-width) - var(--menu-right) * 2 - 12px);
+  max-height: calc(100dvh - var(--menu-top) - var(--controls-bottom) - 8px);
   overflow: auto;
   border-radius: 40px;
   background: var(--color-tertiary-forest);
@@ -113,20 +130,6 @@
   background: var(--color-tertiary-overlay-close);
 }
 
-.panel-placeholders {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 12px 20px 22px;
-}
-
-.placeholder {
-  width: 84px;
-  height: 54px;
-  border-radius: 32px;
-  background: var(--color-tertiary-overlay-hover);
-}
-
 .panel-account {
   display: flex;
   flex-direction: column;
@@ -165,11 +168,12 @@ legend {
   font-size: 15px;
 }
 
+/*controles do mapa */
 .map-actions {
   position: fixed;
   z-index: 2;
-  right: calc(var(--edge) + 10px);
-  bottom: var(--edge);
+  right: var(--actions-right);
+  bottom: var(--controls-bottom);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -180,51 +184,53 @@ legend {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 40px;
+  width: var(--control-width);
+  height: 35px;
   padding: 0;
   border-radius: 50%;
-  background: var(--color-general-navy);
-  box-shadow: var(--inner-shadow);
+  background: var(--color-control-fill);
 }
 
-.map-button:hover:not(:disabled), .map-button[aria-expanded='true'] {
-  background: var(--color-tertiary-forest);
+.map-button:hover:not(:disabled),
+.map-button[aria-expanded='true'] {
+  background: var(--color-general-indigo);
 }
 
 .zoom-buttons {
   overflow: hidden;
-  border-radius: 24px;
-  background: var(--color-general-navy);
-  box-shadow: var(--inner-shadow);
+  border-radius: 20px;
+  background: var(--gradient-zoom);
 }
 
 .zoom-buttons .map-button {
-  height: 36px;
+  height: 32px;
   border-radius: 0;
   background: var(--color-tertiary-transparent);
-  box-shadow: none;
+}
+
+.zoom-buttons .map-button:hover:not(:disabled) {
+  background: var(--color-tertiary-overlay-soft);
+}
+
+.tilt-control {
+  position: absolute;
+  top: 47px;
+  right: calc(100% + 14px);
+  width: 190px;
+  padding: 10px 14px 12px;
+  border-radius: 20px;
+  background: var(--gradient-menu);
+  color: var(--color-tertiary-ivory);
+  font-size: 13px;
+}
+
+.tilt-control input {
+  width: 100%;
 }
 
 @media (max-width: 600px) {
   :root {
     --edge: 12px;
-    --menu-width: 56px;
-  }
-
-  .main-menu {
-    gap: 6px;
-    padding: 6px 4px 14px;
-  }
-
-  .menu-button {
-    width: 44px;
-    height: 38px;
-  }
-
-  .account-button {
-    width: 46px;
-    height: 46px;
   }
 
   .menu-panel {
@@ -243,35 +249,24 @@ legend {
   .layers-content {
     padding: 18px;
   }
-
-  .map-actions {
-    right: calc(var(--edge) + 6px);
-    gap: 8px;
-  }
 }
 
+/*caso a tela seja baica o menu cai pro lado*/
 @media (max-height: 580px) {
-  .main-menu {
-    gap: 4px;
-    padding-bottom: 10px;
+  :root {
+    --actions-right: calc(var(--menu-right) + var(--menu-width) + 16px);
   }
 
   .menu-button {
-    height: 34px;
-  }
-
-  .account-button {
-    height: 46px;
-    width: 46px;
+    height: 36px;
   }
 
   .map-actions {
-    right: calc(var(--edge) + var(--menu-width) + 16px);
     gap: 6px;
   }
 
   .menu-panel {
-    z-index: 4;
+    z-index: 11;
   }
 }
 
@@ -279,4 +274,106 @@ legend {
   .menu-button {
     transition: none;
   }
+}
+
+.context-options {
+  display: grid;
+  gap: 12px;
+  border: 0;
+  padding: 0;
+  margin: 0 0 24px;
+}
+
+.context-options label {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* slider + valor no lado  */
+.range-field {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.range-field input[type='range'] {
+  flex: 1;
+  min-width: 0;
+}
+
+.range-field output {
+  min-width: 36px;
+  text-align: right;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+/*Mostrar atividades no globo*/
+.activities-options {
+  margin-bottom: 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-tertiary-overlay-strong);
+}
+
+/*Menu Configurações*/
+.settings-options {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 48px;
+}
+
+.activity-dialog .settings-option {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 0;
+  font-size: 15px;
+}
+
+.activity-dialog .settings-option input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+
+
+.main-menu[inert],
+.map-actions[inert] {
+  pointer-events: none;
+}
+/* régua: a superfície cobre o mapa enquanto mede */
+.distance-surface {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.distance-readout {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 10px);
+  width: max-content;
+  padding: 8px 14px;
+  border-radius: 16px;
+  background: var(--color-general-navy);
+  color: var(--color-tertiary-ivory);
+}
+
+/* painéis que pedem conta, vistos por um visitante */
+.menu-button[data-locked],
+.menu-button[data-locked]:hover,
+.main-menu .menu-button[data-locked] .material-symbols-outlined {
+  color: var(--color-tertiary-locked);
+}
+
+.logout-button {
+  width: 100%;
+  background: var(--color-tertiary-transparent);
+  text-align: left;
 }

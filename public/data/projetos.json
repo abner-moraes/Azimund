@@ -1,9 +1,8 @@
 [
   {
     "id": "1",
-    "tipo": "ATIVIDADE",
+    "tipo": "AULA",
     "titulo": "Rios no Rio Grande do Sul",
-    "miniatura": "data/miniaturas/rios.jpg",
     "ancora": {
       "lng": -51.27,
       "lat": -29.96
@@ -11,13 +10,15 @@
     "autor": {
       "id": "101",
       "nome": "Equipe Azimund"
-    }
+    },
+    "codigo": "100001",
+    "cor": "#A7E59E",
+    "horarioModificado": "2026-11-16T00:00:00Z"
   },
   {
     "id": "2",
     "tipo": "APRESENTACAO",
     "titulo": "Geografia de Porto Alegre",
-    "miniatura": "data/miniaturas/porto-alegre.jpg",
     "ancora": {
       "lng": -51.228,
       "lat": -30.034
@@ -25,6 +26,9 @@
     "autor": {
       "id": "101",
       "nome": "Equipe Azimund"
-    }
+    },
+    "codigo": "100002",
+    "cor": "#A7E59E",
+    "horarioModificado": "2026-11-16T00:00:00Z"
   }
 ]

@@ -1,236 +1,285 @@
 import React, { useEffect, useState } from 'react';
 import { UserPanel } from './UserPanel.jsx';
 import profileImage from './UserIcon/profile.png';
-import { readDemoAccount } from './Page/demoAccount.js';
-import { setBasemap } from './basemapSwitcher.js';
-import { setProjection } from './projectionToggle.js';
-import { setDrawToolsOpen } from './drawTools.js';
+import { readDemoAccount, signOutDemoAccount } from './Page/demoAccount.js';
 import { Icon } from './Icon.jsx';
-import { MenuPanel, EmptyPanel, AccountPanel, MapLayersPanel } from './MenuPanel.jsx';
-import { ActivityExperience } from './ActivityExperience.jsx';
+import { MenuPanel, AccountPanel } from './MenuPanel.jsx';
+import { MapLayersPanel } from './MapLayersPanel.jsx';
+import { SettingsDialog } from './SettingsDialog.jsx';
+import { GlobeActions } from './GlobeActions.jsx';
+import { useMapLayers } from './useMapLayers.js';
+import { ActivityExperience } from './activities/ActivityExperience.jsx';
+import { ActivityEditor } from './editor/ActivityEditor.jsx';
+import { SearchProject, PlaceSearch, MyProjects } from './ProjectMenus.jsx';
+import * as projects from '../api/projectsService.js';
+import { readStored, writeStored } from '../config/storage.js';
+import {
+  readActiveProject,
+  readLastProject,
+  setActiveProject,
+} from './editor/editorSession.js';
+import '../../css/editor.css';
 
+const SHOW_ACTIVITIES_KEY = 'azimund-mostrar-atividades';
+// visitante so pode usar estes painéis depois de criar conta
+const ACCOUNT_ONLY = ['edit', 'search-projects', 'projects'];
 const SITE_ACTION_ITEMS = [
-  { id: 'account', label: 'Sua conta', icon: 'person' },
-  { id: 'search-map', label: 'Pesquisar no mapa', icon: 'search' },
-  { id: 'layers', label: 'Camadas do mapa', icon: 'public' },
-  { id: 'edit', label: 'Editar', icon: 'edit_square' },
-  { id: 'search-tasks', label: 'Pesquisar projetos', icon: 'assignment' },
-  { id: 'projects', label: 'Projetos', icon: 'library_books' },
+  {
+    id: 'account',
+    label: 'Sua conta',
+    icon: 'person',
+  },
+  {
+    id: 'search-map',
+    label: 'Pesquisar no mapa',
+    icon: 'search',
+  },
+  {
+    id: 'layers',
+    label: 'Camadas do mapa',
+    icon: 'public',
+  },
+  {
+    id: 'edit',
+    label: 'Editar',
+    icon: 'edit_square',
+  },
+  {
+    id: 'search-projects',
+    label: 'Pesquisar projetos',
+    icon: 'assignment',
+  },
+  {
+    id: 'projects',
+    label: 'Projetos',
+    icon: 'library_books',
+  },
 ];
+export function MapInterface({ map, markerLayer }) {
+  // a sessão é atualizada junto com o estado (e não no render)
+  const [user, setUserState] = useState(() => {
+    const account = readDemoAccount();
+    const initial = account && { ...account, foto: profileImage };
+    projects.setSessionUser(initial);
+    return initial;
+  });
+  function setUser(value) {
+    setUserState((current) => {
+      const next = typeof value === 'function' ? value(current) : value;
+      projects.setSessionUser(next);
+      return next;
+    });
+  }
+  const [signupPrompt, setSignupPrompt] = useState(false);
 
-const GLOBE_ACTION_ITEMS = [
-  { id: 'measure', label: 'Medir distância', icon: 'straighten' },
-  { id: 'angle', label: '3D', icon: 'view_in_ar' },
-  { id: 'orient', label: 'Orientação', icon: 'explore' },
-  { id: 'zoom-in', label: 'Aumentar zoom', icon: 'add' },
-  { id: 'zoom-out', label: 'Diminuir zoom', icon: 'remove' },
-];
-
-export function MapInterface({ map, draw, markerLayer }) {
-  //USUARIO DE EXEMPLO
-  const [user, setUser] = useState(() => ({
-    nome: 'Maurício Laks',
-    tipo: 'Professor',
-    email: 'mlaks.prof@gmail.com',
-    foto: profileImage,
-    ...readDemoAccount(),
-  }));
   const [activePanel, setActivePanel] = useState(null);
-  const [basemap, setActiveBasemap] = useState('satellite');
-  const [projection, setActiveProjection] = useState('globe');
-  const [drawOpen, setDrawOpen] = useState(false);
-  const [mapReady, setMapReady] = useState(!!map.getLayer('satellite'));
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const layers = useMapLayers(map);
   const [activityPlaying, setActivityPlaying] = useState(false);
 
-  const selectedMenu = SITE_ACTION_ITEMS.find((item) => item.id === activePanel);
+  // key nova força o editor a montar do zero ao trocar de projeto
+  const [editor, setEditor] = useState(() => {
+    const id = readActiveProject(user?.id);
+    return id ? { id, page: -1, key: Date.now() } : null;
+  });
+
+  const [openRequest, setOpenRequest] = useState(null);
+  const [error, setError] = useState('');
+
+  const [showActivities, setShowActivities] = useState(
+    () => !!user && readStored(SHOW_ACTIVITIES_KEY) === true,
+  );
 
   useEffect(() => {
-    function handleLoad() {
-      setMapReady(true);
+    markerLayer.setEnabled(showActivities, !user);
+    if (user) writeStored(SHOW_ACTIVITIES_KEY, showActivities);
+  }, [markerLayer, showActivities, user]);
+  useEffect(() => {
+    if (!editor) return;
+    markerLayer.setVisible(false);
+    return () => markerLayer.setVisible(true);
+  }, [editor, markerLayer]);
+  function openEditor(id = null, page = -1) {
+    if (!user) {
+      setError('Entre na sua conta para criar ou editar!');
+      return;
     }
-
-    if (map.getLayer('satellite')) handleLoad();
-    map.on('style.load', handleLoad);
-    return () => map.off('style.load', handleLoad);
-  }, [map]);
-
-  useEffect(() => {
-    setDrawToolsOpen(map, draw, drawOpen);
-  }, [map, draw, drawOpen]);
-
-  useEffect(() => {
-    function handleKeyDown(event) {
-      if (event.key === 'Escape') {
-        setActivePanel(null);
-        setDrawOpen(false);
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
+    setActivityPlaying(false);
+    setActivePanel(null);
+    setOpenRequest(null);
+    setActiveProject(user.id, id);
+    setEditor({ id, page, key: Date.now() });
+  }
   function togglePanel(id) {
-    if (id === 'edit') {
-      setDrawOpen(!drawOpen);
+    setSignupPrompt(false);
+    if (!user && ACCOUNT_ONLY.includes(id)) {
+      setSignupPrompt(true);
       setActivePanel(null);
       return;
     }
+    if (editor && !['layers', 'search-map'].includes(id)) {
+      setError('clique "Sair do editor" para salvar antes de sair');
+      return;
+    }
+    if (id === 'edit') {
+      openEditor(readLastProject(user.id));
+      return;
+    }
     setActivePanel(activePanel === id ? null : id);
-    setDrawOpen(false);
   }
-
-  function changeBasemap(event) {
-    setBasemap(map, event.target.value);
-    setActiveBasemap(event.target.value);
+  function seeProject(item) {
+    markerLayer.reveal(item);
+    setActivePanel(null);
+    setOpenRequest({ item, token: Date.now() }); // abrir o mesmo projeto de novo ainda funfa
   }
-
-  function changeProjection(event) {
-    setProjection(map, event.target.value);
-    setActiveProjection(event.target.value);
-  }
-
+  const selectedMenu = SITE_ACTION_ITEMS.find((p) => p.id === activePanel);
   return (
     <>
-      <SiteActions
-        activePanel={activePanel}
-        togglePanel={togglePanel}
-        user={user}
-        drawOpen={drawOpen}
-        activityPlaying={activityPlaying}
-      />
-
-      <GlobeActions map={map} />
-
-      <ActivityExperience
-        map={map}
-        markerLayer={markerLayer}
-        sessionUser={user}
-        onPlayingChange={setActivityPlaying}
-        onOpen={() => {
-          setActivePanel(null);
-          setDrawOpen(false);
-        }}
-      />
-
-      {selectedMenu && (
-        <MenuPanel label={selectedMenu.label} setActivePanel={setActivePanel}>
-          {(() => {
-            switch (activePanel) {
-              case 'account':
-                return <AccountPanel togglePanel={togglePanel} />;
-
-              case 'layers':
-                return (
-                  <MapLayersPanel
-                    mapReady={mapReady}
-                    projection={projection}
-                    changeProjection={changeProjection}
-                    basemap={basemap}
-                    changeBasemap={changeBasemap}
-                  />
-                );
-
-              default:
-                return <EmptyPanel />;
-            }
-          })()}
+      <nav
+        className="main-menu"
+        inert={activityPlaying}
+        aria-disabled={activityPlaying || undefined}
+        aria-label="Menu principal"
+      >
+        {SITE_ACTION_ITEMS.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            className={`menu-button ${item.id === 'account' ? 'account-button' : ''}`}
+            data-locked={(!user && ACCOUNT_ONLY.includes(item.id)) || undefined}
+            aria-label={item.label}
+            title={item.label}
+            aria-expanded={item.id === 'edit' ? !!editor : activePanel === item.id}
+            onClick={() => togglePanel(item.id)}
+          >
+            {item.id === 'account' ? (
+              <img className="account-photo" src={user?.foto || profileImage} alt="" />
+            ) : (
+              <Icon name={item.icon} />
+            )}
+          </button>
+        ))}
+      </nav>
+      <GlobeActions map={map} disabled={activityPlaying} />
+      {editor ? (
+        <ActivityEditor
+          key={editor.key}
+          map={map}
+          initialId={editor.id}
+          initialPage={editor.page}
+          onOpenProject={(id) => openEditor(id)}
+          onClose={() => {
+            setActiveProject(user?.id, null);
+            setEditor(null);
+          }}
+        />
+      ) : (
+        <ActivityExperience
+          key={user?.email || 'guest'}
+          map={map}
+          markerLayer={markerLayer}
+          openRequest={openRequest}
+          onEdit={openEditor}
+          onPlayingChange={setActivityPlaying}
+          onOpen={() => setActivePanel(null)}
+        />
+      )}
+      {selectedMenu &&
+        (!editor || ['layers', 'search-map'].includes(activePanel)) &&
+        activePanel !== 'projects' && (
+          <MenuPanel label={selectedMenu.label} setActivePanel={setActivePanel}>
+            {activePanel === 'account' ? (
+              <>
+                <AccountPanel
+                  user={user}
+                  togglePanel={togglePanel}
+                  onSettings={() => {
+                    setActivePanel(null);
+                    setSettingsOpen(true);
+                  }}
+                  onLogout={() => {
+                    signOutDemoAccount();
+                    markerLayer.setProjects([]);
+                    markerLayer.clearReveal();
+                    setOpenRequest(null);
+                    setShowActivities(false);
+                    setActivePanel('account');
+                    setUser(null);
+                  }}
+                />
+                {!user && <SearchProject onFound={seeProject} />}
+              </>
+            ) : activePanel === 'search-map' ? (
+              <PlaceSearch map={map} />
+            ) : activePanel === 'search-projects' ? (
+              <SearchProject onFound={seeProject} />
+            ) : activePanel === 'layers' ? (
+              <MapLayersPanel
+                contextVisibility={layers.contextVisibility}
+                onContextChange={layers.changeContext}
+                mapReady={layers.mapReady}
+                projectionLocked={!!editor}
+                projection={editor ? 'mercator' : layers.projection}
+                changeProjection={layers.changeProjection}
+                basemap={layers.basemap}
+                changeBasemap={layers.changeBasemap}
+                terrainExaggeration={layers.terrainExaggeration}
+                changeTerrainExaggeration={layers.changeTerrainExaggeration}
+                showActivities={showActivities}
+                onShowActivitiesChange={setShowActivities}
+              />
+            ) : null}
+          </MenuPanel>
+        )}
+      {activePanel === 'projects' && !editor && (
+        <MyProjects
+          onNew={() => openEditor()}
+          onClose={() => setActivePanel(null)}
+          onEdit={openEditor}
+          onMap={seeProject}
+        />
+      )}
+      {activePanel === 'user-info' && (
+        <UserPanel
+          user={user}
+          onChange={setUser}
+          onClose={() => setActivePanel(null)}
+        />
+      )}
+      {settingsOpen && (
+        <SettingsDialog
+          models3d={layers.models3d}
+          onModels3dChange={layers.changeModels3d}
+          onClose={() => setSettingsOpen(false)}
+        />
+      )}
+      {signupPrompt && (
+        <MenuPanel
+          label="Conta necessária"
+          setActivePanel={() => setSignupPrompt(false)}
+        >
+          <div className="project-search">
+            <p>crie uma conta para criar suas atividades e postá-las no mapa!</p>
+            <a className="activity-button" href="./cadastro.html">
+              Criar conta
+            </a>
+            <SearchProject
+              onFound={(item) => {
+                setSignupPrompt(false);
+                seeProject(item);
+              }}
+            />
+          </div>
         </MenuPanel>
       )}
-
-      {/* "user-info" não é um item de SITE_ACTION_ITEMS (então selectedMenu é
-          undefined para ele): a página da conta é um dialog próprio, aberto
-          por "Informações" em AccountPanel, e não fica dentro do MenuPanel. */}
-      {activePanel === 'user-info' && (
-        <UserPanel user={user} onChange={setUser} onClose={() => setActivePanel(null)} />
+      {error && (
+        <div className="editor-notice error" role="alert">
+          {error}
+          <button className="text-button" onClick={() => setError('')}>
+            Fechar
+          </button>
+        </div>
       )}
     </>
-  );
-}
-
-function SiteActions({ activePanel, togglePanel, user, drawOpen, activityPlaying }) {
-  return (
-    <nav className="main-menu" aria-label="Menu principal" inert={activityPlaying}>
-      {SITE_ACTION_ITEMS.map((item) => (
-        <button
-          key={item.id}
-          type="button"
-          className={`menu-button ${item.id === 'account' ? 'account-button' : ''}`}
-          aria-label={item.label}
-          title={item.label}
-          aria-expanded={item.id === 'edit' ? drawOpen : activePanel === item.id}
-          aria-haspopup={item.id === 'account' ? 'dialog' : undefined}
-          aria-controls={
-            item.id === 'account'
-              ? 'user-panel'
-              : item.id === 'edit'
-                ? 'terradraw-tools'
-                : activePanel === item.id
-                  ? 'menu-panel'
-                  : undefined
-          }
-          onClick={() => togglePanel(item.id)}
-        >
-          {item.id === 'account' ? (
-            <img className="account-photo" src={user.foto} alt="" />
-          ) : (
-            <Icon name={item.icon} />
-          )}
-        </button>
-      ))}
-    </nav>
-  );
-}
-
-function GlobeActions({ map }) {
-  return (
-    <div className="map-actions" role="group" aria-label="Controles do mapa">
-      {/* controles visuais pro back dps*/}
-      <button
-        type="button"
-        className="map-button"
-        aria-label="Medir distância"
-        title="Medir distância"
-        disabled
-      >
-        <Icon name="straighten" />
-      </button>
-
-      <button type="button" className="map-button" aria-label="3D" title="3D" disabled>
-        <Icon name="view_in_ar" />
-      </button>
-
-      <button
-        type="button"
-        className="map-button"
-        aria-label="Orientação"
-        title="Orientação"
-        onClick={() => map.easeTo({ bearing: 0, pitch: 0, duration: 700 })}
-      >
-        <Icon name="explore" />
-      </button>
-
-      <div className="zoom-buttons" role="group" aria-label="Zoom">
-        <button
-          type="button"
-          className="map-button"
-          aria-label="Aumentar zoom"
-          title="Aumentar zoom"
-          onClick={() => map.zoomIn()}
-        >
-          <Icon name="add" />
-        </button>
-
-        <button
-          type="button"
-          className="map-button"
-          aria-label="Diminuir zoom"
-          title="Diminuir zoom"
-          onClick={() => map.zoomOut()}
-        >
-          <Icon name="remove" />
-        </button>
-      </div>
-    </div>
   );
 }
