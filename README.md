@@ -20,7 +20,7 @@ js/api/      dados, validação, adaptadores (local/http) e pacote .azmd
 js/config/   estilo do mapa, cores, limites e preferências
 js/core/     efeitos do espaço e camada de modelos 3D
 js/editor/   motor de desenho, histórico e salvamento automático
-js/ui/       interface: menus, painéis, jogador de atividades e editor
-css/         estilos (tokens de cor em css/vars.css)
+js/ui/       interface, menus, painéis, jogador de atividades e editor
+css/         estilos, variaveis de cor e etc
 public/      atividades publicadas, marcadores e modelos 3D
 ```
