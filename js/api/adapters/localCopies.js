@@ -1,4 +1,4 @@
-// IndexedDB: cópias de trabalho de cada autor (chave "<idDoAutor>:<idDoProjeto>") e a sequência local de ids
+// IndexedDB, cópias de trabalho de cada autor (chave "<idDoAutor>:<idDoProjeto>") e a sequência local de ids
 let connection;
 function openDatabase() {
   if (connection) return connection;
@@ -35,7 +35,7 @@ async function runTransaction(store, mode, action) {
     transaction.onerror = transaction.onabort = () =>
       reject({
         codigo: 'ARMAZENAMENTO',
-        mensagem: 'não foi possível gravar ou ler o armazenamento deste navegador',
+        mensagem: 'Não foi possível gravar ou ler o armazenamento deste navegador.',
       });
   });
 }

@@ -18,7 +18,7 @@ export function EditorPageControls({ project, pages, onDelete }) {
             type="button"
             onClick={() => addPage('conteudo')}
             disabled={atLimit}
-            title={atLimit ? `limite de ${LIMITS.pages} páginas` : ''}
+            title={atLimit ? `Limite de ${LIMITS.pages} páginas` : ''}
           >
             + Conteúdo
           </button>
@@ -26,7 +26,7 @@ export function EditorPageControls({ project, pages, onDelete }) {
             type="button"
             onClick={() => addPage('questao')}
             disabled={atLimit}
-            title={atLimit ? `limite de ${LIMITS.pages} páginas` : ''}
+            title={atLimit ? `Limite de ${LIMITS.pages} páginas` : ''}
           >
             + Questão
           </button>
@@ -37,7 +37,7 @@ export function EditorPageControls({ project, pages, onDelete }) {
       )}
       <div className="editor-page-picker">
         <select
-          aria-label="escolher página"
+          aria-label="Escolher página"
           value={pageIndex}
           onChange={(event) => changePage(Number(event.target.value))}
         >
@@ -54,13 +54,13 @@ export function EditorPageControls({ project, pages, onDelete }) {
           <>
             <IconButton
               name="arrow_upward"
-              label="mover página acima"
+              label="Mover página acima"
               disabled={pageIndex === 0}
               onClick={() => movePage(-1)}
             />
             <IconButton
               name="arrow_downward"
-              label="mover página abaixo"
+              label="Mover página abaixo"
               disabled={lastPage}
               onClick={() => movePage(1)}
             />
@@ -69,11 +69,11 @@ export function EditorPageControls({ project, pages, onDelete }) {
       </div>
       {editing && (
         <label className="field-label page-basemap">
-          {page ? 'mapa base da página' : 'mapa base da capa'}
+          {page ? 'Mapa base da página' : 'Mapa base da capa'}
           <BasemapSelect
             value={(page || project).mapaBase}
             defaultLabel="Padrão"
-            label={page ? 'mapa base da página' : 'mapa base da capa'}
+            label={page ? 'Mapa base da página' : 'Mapa base da capa'}
             onChange={pages.setPageBasemap}
           />
         </label>

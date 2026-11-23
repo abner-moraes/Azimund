@@ -65,7 +65,7 @@ export async function findProjectByCode(code) {
   if (!/^\d{6}$/.test(code))
     throw {
       codigo: 'CODIGO_INVALIDO',
-      mensagem: 'digite um código de 6 dígitos.',
+      mensagem: 'Digite um código de 6 dígitos.',
     };
   return callAdapter('findProjectByCode', code);
 }
@@ -160,7 +160,7 @@ export async function importProjectPackage(file) {
     // estrutura mt fora do formato quebra antes das validações (TypeError)
     throw error?.codigo
       ? error
-      : { codigo: 'DADOS_INVALIDOS', mensagem: 'o projeto é inválido' };
+      : { codigo: 'DADOS_INVALIDOS', mensagem: 'O projeto é inválido' };
   }
 
   const created = await createProject({ ancora: content.ancora });

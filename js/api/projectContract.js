@@ -1,4 +1,4 @@
-// formato dos arquivos do projeto (JSON + GeoJSON): validação, valores padrão e correção de respostas
+// formato dos arquivos do projeto (JSON + GeoJSON), validação, valores padrão e correção de respostas
 import { LIMITS } from '../config/limits.js';
 import { BASEMAP_KEYS } from '../config/basemapOptions.js';
 import { readThemeColor } from '../config/theme.js';

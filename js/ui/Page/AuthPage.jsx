@@ -109,8 +109,8 @@ export function AuthPage({ signup }) {
         {complete ? (
           <div className="auth-result" ref={statusRef} tabIndex={-1}>
             <p role="status">Cadastro feito!</p>
-            <p>faça o login para continuar</p>
-            {!storageAvailable && <p role="alert">browser não salvou os dados</p>}
+            <p>Faça o login para continuar</p>
+            {!storageAvailable && <p role="alert">O navegador não salvou os dados</p>}
             <a className="auth-submit" href="./login.html">
               fazer login
             </a>

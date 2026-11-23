@@ -2,16 +2,16 @@ import React from 'react';
 import { IconButton } from '../../common/IconButton.jsx';
 
 const TOOLS = [
-  ['select', 'seleção / vértices', 'ads_click'],
-  ['point', 'ponto', 'location_on'],
-  ['text', 'texto', 'text_fields'],
-  ['linestring', 'linha', 'polyline'],
-  ['shapes', 'formas', 'shapes'],
-  ['freehand', 'desenho livre', 'gesture'],
-  ['open-file', 'abrir geojson', 'attach_file'],
-  ['undo', 'desfazer', 'undo'],
-  ['redo', 'refazer', 'redo'],
-  ['settings', 'configurações', 'settings'],
+  ['select', 'Seleção / vértices', 'ads_click'],
+  ['point', 'Ponto', 'location_on'],
+  ['text', 'Texto', 'text_fields'],
+  ['linestring', 'Linha', 'polyline'],
+  ['shapes', 'Formas', 'shapes'],
+  ['freehand', 'Desenho livre', 'gesture'],
+  ['open-file', 'Abrir GeoJSON', 'attach_file'],
+  ['undo', 'Desfazer', 'undo'],
+  ['redo', 'Refazer', 'redo'],
+  ['settings', 'Configurações', 'settings'],
 ];
 
 export function EditorToolbar({ draft, drawing, pages, onTool }) {
@@ -25,10 +25,10 @@ export function EditorToolbar({ draft, drawing, pages, onTool }) {
     );
   }
   return (
-    <div className="editor-tools" role="toolbar" aria-label="ferramentas de edição">
+    <div className="editor-tools" role="toolbar" aria-label="Ferramentas de edição">
       <IconButton
         name="add_location_alt"
-        label={draft.project ? 'reposicionar pino da atividade' : 'pino da atividade'}
+        label={draft.project ? 'Reposicionar pino da atividade' : 'Pino da atividade'}
         active={drawing.tool === 'ancora'}
         disabled={!drawing.ready || draft.loading}
         onClick={() => onTool('ancora')}

@@ -87,20 +87,20 @@ export function UserPanel({ user, onChange, onClose }) {
   function saveField(event) {
     event.preventDefault();
     if (!value.trim()) {
-      setError('preencha os campos');
+      setError('Preencha os campos');
       inputRef.current?.focus();
       return;
     }
     if (editing === 'senha') {
       if (value !== confirmation) {
-        setError('as senhas tem que ser iguais');
+        setError('As senhas tem que ser iguais');
         return;
       }
       // MUDAR AQUI P INTEGRAR COM O BACK-END
-      setMessage('senha funfada');
+      setMessage('Senha funfada');
     } else {
       onChange({ ...user, [editing]: value.trim() });
-      setMessage('atualizou');
+      setMessage('Atualizou');
     }
     finishEditing();
   }
@@ -123,7 +123,7 @@ export function UserPanel({ user, onChange, onClose }) {
         <button
           type="button"
           className="user-close"
-          aria-label="fechar"
+          aria-label="Fechar"
           onClick={onClose}
           autoFocus
         >
@@ -149,7 +149,7 @@ export function UserPanel({ user, onChange, onClose }) {
           >
             Alterar Foto
           </button>
-          {loadingPhoto && <p role="status">carregando foto</p>}
+          {loadingPhoto && <p role="status">Carregando foto</p>}
           {photoError && (
             <p className="user-error" role="alert">
               {photoError}
@@ -174,7 +174,7 @@ export function UserPanel({ user, onChange, onClose }) {
               {editing === field.key && (
                 <form onSubmit={saveField}>
                   <label htmlFor={`user-${field.key}`}>
-                    {field.key === 'senha' ? 'nova senha' : field.label}
+                    {field.key === 'senha' ? 'Nova senha' : field.label}
                   </label>
                   <input
                     ref={inputRef}
@@ -194,8 +194,8 @@ export function UserPanel({ user, onChange, onClose }) {
                   />
                   {field.key === 'senha' && (
                     <>
-                      <small>pelo menos 8 caracteres</small>
-                      <label htmlFor="user-confirmation">confirmar senha nova</label>
+                      <small>Pelo menos 8 caracteres</small>
+                      <label htmlFor="user-confirmation">Confirmar senha nova</label>
                       <input
                         id="user-confirmation"
                         type="password"
@@ -218,7 +218,7 @@ export function UserPanel({ user, onChange, onClose }) {
                   )}
                   <div className="user-form-actions">
                     <button type="submit">
-                      {field.key === 'senha' ? 'validar senha' : 'Salvar'}
+                      {field.key === 'senha' ? 'Validar senha' : 'Salvar'}
                     </button>
                     <button type="button" onClick={finishEditing}>
                       Cancelar

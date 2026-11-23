@@ -1,4 +1,4 @@
-// modo servidor: as mesmas operações do localFiles, so que via API REST (/api/projetos)
+// modo servidor, q as mesmas operações do localFiles, so que via API REST (/api/projetos)
 
 import { getSessionUser } from '../session.js';
 import { bestAttempt, saveAttempt } from '../attemptStorage.js';
@@ -15,7 +15,7 @@ async function request(path, method = 'GET', body) {
   } catch {
     throw {
       codigo: 'FALHA_REDE',
-      mensagem: 'O servidor está indisponível tente novamente',
+      mensagem: 'O servidor está indisponível. Tente novamente.',
     };
   }
   const data = response.status === 204 ? {} : await response.json().catch(() => null);

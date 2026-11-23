@@ -184,13 +184,13 @@ export function EditorDialogs({
   if (dialog === 'delete' || dialog === 'discard') {
     const discard = dialog === 'discard';
     const description = discard
-      ? 'alterações locais serão removidas. Se houver arquivos publicados, eles serão usados novamente, projetos novos serão removidos'
+      ? 'Alterações locais serão removidas. Se houver arquivos publicados, eles serão usados novamente, projetos novos serão removidos'
       : capabilities.localCopies
-        ? 'a exclusão vale neste browser, os arquivos publicados ainda ficam salvos'
-        : 'a atividade será excluída do servidor';
+        ? 'A exclusão vale neste browser, os arquivos publicados ainda ficam salvos'
+        : 'A atividade será excluída do servidor';
     return (
       <Modal
-        title={discard ? 'excluir cópia local?' : 'excluir atividade?'}
+        title={discard ? 'Excluir cópia local?' : 'Excluir atividade?'}
         onClose={() => setDialog('settings')}
       >
         <p>{description}</p>

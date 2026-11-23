@@ -72,7 +72,7 @@ function ObjectItem({
           <Icon name="close" />
         </button>
       </div>
-      {readOnly && <small>camada nativa, somente leitura</small>}
+      {readOnly && <small>Camada nativa, somente leitura</small>}
       {page && (
         <label className="object-visible">
           <input
@@ -96,9 +96,9 @@ export function ObjectList({ draft, drawing, pages }) {
           clique no pino da atividade e escolha um local no mapa
         </p>
       )}
-      {loading && <p role="status">carregando projeto...</p>}
+      {loading && <p role="status">Carregando projeto...</p>}
       {project && !geojson.features.length && (
-        <p className="editor-hint">use as ferramentas para criar objetos no mapa</p>
+        <p className="editor-hint">Use as ferramentas para criar objetos no mapa</p>
       )}
       {geojson.features.map((feature, index) => (
         <ObjectItem

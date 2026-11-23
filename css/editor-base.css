@@ -49,23 +49,29 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   background: transparent;
   color: inherit;
 }
+
 .icon-button .material-symbols-outlined {
   font-size: 24px;
 }
+
 .icon-button.small {
   width: 24px;
   height: 28px;
 }
+
 .icon-button.small .material-symbols-outlined {
   font-size: 18px;
 }
+
 .icon-button:hover,
 .icon-button.active {
   background: var(--color-tertiary-overlay-strong);
 }
+
 .icon-button:disabled {
   opacity: 0.4;
 }
+
 .activity-project-banner input {
   min-width: 0;
   width: 100%;
@@ -75,6 +81,7 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   outline: none;
   background: transparent;
 }
+
 .text-button {
   display: inline-flex;
   align-items: center;
@@ -86,15 +93,19 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   text-align: left;
   font-size: 13px;
 }
+
 .text-button .material-symbols-outlined {
   font-size: 20px;
 }
+
 .text-button:hover {
   text-decoration: underline;
 }
+
 .text-button:disabled {
   opacity: 0.4;
 }
+
 .field-label {
   display: flex;
   flex-direction: column;
@@ -103,6 +114,7 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   font-size: 13px;
   color: var(--color-tertiary-muted);
 }
+
 .field-label input:not([type='color']),
 .field-label textarea,
 .field-label select,
@@ -116,20 +128,24 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   font: inherit;
   padding: 9px 10px;
 }
+
 .field-label textarea {
   min-height: 72px;
   resize: vertical;
 }
+
 .editor-workspace .activity-project-banner {
   width: 380px;
   height: 48px;
 }
+
 .editor-workspace .activity-with-banner {
   top: 146px;
   bottom: 82px;
   width: 398px;
   padding: 18px 26px;
 }
+
 .editor-context-bar {
   position: fixed;
   z-index: 4;
@@ -140,35 +156,42 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   justify-content: space-between;
   gap: 8px;
 }
+
 .editor-tabs {
   display: flex;
   gap: 4px;
 }
+
 .editor-tabs button,
-.page-edit-actions > button {
+.page-edit-actions>button {
   padding: 8px 10px;
   border-radius: 16px;
   background: var(--color-tertiary-panel);
   color: var(--color-tertiary-ivory);
   font-size: 12px;
 }
+
 .editor-tabs button.active {
   background: var(--color-tertiary-forest);
 }
+
 .editor-tabs button:disabled {
   opacity: 0.45;
 }
-/* "Sair do editor" em destaque: negrito, texto lima e contorno, invertendo no hover */
+
+/*Sair do editor*/
 .editor-tabs button.editor-leave {
   background: var(--color-tertiary-forest);
   color: var(--color-primary-lime);
   font-weight: 700;
   box-shadow: inset 0 0 0 1px var(--color-primary-lime);
 }
+
 .editor-tabs button.editor-leave:hover {
   background: var(--color-primary-lime);
   color: var(--color-general-navy);
 }
+
 .editor-objects {
   position: fixed;
   z-index: 3;
@@ -184,18 +207,22 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   box-shadow: var(--inner-shadow);
   scrollbar-width: thin;
 }
+
 .editor-objects.collapsed {
   bottom: auto;
 }
+
 .objects-heading {
   font-size: 14px;
   margin-bottom: 25px;
 }
+
 .editor-hint {
   font-size: 12px;
   line-height: 1.5;
   color: var(--color-tertiary-muted);
 }
+
 .editor-tools {
   position: fixed;
   z-index: 4;
@@ -216,22 +243,27 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   overflow: auto;
   scrollbar-width: none;
 }
+
 .editor-tools .icon-button {
   width: 36px;
   height: 34px;
 }
+
 .editor-tools .active {
   background: var(--color-tertiary-forest);
 }
+
 .toolbar-divider {
   width: 24px;
   height: 1px;
   background: var(--color-tertiary-border);
   margin: 4px;
 }
+
 .editor-pages-view .editor-tools {
   left: 438px;
 }
+
 .editor-status {
   position: fixed;
   bottom: 18px;
@@ -248,10 +280,12 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   font-size: 12px;
   box-shadow: var(--inner-shadow);
 }
-.editor-status > span {
+
+.editor-status>span {
   color: var(--color-tertiary-muted);
   font-size: 11px;
 }
+
 .editor-notice {
   position: fixed;
   z-index: 12;
@@ -268,13 +302,16 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   box-shadow: var(--inner-shadow);
   font-size: 14px;
 }
+
 .editor-notice.error {
   color: var(--color-error);
 }
+
 .object-item {
   padding: 10px 0;
   border-bottom: 1px solid var(--color-tertiary-overlay-soft);
 }
+
 .object-focus {
   background: none;
   display: flex;
@@ -285,16 +322,20 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   text-align: left;
   font-size: 13px;
 }
-.object-focus > span:last-child {
+
+.object-focus>span:last-child {
   overflow-wrap: anywhere;
 }
+
 .object-focus .material-symbols-outlined {
   font-size: 25px;
 }
+
 .object-focus input {
   min-width: 0;
   width: 120px;
 }
+
 .object-visible {
   font-size: 11px;
   display: flex;
@@ -303,19 +344,23 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   color: var(--color-tertiary-muted);
   padding: 7px 0;
 }
+
 .object-item small {
   font-size: 10px;
   color: var(--color-tertiary-muted);
 }
+
 .color-field {
   display: block;
   font-size: 13px;
   margin: 16px 0;
 }
-.color-field > span {
+
+.color-field>span {
   display: block;
   margin-bottom: 8px;
 }
+
 .color-field input[type='color'] {
   width: 45px;
   height: 34px;
@@ -323,6 +368,7 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   border: 0;
   background: none;
 }
+
 .hex-field {
   width: 98px;
   min-width: 0;
@@ -332,17 +378,20 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   background: transparent;
   color: inherit;
 }
+
 .color-swatches {
   display: flex;
   gap: 7px;
   margin-top: 8px;
 }
+
 .color-swatches button {
   width: 18px;
   height: 18px;
   border-radius: 50%;
   border: 1px solid var(--color-tertiary-border);
 }
+
 .danger-button {
   display: block;
   width: 100%;
@@ -355,18 +404,22 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   font-size: 14px;
   font-weight: 700;
 }
+
 .danger-button:hover:not(:disabled) {
   filter: brightness(1.08);
 }
+
 .marker-preview {
   display: flex;
   justify-content: center;
   padding: 12px;
 }
+
 .marker-preview .project-glyph {
   width: 70px;
   height: 70px;
 }
+
 .shapes-popover {
   position: fixed;
   z-index: 5;
@@ -380,15 +433,18 @@ botões, campos, abas (com "Sair do editor" destacado), objetos, ferramentas e o
   background: var(--color-general-navy);
   box-shadow: var(--inner-shadow);
 }
+
 .editor-pages-view .shapes-popover {
   left: 494px;
 }
+
 .shapes-popover button {
   background: transparent;
   color: inherit;
   padding: 8px;
   text-align: left;
 }
+
 .editor-status img {
   width: 24px;
   height: 24px;

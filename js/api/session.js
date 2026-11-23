@@ -4,8 +4,7 @@ let currentUser = null;
 // login demo so tem nome e email; o back-end real vai mandar o id do usuário
 function getSessionIdentity(account) {
   if (!account?.nome || !account?.email) return null;
-  // Hash base 131 com BigInt, q transforma o e-mail num id numérico estável,
-  // limitado ao maior inteiro de 64 bits com sinal, como um id de banco faria.
+  // Hash base 131 com BigInt q transforma o e-mail num id numérico, como seria no BD
   let hash = 0n;
   for (const character of account.email.trim().toLowerCase())
     hash = (hash * 131n + BigInt(character.codePointAt(0))) % 9223372036854775806n; //security is my passion

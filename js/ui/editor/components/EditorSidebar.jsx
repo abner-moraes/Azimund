@@ -16,10 +16,10 @@ export function EditorSidebar({ draft, drawing, pages }) {
           name={collapsed ? 'add' : feature ? 'arrow_back' : 'remove'}
           label={
             feature
-              ? 'voltar para objetos'
+              ? 'Voltar para objetos'
               : collapsed
-                ? 'expandir objetos'
-                : 'recolher objetos'
+                ? 'Expandir objetos'
+                : 'Recolher objetos'
           }
           onClick={() => (feature ? setSelected(null) : setCollapsed(!collapsed))}
         />

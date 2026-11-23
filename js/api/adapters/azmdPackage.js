@@ -1,4 +1,4 @@
-// pacote .azmd = um ZIP com outra extensão: manifest.json + atividade_<id>.json + atividade_<id>.geojson
+// pacote .azmd = um ZIP com outra extensão, manifest.json + atividade_<id>.json + atividade_<id>.geojson
 // criar: buildManifest monta a etiqueta, strToU8 vira bytes e zipSync zipa tudo na memória
 // ler: confere extensão/tamanho, descompacta so os .json/.geojson e devolve os 3 já em objeto
 // a validação do conteúdo fica no projectsService.importProjectPackage
@@ -102,7 +102,7 @@ export async function readAzmdPackage(file) {
 
   const manifestName = byName(MANIFEST_FILE);
   if (!manifestName)
-    throw { ...INVALID_PACKAGE, mensagem: 'a atividade não tem manifest' };
+    throw { ...INVALID_PACKAGE, mensagem: 'A atividade não tem manifest.' };
   const manifest = parse(manifestName);
   if (manifest?.formato !== AZMD_FORMAT) throw INVALID_PACKAGE;
 

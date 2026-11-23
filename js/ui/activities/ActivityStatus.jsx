@@ -14,7 +14,7 @@ function errorMessage(error) {
     case 'FALHA_REDE':
       return 'Verifique a conexão e tente novamente';
     case 'DADOS_INVALIDOS':
-      return 'os dados precisam de uma revisão pelo autor';
+      return 'Os dados precisam de uma revisão pelo autor';
     default:
       return error.mensagem || 'Tente novamente.';
   }
@@ -23,7 +23,7 @@ export function ErrorState({ error, onRetry }) {
   return (
     <div className="activity-error" role="alert">
       <Icon name="info" />
-      <p>não foi possível abrir este conteúdo</p>
+      <p>Não foi possível abrir este conteúdo</p>
       <p className="activity-error-detail">{errorMessage(error)}</p>
       <button type="button" className="activity-button" onClick={onRetry}>
         tentar novamente

@@ -365,7 +365,7 @@ legend {
   color: var(--color-tertiary-ivory);
 }
 
-/* painéis que pedem conta, vistos por um visitante */
+/* painéis q pedem conta, vistos por um visitante */
 .menu-button[data-locked],
 .menu-button[data-locked]:hover,
 .main-menu .menu-button[data-locked] .material-symbols-outlined {

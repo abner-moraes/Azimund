@@ -118,7 +118,7 @@ export function MapInterface({ map, markerLayer }) {
       return;
     }
     if (editor && !['layers', 'search-map'].includes(id)) {
-      setError('clique "Sair do editor" para salvar antes de sair');
+      setError('Clique "Sair do editor" para salvar antes de sair');
       return;
     }
     if (id === 'edit') {
@@ -259,7 +259,7 @@ export function MapInterface({ map, markerLayer }) {
           setActivePanel={() => setSignupPrompt(false)}
         >
           <div className="project-search">
-            <p>crie uma conta para criar suas atividades e postá-las no mapa!</p>
+            <p>Crie uma conta para criar suas atividades e postá-las no mapa!</p>
             <a className="activity-button" href="./cadastro.html">
               Criar conta
             </a>

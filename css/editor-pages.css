@@ -10,6 +10,7 @@
   resize: vertical;
   outline-offset: 2px;
 }
+
 .page-editing .activity-page-title {
   font-family: var(--font-heading);
   font-size: 26px;
@@ -17,31 +18,38 @@
   border-bottom: 5px solid var(--color-primary-blue);
   text-align: center;
 }
+
 .page-editing .page-textarea {
   min-height: 100px;
   line-height: 1.4;
   font-size: 15px;
 }
+
 .page-editing .cover-description {
   min-height: 130px;
 }
+
 .page-editing .question-textarea {
   min-height: 80px;
   font-size: 15px;
   line-height: 1.4;
 }
+
 .page-editing .activity-page-body {
   padding: 14px 0;
   gap: 14px;
   flex: 0 0 auto;
 }
+
 .page-editing .activity-question legend {
   margin: 0 0 10px;
 }
+
 .page-editing .activity-options {
   gap: 10px;
   padding: 12px 0 0;
 }
+
 .page-editing .activity-question select {
   display: block;
   width: 100%;
@@ -51,6 +59,7 @@
   color: inherit;
   border: 1px solid var(--color-tertiary-border-green);
 }
+
 .editing-option {
   display: flex;
   align-items: center;
@@ -62,7 +71,8 @@
   color: var(--color-general-teal);
   font-size: 14px;
 }
-.editing-option > input {
+
+.editing-option>input {
   min-width: 0;
   width: 100%;
   padding: 5px 0;
@@ -70,10 +80,12 @@
   background: transparent;
   color: inherit;
 }
+
 .editing-option .icon-button {
   width: 22px;
   height: 22px;
 }
+
 .answer-check {
   display: flex;
   align-items: center;
@@ -86,12 +98,15 @@
   color: inherit;
   background: transparent;
 }
+
 .answer-check .material-symbols-outlined {
   font-size: 24px;
 }
+
 .answer-check.correct {
   background: var(--color-primary-lime);
 }
+
 .incomplete-badge {
   display: flex;
   align-items: center;
@@ -100,48 +115,60 @@
   color: var(--color-primary-yellow);
   margin: 8px 0;
 }
+
 .incomplete-badge .material-symbols-outlined {
   font-size: 17px;
 }
+
 .page-edit-actions {
   display: flex;
   gap: 5px;
   margin: 12px 0;
 }
-.page-edit-actions > button:disabled {
+
+.page-edit-actions>button:disabled {
   opacity: 0.4;
 }
+
 .page-edit-actions .icon-button {
   padding: 2px;
   width: 34px;
 }
+
 .editor-page-picker {
   display: flex;
   gap: 4px;
   align-items: center;
   margin: 8px 0;
 }
+
 .editor-page-picker select {
   font-size: 12px;
 }
+
 .fix-camera {
   width: 100%;
   font-size: 12px;
 }
+
 .editor-workspace .activity-button {
   min-height: 44px;
   font-size: 17px;
 }
+
 .editor-workspace .activity-secondary {
   font-size: 13px;
 }
+
 .editor-workspace .activity-page-title {
   font-size: 28px;
 }
+
 .author-code {
   padding: 16px 0;
   font-size: 13px;
 }
+
 .code-button {
   display: flex;
   gap: 6px;
@@ -153,9 +180,11 @@
   font-size: 14px;
   font-variant-numeric: tabular-nums;
 }
+
 .code-button .material-symbols-outlined {
   font-size: 16px;
 }
+
 .image-placeholder {
   padding: 30px 15px;
   border: 1px dashed var(--color-tertiary-border);
@@ -164,14 +193,17 @@
   color: var(--color-tertiary-muted);
   text-align: center;
 }
+
 .activity-page-image {
   flex-shrink: 0;
   max-width: 100%;
   object-fit: contain;
 }
-.activity-dialog .activity-button + .activity-button {
+
+.activity-dialog .activity-button+.activity-button {
   margin-top: 12px;
 }
+
 /* "Mapa base da página/capa" no rodapé do editor de páginas */
 .page-basemap {
   margin: 10px 0;

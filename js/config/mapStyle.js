@@ -2,7 +2,7 @@ import { contextSource, createContextLayers } from './mapOverlays.js';
 import { BASEMAP_TILE_SOURCES } from '../api/basemaps.js';
 import { readThemeColor } from './theme.js';
 
-// estilo inteiro do mapa: fontes de tiles, camadas base e o ceu/neblina do globo
+// estilo inteiro do mapa, fontes de tiles, camadas base e o ceu/neblina do globo
 export function createMapStyle() {
   return {
     version: 8,

@@ -11,7 +11,7 @@ export function downloadFile(bytes, fileName, mimeType = 'application/geo+json')
       type: mimeType,
     }),
   );
-  // a URL blob: aponta pros bytes na memória; o <a download> invisível baixa com o nome certo
+  // a URL blob aponta pros bytes na memória, o <a download> invisível baixa com o nome certo
   const a = document.createElement('a');
   a.href = url;
   a.download = fileName;
@@ -32,7 +32,7 @@ export async function importGeojson(file, onProgress = () => {}) {
   onProgress(5);
   if (file.size > LIMITS.workerBytes)
     return new Promise((resolve, reject) => {
-      // arquivo grande vai pro worker pra não travar a tela; ele manda o progresso por mensagem
+      // arquivo grande vai pro worker pra não travar a tela e ele manda o progresso por mensagem
       const worker = new Worker(new URL('./geojson.worker.js', import.meta.url), {
         type: 'module',
       });

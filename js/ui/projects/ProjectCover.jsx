@@ -49,7 +49,7 @@ export function ProjectCover({ project, editing, isAuthor, onChange }) {
       {editing ? (
         <input
           className="activity-page-title inline-input"
-          aria-label="titulo da capa"
+          aria-label="Título da capa"
           value={project.titulo}
           onChange={(event) =>
             onChange({
@@ -93,7 +93,7 @@ export function ProjectCover({ project, editing, isAuthor, onChange }) {
         {isAuthor && (
           <button
             type="button"
-            title="copiar código"
+            title="Copiar código"
             className="code-button"
             onClick={copyCode}
           >

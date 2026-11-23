@@ -8,13 +8,13 @@ function saveMessage(status, hasProject) {
     case 'pending':
       return 'Alterações pendentes...';
     case 'retrying':
-      return 'erro ao salvar, tentando de novo';
+      return 'Erro ao salvar, tentando de novo';
     case 'error':
-      return 'erro ao salvar';
+      return 'Erro ao salvar';
     default:
       return hasProject
         ? `Salvo${status.savedAt ? ` às ${status.savedAt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}` : ''}`
-        : 'clique no pino da atividade e escolha um local no mapa';
+        : 'Clique no pino da atividade e escolha um local no mapa';
   }
 }
 

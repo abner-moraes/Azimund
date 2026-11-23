@@ -18,7 +18,7 @@ export function ActivityResult({ project, result, answers, headingRef, onExit })
         <p>{project.titulo}</p>
         {result.salvamento && (
           <p role="status">
-            {result.salvamento.salva ? 'resultado salvo' : result.salvamento.mensagem}
+            {result.salvamento.salva ? 'Resultado salvo' : result.salvamento.mensagem}
           </p>
         )}
       </div>

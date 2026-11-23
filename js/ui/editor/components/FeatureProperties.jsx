@@ -62,9 +62,9 @@ export function FeatureProperties({ feature, readOnly, onChange, onRemove }) {
                   value={properties['marker-size'] || 'medium'}
                   onChange={(event) => onChange({ 'marker-size': event.target.value })}
                 >
-                  <option value="small">pequeno</option>
-                  <option value="medium">médio</option>
-                  <option value="large">grande</option>
+                  <option value="small">Pequeno</option>
+                  <option value="medium">Médio</option>
+                  <option value="large">Grande</option>
                 </select>
               </label>
               <label className="field-label">
@@ -79,9 +79,9 @@ export function FeatureProperties({ feature, readOnly, onChange, onRemove }) {
                   }
                 />
               </label>
-              {number('tamanho do texto', 'label-size', 18, 8, 64)}
+              {number('Tamanho do texto', 'label-size', 18, 8, 64)}
               {color(
-                'cor do texto',
+                'Cor do texto',
                 'label-color',
                 readThemeColor('--color-primary-cosmic-latte'),
               )}

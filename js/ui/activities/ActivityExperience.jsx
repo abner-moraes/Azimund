@@ -89,7 +89,7 @@ export function ActivityExperience(props) {
                 disabled={!pages.length}
                 onClick={player.start}
               >
-                {pages.length ? 'Jogar' : 'rascunho sem páginas jogáveis'}
+                {pages.length ? 'Jogar' : 'Rascunho sem páginas jogáveis'}
               </button>
             )
           }
@@ -99,7 +99,7 @@ export function ActivityExperience(props) {
       )}
       {exitRequested && (
         <Modal title="Sair da atividade?" onClose={() => setExitRequested(false)}>
-          <p>suas respostas serão descartadas e esta tentativa não será salva</p>
+          <p>Suas respostas serão descartadas e esta tentativa não será salva</p>
           <div className="activity-modal-actions">
             <button
               type="button"

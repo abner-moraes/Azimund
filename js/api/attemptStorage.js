@@ -1,4 +1,4 @@
-// histórico de tentativas no navegador (visitantes sempre; contas so no modo local)
+// histórico de tentativas no navegador (visitantes sempre, contas so no modo local)
 const ATTEMPT_PREFIX = 'azimund-tentativas:';
 function accountKey(user) {
   if (!user) return ATTEMPT_PREFIX + 'guest';
@@ -25,7 +25,7 @@ export function saveAttempt(user, attempt) {
     localStorage.setItem(accountKey(user), JSON.stringify([...attempts, record]));
     return { salva: true };
   } catch {
-    return { salva: false, mensagem: 'ocorreu um erro' };
+    return { salva: false, mensagem: 'Ocorreu um erro' };
   }
 }
 
