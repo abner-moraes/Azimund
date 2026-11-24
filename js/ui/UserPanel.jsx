@@ -1,6 +1,7 @@
+//BACK END
 // janela "Informações" da conta, foto e campos editáveis (por enquanto so no navegador)
 import React, { useEffect, useRef, useState } from 'react';
-import { readProfilePhoto } from './UserIcon/profilePhoto.js';
+import { deleteAccount } from '../api/accountService.js';
 import '../../css/user.css';
 
 // "Função" e "Senha" ainda não fazem nada no front puro, ficam pro back-end (MySQL) usar depois
@@ -16,26 +17,39 @@ const USER_FIELDS = [
   },
 ];
 
-export function UserPanel({ user, onChange, onClose }) {
+export function UserPanel({ user, onChange, onClose, onDeleted }) {
   const dialogRef = useRef(null);
   const editButtonRef = useRef(null);
   const inputRef = useRef(null);
-  const photoInputRef = useRef(null);
-  const photoRequestRef = useRef(0);
   const [editing, setEditing] = useState(null);
   const [value, setValue] = useState('');
   const [confirmation, setConfirmation] = useState('');
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
-  const [photoError, setPhotoError] = useState('');
-  const [loadingPhoto, setLoadingPhoto] = useState(false);
+
+  // null é fechado
+  // 'confirmar' é sim/não
+  // 'enviando' espera o servidor
+  const [deleteStep, setDeleteStep] = useState(null);
+  const [deleteError, setDeleteError] = useState('');
+
+  async function confirmDelete() {
+    setDeleteStep('enviando');
+    setDeleteError('');
+    try {
+      await deleteAccount();
+      onDeleted();
+    } catch (error) {
+      setDeleteError(error?.mensagem || 'Não foi possível deletar a conta.');
+      setDeleteStep('confirmar');
+    }
+  }
 
   useEffect(() => {
     const dialog = dialogRef.current;
     const opener = document.activeElement;
-    dialog.showModal(); // modal nativo: o resto da página fica inativo e o foco fica aqui dentro
+    dialog.showModal(); // modal nativo q o resto da página fica inativo e o foco fica aqui dentro
     return () => {
-      photoRequestRef.current += 1;
       dialog.close();
       if (opener instanceof HTMLElement && opener.isConnected) opener.focus();
     };
@@ -45,28 +59,6 @@ export function UserPanel({ user, onChange, onClose }) {
     if (editing) inputRef.current?.focus();
     else editButtonRef.current?.focus();
   }, [editing]);
-
-  async function changePhoto(event) {
-    const file = event.target.files[0];
-    // deixa selecionar o mesmo arquivo dnv
-    event.target.value = '';
-    if (!file) return;
-    const request = ++photoRequestRef.current; // so a última foto escolhida vale
-    setPhotoError('');
-    setMessage('');
-    setLoadingPhoto(true);
-    try {
-      const foto = await readProfilePhoto(file);
-      if (request !== photoRequestRef.current) return;
-      // MUDA AQUI P INTEGRAR COM O BACK-END
-      onChange((currentUser) => ({ ...currentUser, foto }));
-      setMessage('Foto de perfil atualizada.');
-    } catch (error) {
-      if (request === photoRequestRef.current) setPhotoError(error.message);
-    } finally {
-      if (request === photoRequestRef.current) setLoadingPhoto(false);
-    }
-  }
 
   function finishEditing() {
     setEditing(null);
@@ -96,9 +88,11 @@ export function UserPanel({ user, onChange, onClose }) {
         setError('As senhas tem que ser iguais');
         return;
       }
+      //entrada do back: fetch de alterar senha
       // MUDAR AQUI P INTEGRAR COM O BACK-END
       setMessage('Senha funfada');
     } else {
+      //entrada do back: fetch de alterar nome/email/função (hoje so muda no navegador)
       onChange({ ...user, [editing]: value.trim() });
       setMessage('Atualizou');
     }
@@ -133,29 +127,6 @@ export function UserPanel({ user, onChange, onClose }) {
           <img src={user.foto} alt="Foto de perfil" />
         </div>
         <hr></hr>
-        <div className="user-photo-controls" aria-busy={loadingPhoto}>
-          <input
-            ref={photoInputRef}
-            id="user-photo"
-            type="file"
-            hidden
-            accept="image/jpeg,image/png,image/webp,image/gif"
-            onChange={changePhoto}
-          />
-          <button
-            type="button"
-            className="user-edit"
-            onClick={() => photoInputRef.current?.click()}
-          >
-            Alterar Foto
-          </button>
-          {loadingPhoto && <p role="status">Carregando foto</p>}
-          {photoError && (
-            <p className="user-error" role="alert">
-              {photoError}
-            </p>
-          )}
-        </div>
         <div className="user-fields">
           {USER_FIELDS.map((field) => (
             <div className="user-field" key={field.key}>
@@ -232,6 +203,47 @@ export function UserPanel({ user, onChange, onClose }) {
         <p className="user-status" role="status">
           {message}
         </p>
+        <div className="user-delete">
+          {deleteStep === null ? (
+            <button
+              type="button"
+              className="user-delete-open"
+              onClick={() => setDeleteStep('confirmar')}
+            >
+              Deletar conta
+            </button>
+          ) : (
+            <>
+              <p>Tem certeza que quer deletar sua conta?</p>
+              {deleteError && (
+                <p className="user-error" role="alert">
+                  {deleteError}
+                </p>
+              )}
+              <div className="user-form-actions">
+                <button
+                  type="button"
+                  className="user-delete-yes"
+                  disabled={deleteStep === 'enviando'}
+                  onClick={confirmDelete}
+                >
+                  {deleteStep === 'enviando' ? 'Deletando...' : 'Sim'}
+                </button>
+                <button
+                  type="button"
+                  disabled={deleteStep === 'enviando'}
+                  onClick={() => {
+                    setDeleteStep(null);
+                    setDeleteError('');
+                  }}
+                  autoFocus
+                >
+                  Não
+                </button>
+              </div>
+            </>
+          )}
+        </div>
         <nav className="user-auth-links" aria-label="Acesso à conta">
           <a href="./login.html">Entrar</a>
           <a href="./cadastro.html">Criar conta</a>

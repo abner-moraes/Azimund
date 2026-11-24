@@ -5,6 +5,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 import '../css/base.css';
 import '../css/ui.css';
+import '../css/ui-panels.css';
 import '../css/map.css';
 import { initSpaceEffects } from './core/spaceEffects.js';
 import { createMapStyle, MAP_VIEW_OPTIONS } from './config/mapStyle.js';

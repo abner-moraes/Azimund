@@ -1,5 +1,6 @@
 // converte um GeoJSON externo pro formato do editor (FeatureCollection WGS84, ids únicos, properties.modo)
-import { validateGeojson, invalidField, assertWgs84 } from '../projectContract.js';
+import { invalidField } from '../projectContract.js';
+import { validateGeojson, assertWgs84 } from '../projectValidation.js';
 import { LIMITS } from '../../config/limits.js';
 // qual ferramenta do editor reabre o objeto ('mode' é o nome que o terra-draw usa)
 export function getFeatureMode(feature) {

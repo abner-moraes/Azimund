@@ -1,3 +1,4 @@
+//BACK END
 // tela de login e cadastro (mesmo componente, muda pelo data-page do HTML)
 import React, { useRef, useState } from 'react';
 import bg from './bg.png';
@@ -49,6 +50,7 @@ export function AuthPage({ signup }) {
       return;
     }
 
+    //entrada do back: fetch de login e cadastro
     // substituir esse placeholder pelo backend de cadastro/login (por enquanto so guarda nome e email)
     const email = values.email.trim();
     const nome = signup

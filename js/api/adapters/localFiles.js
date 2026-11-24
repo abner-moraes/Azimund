@@ -7,6 +7,7 @@ import {
   emptyFeatureCollection,
   gradeAttempt,
   isQuestionComplete,
+  toRespostasJson,
 } from '../projectContract.js';
 import { getSessionUser, requireSessionUser } from '../session.js';
 import * as copyStore from './localCopies.js';
@@ -217,7 +218,8 @@ export const localFiles = {
       salvamento: saveAttempt(user, {
         idProjeto: id,
         tituloProjeto: json.titulo,
-        respostas: answers,
+        // mesmo formato da coluna Tentativa.respostas do back-end
+        respostas: toRespostasJson(result),
         resultado: result,
       }),
     };

@@ -1,4 +1,4 @@
-// estado de "Camadas do mapa": detalhes, projeção, mapa base, exagero do terreno e modelos 3D
+// estado de "Camadas do mapa" como detalhes, projeção, mapa base, exagero do terreno e modelos 3D
 import { useEffect, useState } from 'react';
 import { setContextVisibility } from '../config/mapOverlays.js';
 import { readPreferences, savePreference } from '../config/preferences.js';

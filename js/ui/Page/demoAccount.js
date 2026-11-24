@@ -1,6 +1,8 @@
+//BACK END
 // conta demo no sessionStorage enquanto não tem back-end (some ao fechar o navegador)
 const ACCOUNT_KEY = 'azimund-demo-account';
 
+//entrada do back: trocar a conta demo pela sessão do servidor
 export function readDemoAccount() {
   try {
     const account = JSON.parse(sessionStorage.getItem(ACCOUNT_KEY));

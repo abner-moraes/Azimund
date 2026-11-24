@@ -1,4 +1,5 @@
-// histórico de tentativas no navegador (visitantes sempre, contas so no modo local)
+// histórico de tentativas no navegador
+// visitantes sempre, contas so no modo local
 const ATTEMPT_PREFIX = 'azimund-tentativas:';
 function accountKey(user) {
   if (!user) return ATTEMPT_PREFIX + 'guest';
@@ -39,11 +40,9 @@ export function bestAttempt(user, id) {
     const score = attempt.resultado;
     if (!Number.isInteger(score?.acertos) || !Number.isInteger(score.total)) continue;
     const ratio = score.acertos / (score.total || 1);
-    if (
-      !best ||
-      ratio > best.acertos / (best.total || 1) ||
-      (ratio === best.acertos / (best.total || 1) && score.total > best.total)
-    ) {
+    // caso acertos for maior ou, se empate, o total de questões for maior, atualiza o melhor
+    if (!best || ratio > best.acertos / (best.total || 1) || (ratio === best.acertos / (best.total || 1) && score.total > best.total)) {
+      
       best = { acertos: score.acertos, total: score.total };
     }
   }

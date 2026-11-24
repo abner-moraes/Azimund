@@ -1,0 +1,259 @@
+/* lista de objetos, ferramentas de desenho, status, cores e botão de perigo do editor
+separado do editor-base.css pra deixar os arquivos menores */
+.editor-objects {
+  position: fixed;
+  z-index: 3;
+  left: var(--edge);
+  top: 132px;
+  bottom: 84px;
+  width: 280px;
+  padding: 16px 20px;
+  overflow: auto;
+  border-radius: 28px;
+  background: color-mix(in srgb, var(--color-general-slate) 95%, transparent);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--inner-shadow);
+  scrollbar-width: thin;
+}
+
+.editor-objects.collapsed {
+  bottom: auto;
+}
+
+.objects-heading {
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+.editor-hint {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-tertiary-muted);
+}
+
+.editor-tools {
+  position: fixed;
+  z-index: 4;
+  left: 320px;
+  top: 132px;
+  bottom: 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+  padding: 8px 4px;
+  width: 48px;
+  max-height: 690px;
+  border-radius: 28px;
+  background: var(--color-general-navy);
+  box-shadow: var(--inner-shadow);
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+.editor-tools .icon-button {
+  width: 36px;
+  height: 34px;
+}
+
+.editor-tools .active {
+  background: var(--color-tertiary-forest);
+}
+
+.toolbar-divider {
+  width: 24px;
+  height: 1px;
+  background: var(--color-tertiary-border);
+  margin: 4px;
+}
+
+.editor-pages-view .editor-tools {
+  left: 438px;
+}
+
+.editor-status {
+  position: fixed;
+  bottom: 18px;
+  left: var(--edge);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  max-width: 650px;
+  border-radius: 18px;
+  padding: 8px 16px;
+  background: var(--color-tertiary-forest);
+  font-size: 12px;
+  box-shadow: var(--inner-shadow);
+}
+
+.editor-status>span {
+  color: var(--color-tertiary-muted);
+  font-size: 11px;
+}
+
+.editor-notice {
+  position: fixed;
+  z-index: 12;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  max-width: 650px;
+  padding: 16px 22px;
+  border-radius: 22px;
+  background: var(--color-tertiary-panel);
+  box-shadow: var(--inner-shadow);
+  font-size: 14px;
+}
+
+.editor-notice.error {
+  color: var(--color-error);
+}
+
+.object-item {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-tertiary-overlay-soft);
+}
+
+.object-focus {
+  background: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+  min-width: 0;
+  text-align: left;
+  font-size: 13px;
+}
+
+.object-focus>span:last-child {
+  overflow-wrap: anywhere;
+}
+
+.object-focus .material-symbols-outlined {
+  font-size: 25px;
+}
+
+.object-focus input {
+  min-width: 0;
+  width: 120px;
+}
+
+.object-visible {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-tertiary-muted);
+  padding: 7px 0;
+}
+
+.object-item small {
+  font-size: 10px;
+  color: var(--color-tertiary-muted);
+}
+
+.color-field {
+  display: block;
+  font-size: 13px;
+  margin: 16px 0;
+}
+
+.color-field>span {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.color-field input[type='color'] {
+  width: 45px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.hex-field {
+  width: 98px;
+  min-width: 0;
+  padding: 7px;
+  border: 1px solid var(--color-tertiary-border-green);
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+}
+
+.color-swatches {
+  display: flex;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.color-swatches button {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--color-tertiary-border);
+}
+
+.danger-button {
+  display: block;
+  width: 100%;
+  margin: 18px 0 0;
+  padding: 10px 12px;
+  border-radius: 18px;
+  /* vermelho principal do vars.css; texto navy para manter o contraste legível */
+  background: var(--color-primary-red);
+  color: var(--color-general-navy);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.danger-button:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.marker-preview {
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+}
+
+.marker-preview .project-glyph {
+  width: 70px;
+  height: 70px;
+}
+
+.shapes-popover {
+  position: fixed;
+  z-index: 5;
+  top: 330px;
+  left: 376px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 18px;
+  background: var(--color-general-navy);
+  box-shadow: var(--inner-shadow);
+}
+
+.editor-pages-view .shapes-popover {
+  left: 494px;
+}
+
+.shapes-popover button {
+  background: transparent;
+  color: inherit;
+  padding: 8px;
+  text-align: left;
+}
+
+.editor-status img {
+  width: 24px;
+  height: 24px;
+}

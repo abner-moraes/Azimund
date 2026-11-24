@@ -1,3 +1,4 @@
+//BACK END
 // porta de entrada dos dados, valida tudo e repassa pro adaptador (local ou http)
 // tbm cria/le o pacote .azmd (exportProjectPackage / importProjectPackage)
 import { getSessionUser, requireSessionUser, isProjectAuthor } from './session.js';
@@ -18,8 +19,10 @@ import {
   validateProjectJson,
   validateGeojson,
   validateAncora,
-  assertNumericId,
   assertPageFeatures,
+} from './projectValidation.js';
+import {
+  assertNumericId,
   clone,
   megabytes,
   normalizeProjectJson,
@@ -29,10 +32,11 @@ export { getProjectType, isQuestionComplete } from './projectContract.js';
 export { setSessionUser, getSessionUser, isProjectAuthor } from './session.js';
 export { importGeojson, exportGeojson };
 
+//entrada do back cm VITE_API_MODE=http troca o modo local pelo servidor
 const adapter = import.meta.env?.VITE_API_MODE === 'http' ? http : localFiles;
 export const capabilities = adapter.capabilities;
 
-// avisa as telas (lista de projetos, marcadores) quando algo foi criado/salvo/excluido
+// avisa as telas quando algo foi criado/salvo/excluido
 const events = new EventTarget();
 export function subscribeToProjects(fn) {
   events.addEventListener('change', fn);
@@ -157,7 +161,7 @@ export async function importProjectPackage(file) {
     validateGeojson(geojson);
     assertPageFeatures(content, geojson);
   } catch (error) {
-    // estrutura mt fora do formato quebra antes das validações (TypeError)
+    // estrutura mt fora do formato quebra antes das validações cm TypeError
     throw error?.codigo
       ? error
       : { codigo: 'DADOS_INVALIDOS', mensagem: 'O projeto é inválido' };

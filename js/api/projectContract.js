@@ -1,9 +1,11 @@
-// formato dos arquivos do projeto (JSON + GeoJSON), validação, valores padrão e correção de respostas
+//BACK END
+// formato dos arquivos do projeto (JSON + GeoJSON), valores padrão e correção de respostas
 import { LIMITS } from '../config/limits.js';
-import { BASEMAP_KEYS } from '../config/basemapOptions.js';
 import { readThemeColor } from '../config/theme.js';
+// a validação dos arquivos fica em projectValidation.js
 
-// autor das atividades oficiais ("Equipe Azimund"), visitantes so veem essas no globo
+// autor das atividades oficiais ("Equipe Azimund")
+// visitantes so veem essas no globo
 export const TEAM_AUTHOR_ID = '101';
 
 export const CAMERA_DURATION = 2500;
@@ -38,35 +40,27 @@ export function isImageUrl(url) {
 
 export function getProjectType(json) {
   const pages = json.paginas || [];
-
   if (!pages.length) {
     return 'RASCUNHO';
   }
-
   const questionCount = pages.filter((page) => page.tipo === 'questao').length;
-
   if (!questionCount) {
     return 'APRESENTACAO';
   }
-
   if (questionCount === pages.length) {
     return 'ATIVIDADE';
   }
-
   return 'AULA';
 }
 
 export function isQuestionComplete(page) {
   const question = page.questao;
-
   if (!question?.enunciado?.trim()) {
     return false;
   }
-
   if (question.formato === 'verdadeiro_falso') {
     return typeof question.respostaCorreta === 'boolean';
   }
-
   return (
     Array.isArray(question.alternativas) &&
     question.alternativas.length >= LIMITS.minChoices &&
@@ -77,7 +71,8 @@ export function isQuestionComplete(page) {
   );
 }
 
-// câmera padrão de página nova; overrides troca so o que precisar (ex: zoom do player)
+// câmera padrão de página nova
+// overrides troca so o que precisar (ex: zoom do player)
 export function defaultCamera(ancora, overrides = {}) {
   return {
     centro: [ancora.lng, ancora.lat],
@@ -89,327 +84,15 @@ export function defaultCamera(ancora, overrides = {}) {
   };
 }
 
-function assertString(value, path) {
-  if (typeof value !== 'string') {
-    invalidField(path, 'texto obrigatório');
-  }
-}
-
-function assertNumber(value, path, min = -Infinity, max = Infinity) {
-  if (!Number.isFinite(value) || value < min || value > max) {
-    invalidField(path);
-  }
-}
-
-// mapaBase é opcional: sem ele a página usa o mapa base escolhido pelo visitante
-function assertBasemap(value, path) {
-  if (value !== undefined && !BASEMAP_KEYS.includes(value)) {
-    invalidField(path, 'mapa base desconhecido');
-  }
-}
-
-export function validateAncora(value) {
-  assertNumber(value?.lng, 'ancora.lng', -180, 180);
-  assertNumber(value?.lat, 'ancora.lat', -90, 90);
-}
-
-// Validação do projeto completo, incluindo páginas e features do GeoJSON
-export function validateProjectJson(json) {
-  assertNumericId(json?.idProjeto, 'idProjeto');
-  assertString(json.titulo, 'titulo');
-  assertString(json.descricao, 'descricao');
-  validateAncora(json.ancora);
-
-  if (!/^\d{6}$/.test(json.codigo)) {
-    invalidField('codigo', 'informe 6 dígitos');
-  }
-
-  if (!/^#[\da-f]{6}$/i.test(json.cor)) {
-    invalidField('cor', 'use #RRGGBB');
-  }
-
-  assertBasemap(json.mapaBase, 'mapaBase');
-  assertNumericId(json.autor?.id, 'autor.id');
-  assertString(json.autor?.nome, 'autor.nome');
-
-  if (!Array.isArray(json.paginas) || json.paginas.length > LIMITS.pages) {
-    invalidField('paginas', `máximo de ${LIMITS.pages} páginas`);
-  }
-
-  const ids = new Set();
-
-  json.paginas.forEach((page, index) => {
-    const path = `paginas[${index}]`;
-
-    if (!page || typeof page !== 'object' || Array.isArray(page)) {
-      invalidField(path, 'página inválida');
-    }
-
-    assertString(page.id, `${path}.id`);
-
-    if (!page.id || ids.has(page.id)) {
-      invalidField(`${path}.id`);
-    }
-
-    ids.add(page.id);
-
-    if (!['conteudo', 'questao'].includes(page.tipo)) {
-      invalidField(`${path}.tipo`);
-    }
-
-    assertBasemap(page.mapaBase, `${path}.mapaBase`);
-    assertString(page.titulo, `${path}.titulo`);
-    assertString(page.texto, `${path}.texto`);
-
-    if (
-      !Array.isArray(page.featureIds) ||
-      page.featureIds.some((id) => typeof id !== 'string')
-    ) {
-      invalidField(`${path}.featureIds`);
-    }
-
-    const camera = page.camera;
-
-    if (!Array.isArray(camera?.centro) || camera.centro.length !== 2) {
-      invalidField(`${path}.camera.centro`);
-    }
-
-    assertNumber(camera.centro[0], `${path}.camera.centro[0]`, -180, 180);
-    assertNumber(camera.centro[1], `${path}.camera.centro[1]`, -90, 90);
-    assertNumber(camera.zoom, `${path}.camera.zoom`, 0, 22);
-    assertNumber(camera.pitch, `${path}.camera.pitch`, 0, 85);
-    assertNumber(camera.bearing, `${path}.camera.bearing`);
-    assertNumber(camera.duracaoMs, `${path}.camera.duracaoMs`, 0, 60000);
-
-    if (page.imagem && !isImageUrl(page.imagem)) {
-      invalidField(`${path}.imagem`, 'use URL http ou https');
-    }
-
-    if (page.tipo !== 'questao') {
-      return;
-    }
-
-    const question = page.questao;
-
-    assertString(question?.enunciado, `${path}.questao.enunciado`);
-
-    if (question.imagem && !isImageUrl(question.imagem)) {
-      invalidField(`${path}.questao.imagem`, 'use URL http ou https');
-    }
-
-    if (question.formato === 'multipla_escolha') {
-      if (
-        !Array.isArray(question.alternativas) ||
-        question.alternativas.length < LIMITS.minChoices ||
-        question.alternativas.length > LIMITS.maxChoices
-      ) {
-        invalidField(
-          `${path}.questao.alternativas`,
-          `informe de ${LIMITS.minChoices} a ${LIMITS.maxChoices} alternativas`,
-        );
-      }
-
-      const seenIds = new Set();
-
-      question.alternativas.forEach((alternative, alternativeIndex) => {
-        if (!alternative || typeof alternative !== 'object') {
-          invalidField(`${path}.questao.alternativas[${alternativeIndex}]`);
-        }
-
-        const alternativePath = `${path}.questao.alternativas[${alternativeIndex}]`;
-
-        assertString(alternative.id, `${alternativePath}.id`);
-        assertString(alternative.texto, `${alternativePath}.texto`);
-
-        if (!alternative.id || seenIds.has(alternative.id)) {
-          invalidField(`${alternativePath}.id`);
-        }
-
-        seenIds.add(alternative.id);
-      });
-
-      if (
-        question.respostaCorreta != null &&
-        !question.alternativas.some(
-          (alternative) => alternative.id === question.respostaCorreta,
-        )
-      ) {
-        invalidField(`${path}.questao.respostaCorreta`);
-      }
-    } else if (question.formato === 'verdadeiro_falso') {
-      if (
-        question.respostaCorreta != null &&
-        typeof question.respostaCorreta !== 'boolean'
-      ) {
-        invalidField(`${path}.questao.respostaCorreta`);
-      }
-
-      if (question.alternativas !== undefined) {
-        invalidField(`${path}.questao.alternativas`, 'V/F não admite alternativas');
-      }
-    } else {
-      invalidField(`${path}.questao.formato`);
-    }
-
-    if (question.comentarioErro !== undefined) {
-      assertString(question.comentarioErro, `${path}.questao.comentarioErro`);
-    }
-  });
-
-  if (new Blob([JSON.stringify(json)]).size > LIMITS.fileBytes) {
-    invalidField('json', `limite de ${megabytes(LIMITS.fileBytes)} MB`);
-  }
-}
-
 export const megabytes = (bytes) => bytes / 1024 / 1024;
 
-// so aceita coordenadas lng/lat (WGS84); usado tbm pelo import antes de normalizar
-export function assertWgs84(data) {
-  if (data?.crs && !/4326|CRS84/i.test(JSON.stringify(data.crs))) {
-    invalidField('geojson.crs', 'use WGS84 / EPSG:4326');
-  }
-}
-
-// todo featureId das páginas precisa existir no GeoJSON
-export function assertPageFeatures(json, geojson) {
-  const ids = new Set(geojson.features.map((feature) => feature.id));
-  json.paginas.forEach((page, index) => {
-    if (page.featureIds.some((id) => !ids.has(id))) {
-      invalidField(`paginas[${index}].featureIds`, 'objeto inexistente');
-    }
-  });
-}
-
-export function validateGeojson(data) {
-  if (data?.type !== 'FeatureCollection' || !Array.isArray(data.features)) {
-    invalidField('geojson', 'use FeatureCollection');
-  }
-
-  assertWgs84(data);
-
-  const ids = new Set();
-
-  const coord = (coordinates, path) => {
-    if (!Array.isArray(coordinates) || coordinates.length < 2) {
-      invalidField(path);
-    }
-
-    assertNumber(coordinates[0], `${path}[0]`, -180, 180);
-    assertNumber(coordinates[1], `${path}[1]`, -90, 90);
-
-    if (coordinates[2] !== undefined) {
-      assertNumber(coordinates[2], `${path}[2]`);
-    }
-  };
-
-  const line = (values, path, isRing = false) => {
-    if (!Array.isArray(values) || values.length < (isRing ? 4 : 2)) {
-      invalidField(path);
-    }
-
-    values.forEach((coordinates, index) => {
-      coord(coordinates, `${path}[${index}]`);
-    });
-
-    if (isRing && JSON.stringify(values[0]) !== JSON.stringify(values.at(-1))) {
-      invalidField(path, 'anel não fechado');
-    }
-  };
-
-  const polygon = (values, path) => {
-    if (!Array.isArray(values) || !values.length) {
-      invalidField(path);
-    }
-
-    values.forEach((ring, index) => {
-      line(ring, `${path}[${index}]`, true);
-    });
-  };
-
-  data.features.forEach((feature, index) => {
-    const path = `features[${index}]`;
-
-    if (!feature || typeof feature !== 'object') {
-      invalidField(path, 'feature inválida');
-    }
-
-    if (
-      feature.type !== 'Feature' ||
-      typeof feature.id !== 'string' ||
-      !feature.id ||
-      ids.has(feature.id)
-    ) {
-      invalidField(`${path}.id`, 'id único em string obrigatório');
-    }
-
-    ids.add(feature.id);
-
-    const geometry = feature.geometry;
-    const coordinates = geometry?.coordinates;
-
-    if (geometry?.type === 'Point') {
-      coord(coordinates, path);
-    } else if (geometry?.type === 'LineString') {
-      line(coordinates, path);
-    } else if (geometry?.type === 'Polygon') {
-      polygon(coordinates, path);
-    } else if (
-      ['MultiPoint', 'MultiLineString', 'MultiPolygon'].includes(geometry?.type)
-    ) {
-      if (!Array.isArray(coordinates) || !coordinates.length) {
-        invalidField(path);
-      }
-
-      coordinates.forEach((value) => {
-        if (geometry.type === 'MultiPoint') {
-          coord(value, path);
-        } else if (geometry.type === 'MultiLineString') {
-          line(value, path);
-        } else {
-          polygon(value, path);
-        }
-      });
-    } else {
-      invalidField(`${path}.geometry.type`);
-    }
-
-    if (
-      feature.properties != null &&
-      (typeof feature.properties !== 'object' || Array.isArray(feature.properties))
-    ) {
-      invalidField(`${path}.properties`);
-    }
-
-    const properties = feature.properties || {};
-
-    for (const key of ['stroke', 'fill', 'marker-color', 'label-color']) {
-      if (properties[key] !== undefined && !/^#[\da-f]{6}$/i.test(properties[key])) {
-        invalidField(`${path}.properties.${key}`);
-      }
-    }
-
-    for (const key of ['stroke-opacity', 'fill-opacity']) {
-      if (properties[key] !== undefined) {
-        assertNumber(properties[key], `${path}.properties.${key}`, 0, 1);
-      }
-    }
-
-    for (const key of ['stroke-width', 'label-size', 'radius', 'altura']) {
-      if (properties[key] !== undefined) {
-        assertNumber(properties[key], `${path}.properties.${key}`, 0);
-      }
-    }
-  });
-}
 
 export function normalizeProjectJson(data, item) {
   const json = clone(data);
-
   json.codigo ||= item?.codigo;
   json.cor ||= item?.cor || readThemeColor('--color-general-mint');
   json.autor ||= item?.autor;
   json.paginas ||= [];
-
   json.paginas.forEach((page) => {
     page.featureIds ||= [];
     page.camera = {
@@ -418,9 +101,7 @@ export function normalizeProjectJson(data, item) {
     };
     page.texto ??= '';
   });
-
   json.tipo = getProjectType(json);
-
   return json;
 }
 
@@ -437,11 +118,52 @@ export function toIndexItem(json) {
   };
 }
 
+//entrada do back: formato da coluna Projeto.propriedades
+// COLUNA Projeto.propriedades (JSON) no MySQL
+// junta a cor do marcador e a âncora (lat/lng) num objeto só:
+// { "cor": "#A7E59E", "ancora": { "lat": -29.96, "lng": -51.27 } }
+// no front tudo continua usando json.cor e json.ancora; a troca acontece so no adaptador http
+export function toPropriedades({ cor, ancora }) {
+  return {
+    cor,
+    ancora: { lat: ancora.lat, lng: ancora.lng },
+  };
+}
+
+// faz o caminho inverso: o que vem do servidor com "propriedades" vira cor/ancora de novo
+export function fromPropriedades(data) {
+  if (!data?.propriedades) return data;
+  const { propriedades, ...rest } = data;
+  return {
+    ...rest,
+    cor: propriedades.cor,
+    ancora: { lng: propriedades.ancora.lng, lat: propriedades.ancora.lat },
+  };
+}
+
+// troca cor/ancora soltos por "propriedades" antes de mandar pro servidor
+export function withPropriedades(data) {
+  const { cor, ancora, ...rest } = data;
+  return { ...rest, propriedades: toPropriedades({ cor, ancora }) };
+}
+
+//entrada do back: formato da coluna Tentativa.respostas
+// COLUNA Tentativa.respostas (JSON) no MySQL
+// acertos e erros juntos num json só, uma entrada por questão:
+// { "acertos": 1, "total": 2, "questoes": [ { paginaId, resposta, correta, comentario? } ] }
+export function toRespostasJson(result) {
+  return {
+    acertos: result.acertos,
+    total: result.total,
+    questoes: result.questoes,
+  };
+}
+
 export function gradeAttempt(json, answers) {
   let correct = 0;
   let total = 0;
   const errors = [];
-
+  const questions = [];
   json.paginas
     .filter((page) => page.tipo === 'questao')
     .forEach((page) => {
@@ -449,34 +171,30 @@ export function gradeAttempt(json, answers) {
         console.warn(`Questão incompleta ignorada: ${page.id}`);
         return;
       }
-
       const question = page.questao;
       const answer = answers[page.id];
       const valid =
         question.formato === 'verdadeiro_falso'
           ? typeof answer === 'boolean'
           : question.alternativas.some((alternative) => alternative.id === answer);
-
       if (!valid) {
         console.warn(`Resposta incompleta ignorada: ${page.id}`);
         return;
       }
-
       total++;
-
       if (answer === question.respostaCorreta) {
         correct++;
+        questions.push({ paginaId: page.id, resposta: answer, correta: true });
       } else {
-        errors.push({
-          paginaId: page.id,
-          comentario: question.comentarioErro || '',
-        });
+        const comentario = question.comentarioErro || '';
+        errors.push({ paginaId: page.id, comentario });
+        questions.push({ paginaId: page.id, resposta: answer, correta: false, comentario });
       }
     });
-
   return {
     acertos: correct,
     total,
-    erros: errors,
+    erros: errors, // usado pela tela de resultado
+    questoes: questions, // acertos + erros juntos (vai pro back-end em "respostas")
   };
 }

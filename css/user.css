@@ -187,6 +187,42 @@
   margin: 0;
 }
 
+.user-delete {
+  display: grid;
+  gap: 8px;
+  margin: 22px 18px 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-tertiary-border);
+  font-size: 14px;
+}
+
+.user-delete p {
+  margin: 0;
+}
+
+.user-delete .user-error {
+  color: var(--color-error);
+}
+
+.user-delete-open {
+  justify-self: start;
+  padding: 0;
+  color: var(--color-error);
+  background: var(--color-tertiary-transparent);
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+.user-delete .user-form-actions .user-delete-yes {
+  color: var(--color-tertiary-button-text);
+  background: var(--color-error);
+}
+
+.user-delete button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
 .user-auth-links {
   display: none; /* the cadastro and login buttons */
   /* display: flex; */

@@ -5,6 +5,7 @@ import { ProjectPanel } from '../projects/ProjectPanel.jsx';
 import { useActivityPlayer } from './useActivityPlayer.js';
 import { ActivityStatus, ErrorState } from './ActivityStatus.jsx';
 import '../../../css/activity.css';
+import '../../../css/activity-result.css';
 
 function PlayerNavigation({ player }) {
   const { page, pages, pageIndex, selectedAnswer, hasQuestions, previous, next, exit } =

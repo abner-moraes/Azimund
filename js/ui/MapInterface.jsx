@@ -1,6 +1,8 @@
+//BACK END
 import React, { useEffect, useState } from 'react';
 import { UserPanel } from './UserPanel.jsx';
 import profileImage from './UserIcon/profile.png';
+import loggedProfileImage from './UserIcon/logged_profile.png';
 import { readDemoAccount, signOutDemoAccount } from './Page/demoAccount.js';
 import { Icon } from './Icon.jsx';
 import { MenuPanel, AccountPanel } from './MenuPanel.jsx';
@@ -58,8 +60,9 @@ const SITE_ACTION_ITEMS = [
 export function MapInterface({ map, markerLayer }) {
   // a sessão é atualizada junto com o estado (e não no render)
   const [user, setUserState] = useState(() => {
+    //entrada do back: pegar o usuário logado no servidor em vez da conta demo
     const account = readDemoAccount();
-    const initial = account && { ...account, foto: profileImage };
+    const initial = account && { ...account, foto: loggedProfileImage };
     projects.setSessionUser(initial);
     return initial;
   });
@@ -71,6 +74,17 @@ export function MapInterface({ map, markerLayer }) {
     });
   }
   const [signupPrompt, setSignupPrompt] = useState(false);
+
+  //sair da conta e depois de deletar a conta usam o msm caminho
+  function signOut(nextPanel) {
+    signOutDemoAccount();
+    markerLayer.setProjects([]);
+    markerLayer.clearReveal();
+    setOpenRequest(null);
+    setShowActivities(false);
+    setActivePanel(nextPanel);
+    setUser(null);
+  }
 
   const [activePanel, setActivePanel] = useState(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -130,7 +144,7 @@ export function MapInterface({ map, markerLayer }) {
   function seeProject(item) {
     markerLayer.reveal(item);
     setActivePanel(null);
-    setOpenRequest({ item, token: Date.now() }); // abrir o mesmo projeto de novo ainda funfa
+    setOpenRequest({ item, token: Date.now() }); // abrir o mesmo projeto denovo ainda funfa
   }
   const selectedMenu = SITE_ACTION_ITEMS.find((p) => p.id === activePanel);
   return (
@@ -153,7 +167,7 @@ export function MapInterface({ map, markerLayer }) {
             onClick={() => togglePanel(item.id)}
           >
             {item.id === 'account' ? (
-              <img className="account-photo" src={user?.foto || profileImage} alt="" />
+              <img className="account-photo" src={user ? loggedProfileImage : profileImage} alt="" />
             ) : (
               <Icon name={item.icon} />
             )}
@@ -197,15 +211,7 @@ export function MapInterface({ map, markerLayer }) {
                     setActivePanel(null);
                     setSettingsOpen(true);
                   }}
-                  onLogout={() => {
-                    signOutDemoAccount();
-                    markerLayer.setProjects([]);
-                    markerLayer.clearReveal();
-                    setOpenRequest(null);
-                    setShowActivities(false);
-                    setActivePanel('account');
-                    setUser(null);
-                  }}
+                  onLogout={() => signOut('account')}
                 />
                 {!user && <SearchProject onFound={seeProject} />}
               </>
@@ -244,6 +250,7 @@ export function MapInterface({ map, markerLayer }) {
           user={user}
           onChange={setUser}
           onClose={() => setActivePanel(null)}
+          onDeleted={() => signOut(null)}
         />
       )}
       {settingsOpen && (
