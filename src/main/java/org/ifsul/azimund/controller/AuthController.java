@@ -81,7 +81,8 @@ public class AuthController {
         Usuario user = deets.getUsuario();
 
         Map rep = Map.of(
-                "nome", user.getNome()
+                "nome", user.getNome(),
+                "id", user.getId()
         );
 
         return ResponseEntity

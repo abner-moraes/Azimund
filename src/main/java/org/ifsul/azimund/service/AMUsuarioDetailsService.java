@@ -17,7 +17,7 @@ public class AMUsuarioDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { //definitely wrong somehow
         Usuario usuario = usuarioRepo.findByEmail(username);
-        if (usuario == null) throw new UsernameNotFoundException("qq é tu krl num te conheço");
+        if (usuario == null) throw new UsernameNotFoundException("Email não foi encontrado.");
 
         return new AMUsuarioDetails(usuario);
     }
