@@ -3,6 +3,8 @@ package org.ifsul.azimund.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -37,4 +39,8 @@ public class Projeto {
 
     @Column(name = "descricao", columnDefinition = "text")
     private String descricao;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "propriedades")
+    private String propriedades;
 }

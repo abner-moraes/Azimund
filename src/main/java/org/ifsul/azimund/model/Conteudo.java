@@ -21,14 +21,10 @@ public class Conteudo {
     private Long idProjeto;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "objetos")
-    private String objetos;
-
-    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "anotacoes")
     private String anotacoes;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "questoes")
-    private String questoes;
+    @Column(name = "objetos")
+    private String objetos;
 }

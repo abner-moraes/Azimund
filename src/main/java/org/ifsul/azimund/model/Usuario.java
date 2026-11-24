@@ -31,4 +31,7 @@ public class Usuario {
 
     @Column(name = "nome", nullable = false, length = 63)
     private String nome;
+
+    @Column(name = "funcao")
+    private String funcao;
 }
