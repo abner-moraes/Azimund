@@ -11,7 +11,9 @@ public enum EndpointPerms {
     NONE (new String[]{
             "/",
             "/login.html",
-            "/cadastro.html"
+            "/cadastro.html",
+            "/back/usuarios/cadastro",
+            "/back/auth/login"
     }),
     AUTH (new String[]{
             "/baguio"
