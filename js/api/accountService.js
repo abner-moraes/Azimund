@@ -1,42 +1,63 @@
 //BACK END
-// operações da conta do usuário logado
-// deletar conta da tabela Usuario no MySQL
-// o Spring teria q conferir os cookies/seção antes de apagar
+// AuthController e UsuarioController do Spring, o Spring tem q conferir o cookie e se o id é do próprio usuário antes de mudar algo
 import { requireSessionUser } from './session.js';
+import { backRequest } from './backRequest.js';
+import {
+  CADASTRO,
+  LOGIN,
+  LOGOUT,
+  ME,
+  UPDATE,
+  DELETE,
+} from '../config/backEndpoints.js';
 
-const isHttp = import.meta.env?.VITE_API_MODE === 'http';
-const baseUrl = (import.meta.env?.VITE_API_BASE_URL || '').replace(/\/$/, '');
+// POST /back/usuarios/cadastro  body: UsuarioCreateDTO { nome, email, senha }
+export function signUp({ nome, email, senha }) {
+  return backRequest(CADASTRO, { method: 'POST', body: { nome, email, senha } });
+}
 
-// POST /api/usuarios/deletar  body: { "idUsuario": "123" }
-// resposta esperada: 200/204 (ok) ou { codigo, mensagem } em caso de erro
+// POST /back/auth/login  body: LoginDTO { email, senha }  ->  { email, nome }
+export async function login({ email, senha }) {
+  const logged = await backRequest(LOGIN, { method: 'POST', body: { email, senha } });
+  const me = await fetchMe();
+  return { id: me.id, nome: me.nome ?? logged.nome, email: logged.email };
+}
+
+// GET /back/auth/me { id, nome } (401 se não tiver sessão)
+export async function fetchMe() {
+  const me = await backRequest(ME);
+  return { id: String(me.id), nome: me.nome };
+}
+
+// POST /back/auth/logout  (invalida a sessão no Spring)
+export async function logout() {
+  try {
+    await backRequest(LOGOUT, { method: 'POST' });
+  } catch {
+    //no front sai da conta do msm jt
+  }
+}
+
+// PATCH /back/usuarios/update  body: UsuarioPatchDTO { id, email, senha, nome, funcao }
+// manda so o id + o campo alterado spring mantém o que vier null
+export async function updateAccount(changes) {
+  const user = requireSessionUser();
+  const saved = await backRequest(UPDATE, {
+    method: 'PATCH',
+    body: { id: Number(user.id), ...changes },
+  });
+  // a resposta é a entidade Usuario; so aproveita os campos públicos (nunca o senhaHash)
+  const result = {};
+  if (saved?.nome) result.nome = saved.nome;
+  if (saved?.email) result.email = saved.email;
+  if (saved) result.funcao = saved.funcao ?? '';
+  return result;
+}
+
+// DELETE /back/usuarios/delete/{id}
 export async function deleteAccount() {
   const user = requireSessionUser();
-
-  // sem back-end (modo local) não tem o que apagar no banco
-  // so sai da conta mesmo
-  if (!isHttp) return { excluido: true };
-
-  let response;
-  try {
-    //entrada do back: POST /api/usuarios/deletar
-    response = await fetch(`${baseUrl}/api/usuarios/deletar`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ idUsuario: user.id }),
-    });
-  } catch {
-    throw {
-      codigo: 'FALHA_REDE',
-      mensagem: 'servidor indisponível tente novamente',
-    };
-  }
-  if (!response.ok) {
-    const data = await response.json().catch(() => null);
-    throw {
-      codigo: data?.codigo || 'ERRO_HTTP',
-      mensagem: data?.mensagem || `não foi possível deletar a conta (${response.status}).`,
-    };
-  }
+  await backRequest(DELETE(user.id), { method: 'DELETE' });
+  await logout();
   return { excluido: true };
 }

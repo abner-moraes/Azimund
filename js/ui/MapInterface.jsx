@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { UserPanel } from './UserPanel.jsx';
 import profileImage from './UserIcon/profile.png';
 import loggedProfileImage from './UserIcon/logged_profile.png';
-import { readDemoAccount, signOutDemoAccount } from './Page/demoAccount.js';
+import { readDemoAccount, saveDemoAccount, signOutDemoAccount } from './Page/demoAccount.js';
+import { fetchMe, logout } from '../api/accountService.js';
 import { Icon } from './Icon.jsx';
 import { MenuPanel, AccountPanel } from './MenuPanel.jsx';
 import { MapLayersPanel } from './MapLayersPanel.jsx';
@@ -60,7 +61,7 @@ const SITE_ACTION_ITEMS = [
 export function MapInterface({ map, markerLayer }) {
   // a sessão é atualizada junto com o estado (e não no render)
   const [user, setUserState] = useState(() => {
-    //entrada do back: pegar o usuário logado no servidor em vez da conta demo
+    // abre com a cópia salva no login; o useEffect abaixo confere com o GET /back/auth/me
     const account = readDemoAccount();
     const initial = account && { ...account, foto: loggedProfileImage };
     projects.setSessionUser(initial);
@@ -75,8 +76,40 @@ export function MapInterface({ map, markerLayer }) {
   }
   const [signupPrompt, setSignupPrompt] = useState(false);
 
+  // confere a sessão no Spring: se o cookie expirou, volta pra visitante
+  useEffect(() => {
+    if (!readDemoAccount()) return; // visitante nem pergunta (evita 401 à toa)
+    let cancelled = false;
+    fetchMe()
+      .then((me) => {
+        if (cancelled) return;
+        setUser((current) => {
+          if (!current) return current;
+          const next = { ...current, id: me.id, nome: me.nome };
+          saveDemoAccount(next);
+          return next;
+        });
+      })
+      .catch((failure) => {
+        if (!cancelled && failure?.status === 401) signOut(null, { server: false });
+      });
+    return () => {
+      cancelled = true;
+    };
+    // so na montagem
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // painel "Informações" alterou nome/email/função no servidor
+  function changeUser(next) {
+    saveDemoAccount(next);
+    setUser(next);
+  }
+
   //sair da conta e depois de deletar a conta usam o msm caminho
-  function signOut(nextPanel) {
+  // server: false quando a sessão já não existe mais no Spring (expirou ou foi apagada)
+  function signOut(nextPanel, { server = true } = {}) {
+    if (server) logout(); // POST /back/auth/logout
     signOutDemoAccount();
     markerLayer.setProjects([]);
     markerLayer.clearReveal();
@@ -248,9 +281,9 @@ export function MapInterface({ map, markerLayer }) {
       {activePanel === 'user-info' && (
         <UserPanel
           user={user}
-          onChange={setUser}
+          onChange={changeUser}
           onClose={() => setActivePanel(null)}
-          onDeleted={() => signOut(null)}
+          onDeleted={() => signOut(null, { server: false })}
         />
       )}
       {settingsOpen && (

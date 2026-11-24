@@ -1,6 +1,19 @@
 import { defineConfig } from 'vite';
 import { fileURLToPath } from 'node:url';
 
+// repassa /back/* pro Spring, assim o navegador acha que é tudo a mesma origem
+const backProxy = {
+  '/back': {
+    target: 'http://localhost:8080',
+    configure: (proxy) => {
+      proxy.on('proxyReq', (req) => req.removeHeader('origin'));
+      proxy.on('proxyRes', (res) => {
+        delete res.headers['www-authenticate'];
+      });
+    },
+  },
+};
+
 export default defineConfig({
   base: './',
   build: {
@@ -12,6 +25,6 @@ export default defineConfig({
       },
     },
   },
-  server: { port: 5173 },
-  preview: { port: 5173 },
+  server: { port: 5173, proxy: backProxy },
+  preview: { port: 5173, proxy: backProxy },
 });

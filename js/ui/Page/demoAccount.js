@@ -1,13 +1,19 @@
 //BACK END
-// conta demo no sessionStorage enquanto não tem back-end (some ao fechar o navegador)
+// cópia da conta logada no sessionStorage (some ao fechar o navegador)
+// a sessão de verdade é o cookie do Spring; isso aqui so evita piscar a tela de visitante
+// e guarda o email/função, que o GET /back/auth/me não devolve
 const ACCOUNT_KEY = 'azimund-demo-account';
 
-//entrada do back: trocar a conta demo pela sessão do servidor
 export function readDemoAccount() {
   try {
     const account = JSON.parse(sessionStorage.getItem(ACCOUNT_KEY));
     if (typeof account?.nome === 'string' && typeof account?.email === 'string') {
-      return { nome: account.nome, email: account.email };
+      return {
+        id: account.id != null ? String(account.id) : undefined,
+        nome: account.nome,
+        email: account.email,
+        funcao: typeof account.funcao === 'string' ? account.funcao : '',
+      };
     }
   } catch {
     // interface continua msm se o armazenamento não estiver funcionando
@@ -15,9 +21,9 @@ export function readDemoAccount() {
   return null;
 }
 
-export function saveDemoAccount({ nome, email }) {
+export function saveDemoAccount({ id, nome, email, funcao = '' }) {
   try {
-    sessionStorage.setItem(ACCOUNT_KEY, JSON.stringify({ nome, email }));
+    sessionStorage.setItem(ACCOUNT_KEY, JSON.stringify({ id, nome, email, funcao }));
     return true;
   } catch {
     return false;
@@ -25,5 +31,9 @@ export function saveDemoAccount({ nome, email }) {
 }
 
 export function signOutDemoAccount() {
-  sessionStorage.removeItem(ACCOUNT_KEY);
+  try {
+    sessionStorage.removeItem(ACCOUNT_KEY);
+  } catch {
+    /* sem armazenamento */
+  }
 }

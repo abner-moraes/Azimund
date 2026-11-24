@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react';
 import bg from './bg.png';
 import { HudShape } from './HudShape.jsx';
 import { readDemoAccount, saveDemoAccount } from './demoAccount.js';
+import { login, signUp } from '../../api/accountService.js';
 
 export function AuthPage({ signup }) {
   const [account] = useState(readDemoAccount);
@@ -16,6 +17,7 @@ export function AuthPage({ signup }) {
   const [error, setError] = useState(null);
   const [complete, setComplete] = useState(false);
   const [storageAvailable, setStorageAvailable] = useState(true);
+  const [loading, setLoading] = useState(false);
   const confirmationRef = useRef(null);
   const nameRef = useRef(null);
   const statusRef = useRef(null);
@@ -26,8 +28,9 @@ export function AuthPage({ signup }) {
     setError(null);
   }
 
-  function submit(event) {
+  async function submit(event) {
     event.preventDefault();
+    if (loading) return;
     if (signup && !values.nome.trim()) {
       setError({ field: 'nome', message: 'Informe seu nome ou nickname' });
       nameRef.current?.focus();
@@ -50,15 +53,26 @@ export function AuthPage({ signup }) {
       return;
     }
 
-    //entrada do back: fetch de login e cadastro
-    // substituir esse placeholder pelo backend de cadastro/login (por enquanto so guarda nome e email)
+    //entrada do back: login e cadastro no Spring (endereços em config/backEndpoints.js)
     const email = values.email.trim();
-    const nome = signup
-      ? values.nome.trim()
-      : account?.email.toLowerCase() === email.toLowerCase()
-        ? account.nome
-        : email.split('@')[0];
-    setStorageAvailable(saveDemoAccount({ nome, email }));
+    setLoading(true);
+    try {
+      if (signup) {
+        await signUp({ nome: values.nome.trim(), email, senha: values.senha });
+      } else {
+        // login + GET /back/auth/me (pega o id_usuario real do banco)
+        const user = await login({ email, senha: values.senha });
+        // guarda a cópia da conta pro mapa abrir já logado (a sessão real é o cookie)
+        const funcao =
+          account?.email?.toLowerCase() === user.email.toLowerCase() ? account.funcao : '';
+        setStorageAvailable(saveDemoAccount({ ...user, funcao }));
+      }
+    } catch (failure) {
+      setError({ field: null, message: failure?.mensagem || 'Não foi possível concluir.' });
+      return;
+    } finally {
+      setLoading(false);
+    }
     setValues((current) => ({ ...current, senha: '', confirmation: '' }));
     setError(null);
     if (!signup) {
@@ -145,7 +159,7 @@ export function AuthPage({ signup }) {
                 {error.message}
               </p>
             )}
-            <button className="auth-submit" type="submit">
+            <button className="auth-submit" type="submit" disabled={loading}>
               {signup ? 'Cadastrar-se' : 'Fazer Login'}
             </button>
           </form>

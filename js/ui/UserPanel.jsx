@@ -1,13 +1,14 @@
 //BACK END
-// janela "Informações" da conta, foto e campos editáveis (por enquanto so no navegador)
+// janela "Informações" da conta, foto e campos editáveis
+// salvar = PATCH /back/usuarios/update   deletar = DELETE /back/usuarios/delete/{id}
 import React, { useEffect, useRef, useState } from 'react';
-import { deleteAccount } from '../api/accountService.js';
+import { deleteAccount, updateAccount } from '../api/accountService.js';
 import '../../css/user.css';
 
-// "Função" e "Senha" ainda não fazem nada no front puro, ficam pro back-end (MySQL) usar depois
+// as chaves batem com o UsuarioPatchDTO do Spring (nome, funcao, email, senha)
 const USER_FIELDS = [
   { key: 'nome', label: 'Nome', type: 'text', autoComplete: 'name' },
-  { key: 'tipo', label: 'Função', type: 'text', autoComplete: 'off' },
+  { key: 'funcao', label: 'Função', type: 'text', autoComplete: 'off' },
   { key: 'email', label: 'Email', type: 'email', autoComplete: 'email' },
   {
     key: 'senha',
@@ -24,6 +25,7 @@ export function UserPanel({ user, onChange, onClose, onDeleted }) {
   const [editing, setEditing] = useState(null);
   const [value, setValue] = useState('');
   const [confirmation, setConfirmation] = useState('');
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
@@ -70,33 +72,49 @@ export function UserPanel({ user, onChange, onClose, onDeleted }) {
   function startEditing(field, event) {
     editButtonRef.current = event.currentTarget;
     setEditing(field.key);
-    setValue(field.key === 'senha' ? '' : user[field.key]);
+    setValue(field.key === 'senha' ? '' : user[field.key] || '');
     setConfirmation('');
     setError('');
     setMessage('');
   }
 
-  function saveField(event) {
+  async function saveField(event) {
     event.preventDefault();
-    if (!value.trim()) {
+    if (saving) return;
+    // função pode ficar vazia (coluna funcao aceita NULL); o resto é obrigatório
+    if (editing !== 'funcao' && !value.trim()) {
       setError('Preencha os campos');
       inputRef.current?.focus();
       return;
     }
     if (editing === 'senha') {
+      if (value.length < 8) {
+        setError('A senha precisa ter pelo menos 8 caracteres');
+        return;
+      }
       if (value !== confirmation) {
         setError('As senhas tem que ser iguais');
         return;
       }
-      //entrada do back: fetch de alterar senha
-      // MUDAR AQUI P INTEGRAR COM O BACK-END
-      setMessage('Senha funfada');
-    } else {
-      //entrada do back: fetch de alterar nome/email/função (hoje so muda no navegador)
-      onChange({ ...user, [editing]: value.trim() });
-      setMessage('Atualizou');
     }
-    finishEditing();
+    // senha vai como digitada; o resto sem espaços nas pontas
+    const changes = { [editing]: editing === 'senha' ? value : value.trim() };
+
+    //entrada do back: PATCH /back/usuarios/update { id, <campo alterado> }
+    setSaving(true);
+    setError('');
+    try {
+      const saved = await updateAccount(changes);
+      // a senha nunca fica guardada no front
+      const { senha: _ignored, ...visible } = changes;
+      onChange({ ...user, ...visible, ...saved });
+      setMessage(editing === 'senha' ? 'Senha alterada' : 'Atualizou');
+      finishEditing();
+    } catch (failure) {
+      setError(failure?.mensagem || 'Não foi possível salvar.');
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -132,7 +150,7 @@ export function UserPanel({ user, onChange, onClose, onDeleted }) {
             <div className="user-field" key={field.key}>
               <h2>{field.label}</h2>
               {editing !== field.key && (
-                <p>{field.key === 'senha' ? '**********' : user[field.key]}</p>
+                <p>{field.key === 'senha' ? '**********' : user[field.key] || 'usuário'}</p>
               )}
               <button
                 type="button"
@@ -152,9 +170,9 @@ export function UserPanel({ user, onChange, onClose, onDeleted }) {
                     id={`user-${field.key}`}
                     type={field.type}
                     autoComplete={field.autoComplete}
-                    required
-                    maxLength={field.key === 'email' ? 254 : 120}
-                    minLength={field.key === 'senha' ? 8 : 1}
+                    required={field.key !== 'funcao'}
+                    maxLength={field.key === 'email' ? 254 : field.key === 'nome' ? 63 : 120}
+                    minLength={field.key === 'senha' ? 8 : undefined}
                     value={value}
                     onChange={(event) => {
                       setValue(event.target.value);
@@ -188,10 +206,10 @@ export function UserPanel({ user, onChange, onClose, onDeleted }) {
                     </p>
                   )}
                   <div className="user-form-actions">
-                    <button type="submit">
-                      {field.key === 'senha' ? 'Validar senha' : 'Salvar'}
+                    <button type="submit" disabled={saving}>
+                      {saving ? 'Salvando...' : field.key === 'senha' ? 'Validar senha' : 'Salvar'}
                     </button>
-                    <button type="button" onClick={finishEditing}>
+                    <button type="button" onClick={finishEditing} disabled={saving}>
                       Cancelar
                     </button>
                   </div>
