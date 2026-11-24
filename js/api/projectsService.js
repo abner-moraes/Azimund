@@ -57,14 +57,21 @@ async function callAdapter(method, ...args) {
   }
 }
 
+// lista que vai pro MAPA: so as atividades da Equipe Azimund (id 101)
+// com conta, as atividades do próprio usuário tbm aparecem pra ele
+// as outras não aparecem no globo, mas abrem pelo código (findProjectByCode)
 export async function listPublicProjects() {
   const items = await callAdapter('listPublicProjects');
-  return getSessionUser()
-    ? items
-    : items.filter((item) => String(item.autor?.id) === TEAM_AUTHOR_ID);
+  const user = getSessionUser();
+  return items.filter(
+    (item) =>
+      String(item.autor?.id) === TEAM_AUTHOR_ID ||
+      (!!user && String(item.autor?.id) === user.id),
+  );
 }
 export const getBestAttempt = (id) => callAdapter('getBestAttempt', id);
 export const listMyProjects = () => callAdapter('listMyProjects');
+// procura em TODAS as atividades (de qualquer conta), com ou sem login
 export async function findProjectByCode(code) {
   if (!/^\d{6}$/.test(code))
     throw {

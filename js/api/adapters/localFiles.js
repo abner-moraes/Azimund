@@ -1,8 +1,7 @@
 // modo local, le os arquivos publicados em public/data e sobrepõe as cópias de trabalho
-// que o autor logado salvou no IndexedDB (localCopies.js)
+// salvas no IndexedDB (localCopies.js); a leitura/busca fica em localCatalog.js
 import {
   clone,
-  normalizeProjectJson,
   toIndexItem,
   emptyFeatureCollection,
   gradeAttempt,
@@ -13,63 +12,13 @@ import { getSessionUser, requireSessionUser } from '../session.js';
 import * as copyStore from './localCopies.js';
 import { saveAttempt, bestAttempt } from '../attemptStorage.js';
 import { readThemeColor } from '../../config/theme.js';
-const baseUrl = import.meta.env?.BASE_URL || '/';
-async function fetchDataFile(fileName) {
-  let response;
-  try {
-    response = await fetch(`${baseUrl}data/${fileName}`, {
-      cache: 'no-store',
-    });
-  } catch {
-    throw {
-      codigo: 'FALHA_REDE',
-      mensagem: 'Não foi possível ler os arquivos de dados.',
-    };
-  }
-  if (!response.ok)
-    throw {
-      codigo: 'NAO_ENCONTRADO',
-      mensagem: `Arquivo não encontrado: ${fileName}.`,
-    };
-  try {
-    return await response.json();
-  } catch {
-    throw {
-      codigo: 'DADOS_INVALIDOS',
-      mensagem: `${fileName}: JSON inválido.`,
-    };
-  }
-}
-async function loadPublishedIndex() {
-  const data = await fetchDataFile('projetos.json');
-  if (!Array.isArray(data))
-    throw {
-      codigo: 'DADOS_INVALIDOS',
-      mensagem: 'projetos.json deve ser uma lista.',
-    };
-  return data;
-}
-// copias ficam no IndexedDB como "<idDoAutor>:<idDoProjeto>"
-async function findWorkingCopy(id) {
-  const user = getSessionUser();
-  return user ? copyStore.getCopy(user.id, id) : null;
-}
-async function loadJson(id) {
-  const record = await findWorkingCopy(id);
-  if (record?.excluido)
-    throw {
-      codigo: 'NAO_ENCONTRADO',
-      mensagem: 'Atividade excluída nesta cópia local.',
-    };
-  if (record) return clone(record.json);
-  const item = (await loadPublishedIndex()).find((item) => item.id === id);
-  if (!item)
-    throw {
-      codigo: 'NAO_ENCONTRADO',
-      mensagem: 'Atividade não encontrada.',
-    };
-  return normalizeProjectJson(await fetchDataFile(`atividade_${id}.json`), item);
-}
+import {
+  fetchDataFile,
+  loadPublishedIndex,
+  findWorkingCopy,
+  loadCatalogJson as loadJson,
+  listCatalog,
+} from './localCatalog.js';
 async function saveProject(id, { json, geojson }) {
   const user = requireSessionUser();
   const previousProject = await loadJson(id);
@@ -140,27 +89,15 @@ export const localFiles = {
   capabilities: {
     localCopies: true,
   },
-  async listPublicProjects() {
-    const items = new Map((await loadPublishedIndex()).map((item) => [item.id, item]));
-    const user = getSessionUser();
-    if (user)
-      for (const copy of await copyStore.getAllCopies())
-        if (copy.owner === user.id)
-          copy.excluido
-            ? items.delete(copy.json.idProjeto)
-            : items.set(copy.json.idProjeto, toIndexItem(copy.json));
-    return [...items.values()];
-  },
+  // lista completa (todas as contas deste navegador); o mapa filtra no projectsService
+  listPublicProjects: listCatalog,
   async listMyProjects() {
     const user = requireSessionUser();
-    return (await this.listPublicProjects()).filter(
-      (item) => item.autor.id === user.id,
-    );
+    return (await listCatalog()).filter((item) => item.autor.id === user.id);
   },
+  // busca pelo código em todas as atividades, com conta ou sem conta
   async findProjectByCode(code) {
-    return (
-      (await this.listPublicProjects()).find((item) => item.codigo === code) || null
-    );
+    return (await listCatalog()).find((item) => item.codigo === code) || null;
   },
   loadProjectJson: loadJson,
   async loadProjectGeojson(id) {

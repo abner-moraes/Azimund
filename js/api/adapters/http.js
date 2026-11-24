@@ -42,14 +42,28 @@ const unpackList = (items) => items.map(fromPropriedades);
 const loadJson = async (id) => fromPropriedades(await request(`/${id}/json`));
 
 //entrada do back: rotas de /api/projetos (listar, criar, salvar, excluir, tentativas e visualizações)
+//entrada do back: estas rotas tem q responder SEM sessão (visitante deslogado) e pra qualquer conta:
+//   GET /api/projetos/codigo/{codigo}  -> SELECT em Projeto pelo codigo, sem filtrar pelo autor (null/404 se não achar)
+//   GET /api/projetos/{id}/json        -> SELECT em Projeto pelo id_projeto, sem filtrar pelo autor
+//   GET /api/projetos/{id}/geojson     -> idem
+//   POST /api/projetos/{id}/tentativas -> visitante pode enviar (id_usuario NULL na Tentativa)
+// so salvar/excluir (PUT/DELETE) conferem se a sessão é do autor
+// GET /api/projetos pode mandar tudo, o projectsService filtra o mapa (Equipe Azimund + do próprio usuário)
 export const http = {
   capabilities: {
     localCopies: false,
   },
   listPublicProjects: async () => unpackList(await request('')),
   listMyProjects: async () => unpackList(await request('/minhas')),
-  findProjectByCode: async (code) =>
-    fromPropriedades(await request(`/codigo/${encodeURIComponent(code)}`)),
+  // código q não existe (404 / NAO_ENCONTRADO) vira null, ai a tela mostra "Nenhuma atividade com este código"
+  async findProjectByCode(code) {
+    try {
+      return fromPropriedades(await request(`/codigo/${encodeURIComponent(code)}`));
+    } catch (error) {
+      if (error.codigo === 'NAO_ENCONTRADO') return null;
+      throw error;
+    }
+  },
   loadProjectJson: loadJson,
   loadProjectGeojson: (id) => request(`/${id}/geojson`),
   createProject: ({ ancora }) =>
