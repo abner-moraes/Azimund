@@ -20,12 +20,12 @@ public class UsuarioController {
         return usuarioService.save(usuarioCreateDTO);
     }
 
-    @PatchMapping
+    @PatchMapping("/update")
     public Usuario update(@RequestBody UsuarioPatchDTO usuarioPatchDTO, Authentication auth) {
         return usuarioService.update(usuarioPatchDTO, auth);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/delete/{id}")
     public void remover(@PathVariable Long id, Authentication auth) {
         usuarioService.delete(id, auth);
     }

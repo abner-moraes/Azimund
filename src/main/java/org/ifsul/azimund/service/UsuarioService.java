@@ -36,20 +36,33 @@ public class UsuarioService {
 
     @Transactional
     public Usuario update(UsuarioPatchDTO usuarioPatchDTO, Authentication auth) {
+        if (usuarioPatchDTO.id() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Informação insuficiente para alterar conta.");
+        }
+
         AMUsuarioDetails deets = (AMUsuarioDetails) auth.getPrincipal();
 
         if (deets == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Precisa estar autenticado para tentar alterar detalhes da conta.");
+        } else if (!deets.getUsuario().getId().equals(usuarioPatchDTO.id())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Não pode alterar conta de outro usuário.");
         }
 
-        String hash = passwordEncoder.encode(usuarioPatchDTO.senha());
+        Usuario usuario = usuarioRepo.findById(usuarioPatchDTO.id())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conta a ser alterada não foi encontrada."));
 
-        Usuario usuario = new Usuario();
-        usuario.setId(deets.getUsuario().getId());
-        usuario.setEmail(usuarioPatchDTO.email());
-        usuario.setSenhaHash(hash);
-        usuario.setNome(usuarioPatchDTO.nome());
-        usuario.setFuncao(usuarioPatchDTO.funcao());
+        if (usuarioPatchDTO.email() != null && !usuarioPatchDTO.email().isBlank()) {
+            usuario.setEmail(usuarioPatchDTO.email().trim());
+        }
+        if (usuarioPatchDTO.nome() != null && !usuarioPatchDTO.nome().isBlank()) {
+            usuario.setNome(usuarioPatchDTO.nome().trim());
+        }
+        if (usuarioPatchDTO.funcao() != null) {
+            usuario.setFuncao(usuarioPatchDTO.funcao().isBlank() ? null : usuarioPatchDTO.funcao().trim());
+        }
+        if (usuarioPatchDTO.senha() != null && !usuarioPatchDTO.senha().isBlank()) {
+            usuario.setSenhaHash(passwordEncoder.encode(usuarioPatchDTO.senha()));
+        }
 
         return usuarioRepo.save(usuario);
     }

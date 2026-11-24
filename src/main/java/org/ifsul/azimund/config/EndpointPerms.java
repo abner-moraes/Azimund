@@ -17,7 +17,9 @@ public enum EndpointPerms {
     }),
     AUTH (new String[]{
             "/back/auth/logout",
-            "/back/auth/me"
+            "/back/auth/me",
+            "/back/usuarios/update",
+            "/back/usuarios/delete/**"
     });
 
     private final String[] urls;
