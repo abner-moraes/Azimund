@@ -9,7 +9,8 @@ CREATE TABLE usuario(
     email VARCHAR(255) NOT NULL UNIQUE,
     senha_hash VARCHAR(63) NOT NULL,
     tipo ENUM("USER", "ADMIN") NOT NULL,
-    nome VARCHAR(63) NOT NULL
+    nome VARCHAR(63) NOT NULL,
+    funcao VARCHAR(255)
 );
 
 CREATE TABLE projeto(
@@ -20,19 +21,19 @@ CREATE TABLE projeto(
     horario_modificado DATETIME NOT NULL,
     
     codigo_acesso VARCHAR(15), -- redundancia
-    tipo ENUM("Mapa", "Apresentacao", "Atividade"),
+    tipo ENUM("Rascunho", "Apresentacao", "Atividade", "Aula"),
     titulo VARCHAR(63),
-    descricao TEXT
+    descricao TEXT,
+    propriedades JSON
 );
 
 CREATE TABLE conteudo(
 	id_conteudo BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     id_projeto BIGINT NOT NULL,
     FOREIGN KEY(id_projeto) REFERENCES projeto(id_projeto),
-    
-    objetos JSON,
+
     anotacoes JSON,
-    questoes JSON
+    objetos JSON
 );
 
 CREATE TABLE tentativa(
@@ -52,6 +53,8 @@ CREATE TABLE visualizacao(
 	id_usuario BIGINT NOT NULL,
     FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario),
     id_projeto BIGINT NOT NULL,
-    FOREIGN KEY(id_projeto) REFERENCES projeto(id_projeto)
+    FOREIGN KEY(id_projeto) REFERENCES projeto(id_projeto),
+
+    horario DATETIME NOT NULL
 );
 
