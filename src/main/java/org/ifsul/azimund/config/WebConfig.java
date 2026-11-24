@@ -7,8 +7,9 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 //https://dev.to/mspilari/fullstack-app-developing-the-back-end-with-spring-boot-and-postgresql-bbk
-@Configuration
+//@Configuration
 public class WebConfig {
+    /*
 
     private String allowedOrigins;
 
@@ -29,4 +30,6 @@ public class WebConfig {
         };
 
     }
+     */
 }
+

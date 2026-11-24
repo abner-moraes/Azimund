@@ -20,8 +20,8 @@ CREATE TABLE projeto(
     horario_criado DATETIME NOT NULL,
     horario_modificado DATETIME NOT NULL,
     
-    codigo_acesso VARCHAR(15), -- redundancia
-    tipo ENUM("Rascunho", "Apresentacao", "Atividade", "Aula"),
+    codigo_acesso VARCHAR(15) NOT NULL UNIQUE, -- redundancia
+    tipo ENUM("Rascunho", "Apresentacao", "Atividade", "Aula") NOT NULL,
     titulo VARCHAR(63),
     descricao TEXT,
     propriedades JSON

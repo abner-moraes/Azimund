@@ -16,7 +16,8 @@ public enum EndpointPerms {
             "/back/auth/login"
     }),
     AUTH (new String[]{
-            "/baguio"
+            "/back/auth/logout",
+            "/back/auth/me"
     });
 
     private final String[] urls;
