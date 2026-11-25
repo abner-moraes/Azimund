@@ -42,4 +42,8 @@ public class ConteudoService {
 
         return conteudoRepo.save(conteudo);
     }
+
+    public Conteudo procurarPorIdProjeto(Long idProjeto) {
+        return conteudoRepo.findByIdProjeto(idProjeto);
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -79,5 +80,16 @@ public class ProjetoService {
 
     public Projeto procurarPorCodigo(String codigo) {
         return projetoRepo.findByCodigo(codigo);
+    }
+
+    public List<Projeto> procurarPorIdUsuario(Long idUsuario) {
+        return projetoRepo.findByIdUsuario(idUsuario);
+    }
+
+    public Projeto procurarPorId(Long id) {
+        if (projetoRepo.findById(id).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Projeto não foi encontrado.");
+        }
+        return projetoRepo.findById(id).get();
     }
 }

@@ -14,7 +14,7 @@ public enum EndpointPerms {
             "/cadastro.html",
             "/back/usuarios/cadastro",
             "/back/auth/login",
-            "/back/projetos/buscar/**"
+            "/back/projetos/porcodigo/**"
     }),
     AUTH (new String[]{
             "/back/auth/logout",
@@ -25,7 +25,9 @@ public enum EndpointPerms {
             "/back/projetos/update",
             "/back/projetos/delete/**",
             "/back/conteudo/novo",
-            "/back/conteudo/update"
+            "/back/conteudo/update",
+            "/back/projetos/porusuario/**",
+            "/back/projetos/porid/**"
     });
 
     private final String[] urls;

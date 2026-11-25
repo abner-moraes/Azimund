@@ -16,7 +16,7 @@ CREATE TABLE usuario(
 CREATE TABLE projeto(
 	id_projeto BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     id_criador BIGINT NOT NULL,
-    FOREIGN KEY(id_criador) REFERENCES usuario(id_usuario),
+    FOREIGN KEY(id_criador) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     horario_criado DATETIME NOT NULL,
     horario_modificado DATETIME NOT NULL,
     
@@ -30,7 +30,7 @@ CREATE TABLE projeto(
 CREATE TABLE conteudo(
 	id_conteudo BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     id_projeto BIGINT NOT NULL,
-    FOREIGN KEY(id_projeto) REFERENCES projeto(id_projeto),
+    FOREIGN KEY(id_projeto) REFERENCES projeto(id_projeto) ON DELETE CASCADE,
 
     anotacoes JSON,
     objetos JSON
@@ -39,7 +39,7 @@ CREATE TABLE conteudo(
 CREATE TABLE tentativa(
 	id_tentativa BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     id_atividade BIGINT NOT NULL,
-    FOREIGN KEY(id_atividade) REFERENCES projeto(id_projeto),
+    FOREIGN KEY(id_atividade) REFERENCES projeto(id_projeto) ON DELETE CASCADE,
     id_usuario BIGINT,
     FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario),
     horario_submissao DATETIME,
@@ -53,7 +53,7 @@ CREATE TABLE visualizacao(
 	id_usuario BIGINT NOT NULL,
     FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario),
     id_projeto BIGINT NOT NULL,
-    FOREIGN KEY(id_projeto) REFERENCES projeto(id_projeto),
+    FOREIGN KEY(id_projeto) REFERENCES projeto(id_projeto) ON DELETE CASCADE,
 
     horario DATETIME NOT NULL
 );
