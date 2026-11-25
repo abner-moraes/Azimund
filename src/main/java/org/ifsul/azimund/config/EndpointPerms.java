@@ -23,7 +23,9 @@ public enum EndpointPerms {
             "/back/usuarios/delete/**",
             "/back/projetos/novo",
             "/back/projetos/update",
-            "/back/projetos/delete/**"
+            "/back/projetos/delete/**",
+            "/back/conteudo/novo",
+            "/back/conteudo/update"
     });
 
     private final String[] urls;
